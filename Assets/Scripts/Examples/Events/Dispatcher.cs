@@ -15,7 +15,7 @@ namespace QuickUnity.Examples.Events
         /// <param name="dispatcher">The event dispatcher.</param>
         public void Notify(IEventDispatcher dispatcher)
         {
-            dispatcher.DispatchEvent<ExampleEvent>(new ExampleEvent(ExampleEvent.Example));
+            dispatcher.DispatchEvent(new ExampleEvent(ExampleEvent.Example));
         }
     }
 }
