@@ -70,7 +70,7 @@ namespace QuickUnity.Events
             }
         }
 
-        #region IEventDispatcher Implement
+        #region IEventDispatcher Implementations
 
         /// <summary>
         /// Registers an event listener object with an EventDispatcher object so that the listener receives notification of an event.
@@ -154,6 +154,6 @@ namespace QuickUnity.Events
             }
         }
 
-        #endregion
+        #endregion IEventDispatcher Implementations
     }
 }

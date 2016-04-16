@@ -28,12 +28,12 @@ using UnityEngine;
 namespace QuickUnity.Events
 {
     /// <summary>
-    /// The MonoEventDispatcher class is the class for all classes that both inherits from
-    /// MonoBehaviour and dispatch events.
+    /// The MonoBehaviourEventDispatcher class is the class for all classes that both inherits from
+    /// MonoBehaviour and need to dispatch events.
     /// </summary>
     /// <seealso cref="UnityEngine.MonoBehaviour"/>
     /// <seealso cref="QuickUnity.Events.IEventDispatcher"/>
-    public class MonoEventDispatcher : MonoBehaviour, IEventDispatcher
+    public class MonoBehaviourEventDispatcher : MonoBehaviour, IEventDispatcher
     {
         /// <summary>
         /// The event dispatcher.
@@ -60,7 +60,7 @@ namespace QuickUnity.Events
 
         #endregion Messages
 
-        #region IEventDispatcher Implement
+        #region IEventDispatcher Implementations
 
         /// <summary>
         /// Registers an event listener object with an EventDispatcher object so that the listener
@@ -116,6 +116,6 @@ namespace QuickUnity.Events
                 m_eventDispatcher.RemoveEventListener(eventType, listener);
         }
 
-        #endregion IEventDispatcher Implement
+        #endregion IEventDispatcher Implementations
     }
 }
