@@ -30,8 +30,7 @@ namespace QuickUnity.Events
     /// The IEventDispatcher interface defines methods for adding or removing event listeners, 
     /// checks whether specific types of event listeners are registered, and dispatches events.
     /// </summary>
-    /// <seealso cref="System.IDisposable" />
-    public interface IEventDispatcher : IDisposable
+    public interface IEventDispatcher
     {
         /// <summary>
         /// Registers an event listener object with an EventDispatcher object so that the listener receives notification of an event.

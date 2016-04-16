@@ -14,7 +14,7 @@ namespace QuickUnity.UnitTests.Events
         /// <summary>
         /// Test event object for unit tests.
         /// </summary>
-        /// <seealso cref="QuickUnity.Events.Event" />
+        /// <seealso cref="QuickUnity.Events.Event"/>
         internal class TestEvent : Event
         {
             /// <summary>
@@ -28,9 +28,8 @@ namespace QuickUnity.UnitTests.Events
             /// <param name="eventType">The type of event.</param>
             /// <param name="context">The context object.</param>
             public TestEvent(string eventType, object context = null)
-                :base(eventType, context)
+                : base(eventType, context)
             {
-
             }
         }
 
@@ -68,7 +67,7 @@ namespace QuickUnity.UnitTests.Events
         public void HasEventListenerTest()
         {
             IEventDispatcher dispatcher = new EventDispatcher();
-            Action<TestEvent> TestEventHandler = (testEvent) => {};
+            Action<TestEvent> TestEventHandler = (testEvent) => { };
             dispatcher.AddEventListener(TestEvent.Test, TestEventHandler);
             Assert.IsTrue(dispatcher.HasEventListener(TestEvent.Test, TestEventHandler));
         }

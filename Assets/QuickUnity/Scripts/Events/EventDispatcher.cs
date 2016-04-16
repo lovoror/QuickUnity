@@ -48,16 +48,29 @@ namespace QuickUnity.Events
         }
 
         /// <summary>
-        /// Disposes this instance.
+        /// Finalizes an instance of the <see cref="EventDispatcher"/> class.
         /// </summary>
-        public void Dispose()
+        ~EventDispatcher()
         {
             if(m_listeners != null)
             {
+                foreach(KeyValuePair<string, ArrayList> kvp in m_listeners)
+                {
+                    ArrayList list = kvp.Value;
+
+                    if (list != null)
+                    {
+                        list.Clear();
+                        list = null;
+                    }
+                }
+
                 m_listeners.Clear();
                 m_listeners = null;
             }
         }
+
+        #region IEventDispatcher Implement
 
         /// <summary>
         /// Registers an event listener object with an EventDispatcher object so that the listener receives notification of an event.
@@ -140,5 +153,7 @@ namespace QuickUnity.Events
                     listeners.Remove(listener);
             }
         }
+
+        #endregion
     }
 }
