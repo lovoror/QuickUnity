@@ -28,12 +28,12 @@ using UnityEngine;
 namespace QuickUnity.Events
 {
     /// <summary>
-    /// The MonoBehaviourEventDispatcher class is the class for all classes that both inherits from
+    /// The DispatchableMonoBehaviour class is the class for all classes that both inherits from
     /// MonoBehaviour and need to dispatch events.
     /// </summary>
     /// <seealso cref="UnityEngine.MonoBehaviour"/>
     /// <seealso cref="QuickUnity.Events.IEventDispatcher"/>
-    public class MonoBehaviourEventDispatcher : MonoBehaviour, IEventDispatcher
+    public class DispatchableMonoBehaviour : MonoBehaviour, IEventDispatcher
     {
         /// <summary>
         /// The event dispatcher.
