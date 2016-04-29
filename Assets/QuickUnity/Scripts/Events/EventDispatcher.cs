@@ -23,21 +23,21 @@
  */
 
 using System;
-using System.Collections.Generic;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace QuickUnity.Events
 {
     /// <summary>
-    /// The EventDispatcher class is the base class for all classes that dispatch events. 
+    /// The EventDispatcher class is the base class for all classes that dispatch events.
     /// </summary>
-    /// <seealso cref="QuickUnity.Events.IEventDispatcher" />
+    /// <seealso cref="QuickUnity.Events.IEventDispatcher"/>
     public class EventDispatcher : IEventDispatcher
     {
         /// <summary>
         /// The listeners dictionary.
         /// </summary>
-        protected Dictionary<string, ArrayList> m_listeners;
+        private Dictionary<string, ArrayList> m_listeners;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EventDispatcher"/> class.
@@ -52,19 +52,8 @@ namespace QuickUnity.Events
         /// </summary>
         ~EventDispatcher()
         {
-            if(m_listeners != null)
+            if (m_listeners != null)
             {
-                foreach(KeyValuePair<string, ArrayList> kvp in m_listeners)
-                {
-                    ArrayList list = kvp.Value;
-
-                    if (list != null)
-                    {
-                        list.Clear();
-                        list = null;
-                    }
-                }
-
                 m_listeners.Clear();
                 m_listeners = null;
             }
@@ -73,9 +62,12 @@ namespace QuickUnity.Events
         #region IEventDispatcher Implementations
 
         /// <summary>
-        /// Registers an event listener object with an EventDispatcher object so that the listener receives notification of an event.
+        /// Registers an event listener object with an EventDispatcher object so that the listener
+        /// receives notification of an event.
         /// </summary>
-        /// <typeparam name="T">The type of event object.</typeparam>
+        /// <typeparam name="T">
+        /// The type of the parameter of the method that this delegate encapsulates.
+        /// </typeparam>
         /// <param name="eventType">The type of event.</param>
         /// <param name="listener">The listener function that processes the event.</param>
         public void AddEventListener<T>(string eventType, Action<T> listener) where T : Event
@@ -96,7 +88,9 @@ namespace QuickUnity.Events
         /// <summary>
         /// Dispatches the event.
         /// </summary>
-        /// <typeparam name="T">The type of event object.</typeparam>
+        /// <typeparam name="T">
+        /// The type of the parameter of the method that this delegate encapsulates.
+        /// </typeparam>
         /// <param name="eventObject">The event object.</param>
         public void DispatchEvent<T>(T eventObject) where T : Event
         {
@@ -120,12 +114,17 @@ namespace QuickUnity.Events
         }
 
         /// <summary>
-        /// Checks whether the EventDispatcher object has any listeners registered for a specific type of event.
+        /// Checks whether the EventDispatcher object has any listeners registered for a specific
+        /// type of event.
         /// </summary>
-        /// <typeparam name="T">The type of event object.</typeparam>
+        /// <typeparam name="T">
+        /// The type of the parameter of the method that this delegate encapsulates.
+        /// </typeparam>
         /// <param name="eventType">The type of event.</param>
         /// <param name="listener">The listener function that processes the event.</param>
-        /// <returns>A value of <c>true</c> if a listener of the specified type is registered; <c>false</c> otherwise.</returns>
+        /// <returns>
+        /// A value of <c>true</c> if a listener of the specified type is registered; <c>false</c> otherwise.
+        /// </returns>
         public bool HasEventListener<T>(string eventType, Action<T> listener) where T : Event
         {
             if (string.IsNullOrEmpty(eventType) || listener == null)
@@ -137,7 +136,9 @@ namespace QuickUnity.Events
         /// <summary>
         /// Removes a listener from the EventDispatcher object.
         /// </summary>
-        /// <typeparam name="T">The type of event object.</typeparam>
+        /// <typeparam name="T">
+        /// The type of the parameter of the method that this delegate encapsulates.
+        /// </typeparam>
         /// <param name="eventType">The type of event.</param>
         /// <param name="listener">The listener object to remove.</param>
         public void RemoveEventListener<T>(string eventType, Action<T> listener) where T : Event

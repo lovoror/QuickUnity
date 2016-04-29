@@ -27,53 +27,47 @@ using System;
 namespace QuickUnity.Events
 {
     /// <summary>
-    /// The IEventDispatcher interface defines methods for adding or removing event listeners, checks
-    /// whether specific types of event listeners are registered, and dispatches events.
+    /// The IThreadEventDispatcher interface defines methods for adding or removing event listeners,
+    /// checks whether specific types of event listeners are registered, and dispatches events for
+    /// child thread.
     /// </summary>
-    public interface IEventDispatcher
+    public interface IThreadEventDispatcher
     {
+        /// <summary>
+        /// Update is called every frame.
+        /// </summary>
+        void Update();
+
         /// <summary>
         /// Registers an event listener object with an EventDispatcher object so that the listener
         /// receives notification of an event.
         /// </summary>
-        /// <typeparam name="T">
-        /// The type of the parameter of the method that this delegate encapsulates.
-        /// </typeparam>
         /// <param name="eventType">The type of event.</param>
         /// <param name="listener">The listener function that processes the event.</param>
-        void AddEventListener<T>(string eventType, Action<T> listener) where T : Event;
+        void AddEventListener(string eventType, Action<Event> listener);
 
         /// <summary>
         /// Dispatches the event.
         /// </summary>
-        /// <typeparam name="T">
-        /// The type of the parameter of the method that this delegate encapsulates.
-        /// </typeparam>
         /// <param name="eventObject">The event object.</param>
-        void DispatchEvent<T>(T eventObject) where T : Event;
+        void DispatchEvent(Event eventObject);
 
         /// <summary>
         /// Checks whether the EventDispatcher object has any listeners registered for a specific
         /// type of event.
         /// </summary>
-        /// <typeparam name="T">
-        /// The type of the parameter of the method that this delegate encapsulates.
-        /// </typeparam>
         /// <param name="eventType">The type of event.</param>
         /// <param name="listener">The listener function that processes the event.</param>
         /// <returns>
         /// A value of <c>true</c> if a listener of the specified type is registered; <c>false</c> otherwise.
         /// </returns>
-        bool HasEventListener<T>(string eventType, Action<T> listener) where T : Event;
+        bool HasEventListener(string eventType, Action<Event> listener);
 
         /// <summary>
         /// Removes a listener from the EventDispatcher object.
         /// </summary>
-        /// <typeparam name="T">
-        /// The type of the parameter of the method that this delegate encapsulates.
-        /// </typeparam>
         /// <param name="eventType">The type of event.</param>
         /// <param name="listener">The listener object to remove.</param>
-        void RemoveEventListener<T>(string eventType, Action<T> listener) where T : Event;
+        void RemoveEventListener(string eventType, Action<Event> listener);
     }
 }
