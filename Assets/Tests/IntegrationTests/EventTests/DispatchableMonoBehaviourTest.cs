@@ -20,11 +20,11 @@ namespace QuickUnity.Tests.IntegrationTests
         /// </summary>
         private void Start()
         {
-            DispatcherMock mock = GameObject.FindObjectOfType<DispatcherMock>();
+            DispatcherTester mock = GameObject.FindObjectOfType<DispatcherTester>();
 
             if (mock)
             {
-                mock.AddEventListener<MockEvent>(MockEvent.Test, MockEventTestHandler);
+                mock.AddEventListener<TestEvent>(TestEvent.Test, MockEventTestHandler);
             }
             else
             {
@@ -37,25 +37,25 @@ namespace QuickUnity.Tests.IntegrationTests
         /// </summary>
         private void Update()
         {
-            DispatcherMock mock = GameObject.FindObjectOfType<DispatcherMock>();
+            DispatcherTester mock = GameObject.FindObjectOfType<DispatcherTester>();
 
             if (mock)
-                IntegrationTest.Assert(gameObject, mock.HasEventListener<MockEvent>(MockEvent.Test, MockEventTestHandler));
+                IntegrationTest.Assert(gameObject, mock.HasEventListener<TestEvent>(TestEvent.Test, MockEventTestHandler));
         }
 
         private void OnDestroy()
         {
-            DispatcherMock mock = GameObject.FindObjectOfType<DispatcherMock>();
+            DispatcherTester mock = GameObject.FindObjectOfType<DispatcherTester>();
 
             if (mock)
-                mock.RemoveEventListener<MockEvent>(MockEvent.Test, MockEventTestHandler);
+                mock.RemoveEventListener<TestEvent>(TestEvent.Test, MockEventTestHandler);
         }
 
         /// <summary>
         /// Mocks the event test eventType handler.
         /// </summary>
         /// <param name="mockEvent">The mock event.</param>
-        private void MockEventTestHandler(MockEvent mockEvent)
+        private void MockEventTestHandler(TestEvent mockEvent)
         {
             IntegrationTest.Pass(gameObject);
         }

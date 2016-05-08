@@ -8,7 +8,7 @@ namespace QuickUnity.Tests.IntegrationTests
     /// Class DispatcherMock for dispatch event.
     /// </summary>
     /// <seealso cref="UnityEngine.MonoBehaviour"/>
-    public class DispatcherMock : DispatchableMonoBehaviour
+    public class DispatcherTester : DispatchableMonoBehaviour
     {
         /// <summary>
         /// Start is called just before any of the Update methods is called the first time.
@@ -23,7 +23,7 @@ namespace QuickUnity.Tests.IntegrationTests
         /// </summary>
         private void DelayDispatch()
         {
-            DispatchEvent(new MockEvent(MockEvent.Test));
+            DispatchEvent(new TestEvent(TestEvent.Test));
         }
     }
 }
