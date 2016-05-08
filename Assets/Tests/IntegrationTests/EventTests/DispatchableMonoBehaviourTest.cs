@@ -20,7 +20,7 @@ namespace QuickUnity.Tests.IntegrationTests
         /// </summary>
         private void Start()
         {
-            DispatcherTester mock = GameObject.FindObjectOfType<DispatcherTester>();
+            DispatchableMonoBehaviourTester mock = GameObject.FindObjectOfType<DispatchableMonoBehaviourTester>();
 
             if (mock)
             {
@@ -37,7 +37,7 @@ namespace QuickUnity.Tests.IntegrationTests
         /// </summary>
         private void Update()
         {
-            DispatcherTester mock = GameObject.FindObjectOfType<DispatcherTester>();
+            DispatchableMonoBehaviourTester mock = GameObject.FindObjectOfType<DispatchableMonoBehaviourTester>();
 
             if (mock)
                 IntegrationTest.Assert(gameObject, mock.HasEventListener<TestEvent>(TestEvent.Test, MockEventTestHandler));
@@ -45,7 +45,7 @@ namespace QuickUnity.Tests.IntegrationTests
 
         private void OnDestroy()
         {
-            DispatcherTester mock = GameObject.FindObjectOfType<DispatcherTester>();
+            DispatchableMonoBehaviourTester mock = GameObject.FindObjectOfType<DispatchableMonoBehaviourTester>();
 
             if (mock)
                 mock.RemoveEventListener<TestEvent>(TestEvent.Test, MockEventTestHandler);

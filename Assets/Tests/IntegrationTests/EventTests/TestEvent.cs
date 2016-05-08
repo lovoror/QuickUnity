@@ -14,6 +14,11 @@ namespace QuickUnity.Tests.IntegrationTests
         public const string Test = "Test";
 
         /// <summary>
+        /// The event type of complete doing something.
+        /// </summary>
+        public const string Complete = "Complete";
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="MockEvent"/> class.
         /// </summary>
         /// <param name="eventType">Type of the event.</param>
