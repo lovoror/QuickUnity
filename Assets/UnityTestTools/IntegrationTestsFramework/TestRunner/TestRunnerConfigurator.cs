@@ -1,6 +1,7 @@
 #if !UNITY_METRO && !UNITY_WEBPLAYER && (UNITY_PRO_LICENSE || !(UNITY_ANDROID || UNITY_IPHONE))
 #define UTT_SOCKETS_SUPPORTED
 #endif
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,6 +9,7 @@ using System.Linq;
 using System.Threading;
 using UnityEngine;
 using UnityTest.IntegrationTestRunner;
+
 #if UTT_SOCKETS_SUPPORTED
 using System.Net;
 using System.Net.Sockets;
@@ -15,7 +17,9 @@ using System.Net.NetworkInformation;
 #endif
 
 #if UNITY_EDITOR
+
 using UnityEditorInternal;
+
 #endif
 
 namespace UnityTest
@@ -25,6 +29,7 @@ namespace UnityTest
         public static string integrationTestsNetwork = "networkconfig.txt";
         public static string batchRunFileMarker = "batchrun.txt";
         public static string testScenesToRun = "testscenes.txt";
+        public static string previousScenes = "previousScenes.txt";
 
         public bool isBatchRun { get; private set; }
 
@@ -40,6 +45,38 @@ namespace UnityTest
             CheckForSendingResultsOverNetwork();
         }
 
+#if UNITY_EDITOR
+
+        public UnityEditor.EditorBuildSettingsScene[] GetPreviousScenesToRestore()
+        {
+            string text = null;
+            if (Application.isEditor)
+            {
+                text = GetTextFromTempFile(previousScenes);
+            }
+
+            if (text != null)
+            {
+                var serializer = new System.Xml.Serialization.XmlSerializer(typeof(UnityEditor.EditorBuildSettingsScene[]));
+                using (var textReader = new StringReader(text))
+                {
+                    try
+                    {
+                        return (UnityEditor.EditorBuildSettingsScene[])serializer.Deserialize(textReader);
+                    }
+                    catch (System.Xml.XmlException e)
+                    {
+                        Debug.LogError(e.StackTrace);
+                        return null;
+                    }
+                }
+            }
+
+            return null;
+        }
+
+#endif
+
         public string GetIntegrationTestScenes(int testSceneNum)
         {
             string text;
@@ -49,7 +86,7 @@ namespace UnityTest
                 text = GetTextFromTextAsset(testScenesToRun);
 
             List<string> sceneList = new List<string>();
-            foreach (var line in text.Split(new[] {'\n'}, StringSplitOptions.RemoveEmptyEntries))
+            foreach (var line in text.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries))
             {
                 sceneList.Add(line.ToString());
             }
@@ -124,7 +161,7 @@ namespace UnityTest
         public static List<string> GetAvailableNetworkIPs()
         {
 #if UTT_SOCKETS_SUPPORTED
-            if (!NetworkInterface.GetIsNetworkAvailable()) 
+            if (!NetworkInterface.GetIsNetworkAvailable())
                 return new List<String>{IPAddress.Loopback.ToString()};
 
             var ipList = new List<UnicastIPAddressInformation>();
