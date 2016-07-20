@@ -28,12 +28,12 @@ using UnityEngine;
 namespace QuickUnity.Events
 {
     /// <summary>
-    /// The DispatchableMonoBehaviour class is the class for all classes that both inherits from
+    /// The BehaviourEventDispatcher class is the class for all classes that both inherits from
     /// MonoBehaviour and need to dispatch events.
     /// </summary>
     /// <seealso cref="UnityEngine.MonoBehaviour"/>
     /// <seealso cref="QuickUnity.Events.IEventDispatcher"/>
-    public class DispatchableMonoBehaviour : MonoBehaviour, IEventDispatcher
+    public class BehaviourEventDispatcher : MonoBehaviour, IEventDispatcher
     {
         /// <summary>
         /// The event dispatcher.
@@ -45,7 +45,7 @@ namespace QuickUnity.Events
         /// <summary>
         /// Awake is called when the script instance is being loaded.
         /// </summary>
-        protected virtual void Awake()
+        protected void Awake()
         {
             m_eventDispatcher = new EventDispatcher();
         }
@@ -53,7 +53,7 @@ namespace QuickUnity.Events
         /// <summary>
         /// This function is called when the MonoBehaviour will be destroyed.
         /// </summary>
-        protected virtual void OnDestroy()
+        protected void OnDestroy()
         {
             m_eventDispatcher = null;
         }

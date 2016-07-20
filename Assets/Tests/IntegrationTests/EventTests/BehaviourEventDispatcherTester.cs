@@ -5,10 +5,10 @@ using UnityEngine;
 namespace QuickUnity.Tests.IntegrationTests
 {
     /// <summary>
-    /// Class DispatchableMonoBehaviourTester.
+    /// Class BehaviourEventDispatcherTester.
     /// </summary>
     /// <seealso cref="UnityEngine.MonoBehaviour"/>
-    public class DispatchableMonoBehaviourTester : DispatchableMonoBehaviour
+    public class BehaviourEventDispatcherTester : BehaviourEventDispatcher
     {
         /// <summary>
         /// Start is called just before any of the Update methods is called the first time.

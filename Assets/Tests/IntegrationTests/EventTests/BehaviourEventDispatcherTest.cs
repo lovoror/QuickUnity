@@ -6,9 +6,9 @@ namespace QuickUnity.Tests.IntegrationTests
     /// IntegrationTest for class DispatchableMonoBehaviour.
     /// </summary>
     /// <seealso cref="UnityEngine.MonoBehaviour"/>
-    [IntegrationTest.DynamicTestAttribute("DispatchableMonoBehaviourTest")]
+    [IntegrationTest.DynamicTestAttribute("BehaviourEventDispatcherTest")]
     [IntegrationTest.SucceedWithAssertions]
-    public class DispatchableMonoBehaviourTest : MonoBehaviour
+    public class BehaviourEventDispatcherTest : MonoBehaviour
     {
         /// <summary>
         /// The name of DispatcherMock object.
@@ -20,7 +20,7 @@ namespace QuickUnity.Tests.IntegrationTests
         /// </summary>
         private void Start()
         {
-            DispatchableMonoBehaviourTester mock = GameObject.FindObjectOfType<DispatchableMonoBehaviourTester>();
+            BehaviourEventDispatcherTester mock = GameObject.FindObjectOfType<BehaviourEventDispatcherTester>();
 
             if (mock)
             {
@@ -37,7 +37,7 @@ namespace QuickUnity.Tests.IntegrationTests
         /// </summary>
         private void Update()
         {
-            DispatchableMonoBehaviourTester mock = GameObject.FindObjectOfType<DispatchableMonoBehaviourTester>();
+            BehaviourEventDispatcherTester mock = GameObject.FindObjectOfType<BehaviourEventDispatcherTester>();
 
             if (mock)
                 IntegrationTest.Assert(gameObject, mock.HasEventListener<TestEvent>(TestEvent.Test, MockEventTestHandler));
@@ -45,7 +45,7 @@ namespace QuickUnity.Tests.IntegrationTests
 
         private void OnDestroy()
         {
-            DispatchableMonoBehaviourTester mock = GameObject.FindObjectOfType<DispatchableMonoBehaviourTester>();
+            BehaviourEventDispatcherTester mock = GameObject.FindObjectOfType<BehaviourEventDispatcherTester>();
 
             if (mock)
                 mock.RemoveEventListener<TestEvent>(TestEvent.Test, MockEventTestHandler);
