@@ -45,7 +45,7 @@ namespace QuickUnity.Events
         /// <summary>
         /// Awake is called when the script instance is being loaded.
         /// </summary>
-        protected void Awake()
+        protected virtual void Awake()
         {
             m_eventDispatcher = new EventDispatcher();
         }
@@ -53,7 +53,7 @@ namespace QuickUnity.Events
         /// <summary>
         /// This function is called when the MonoBehaviour will be destroyed.
         /// </summary>
-        protected void OnDestroy()
+        protected virtual void OnDestroy()
         {
             m_eventDispatcher = null;
         }
