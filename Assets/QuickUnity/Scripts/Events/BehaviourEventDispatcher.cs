@@ -31,24 +31,28 @@ namespace QuickUnity.Events
     /// The BehaviourEventDispatcher class is the class for all classes that both inherits from
     /// MonoBehaviour and need to dispatch events.
     /// </summary>
-    /// <seealso cref="UnityEngine.MonoBehaviour"/>
+    /// <seealso cref="QuickUnity.MonoBehaviourBase"/>
     /// <seealso cref="QuickUnity.Events.IEventDispatcher"/>
-    public class BehaviourEventDispatcher : MonoBehaviour, IEventDispatcher
+    public class BehaviourEventDispatcher : MonoBehaviourBase, IEventDispatcher
     {
         /// <summary>
         /// The event dispatcher.
         /// </summary>
         protected IEventDispatcher m_eventDispatcher;
 
-        #region Messages
+        #region Protected Functions
 
         /// <summary>
-        /// Awake is called when the script instance is being loaded.
+        /// Called when script receive message Awake.
         /// </summary>
-        protected virtual void Awake()
+        protected override void OnAwake()
         {
             m_eventDispatcher = new EventDispatcher();
         }
+
+        #endregion Protected Functions
+
+        #region Messages
 
         /// <summary>
         /// This function is called when the MonoBehaviour will be destroyed.

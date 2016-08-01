@@ -94,19 +94,23 @@ namespace QuickUnity.Patterns
             }
         }
 
-        #region Messages
+        #region Protected Functions
 
         /// <summary>
-        /// Awake is called when the script instance is being loaded.
+        /// Called when script receive message Awake.
         /// </summary>
-        protected override void Awake()
+        protected override void OnAwake()
         {
-            base.Awake();
+            base.OnAwake();
 
             // If singleton instance got null, find the instance already have.
             if (s_instance == null)
                 instance = FindObjectOfType<T>();
         }
+
+        #endregion Protected Functions
+
+        #region Messages
 
         /// <summary>
         /// This function is called when the MonoBehaviour will be destroyed.
