@@ -75,13 +75,13 @@ namespace QuickUnity.Events
             if (string.IsNullOrEmpty(eventType) || listener == null)
                 return;
 
-            if (!m_listeners.ContainsKey(eventType))
+            if (m_listeners != null && !m_listeners.ContainsKey(eventType))
             {
                 ArrayList list = new ArrayList();
                 m_listeners.Add(eventType, list);
             }
 
-            if (!m_listeners[eventType].Contains(listener))
+            if (m_listeners != null && !m_listeners[eventType].Contains(listener))
                 m_listeners[eventType].Add(listener);
         }
 
@@ -99,7 +99,7 @@ namespace QuickUnity.Events
 
             string eventType = eventObject.eventType;
 
-            if (m_listeners.ContainsKey(eventType))
+            if (m_listeners != null && m_listeners.ContainsKey(eventType))
             {
                 ArrayList listeners = m_listeners[eventType];
 
@@ -130,7 +130,7 @@ namespace QuickUnity.Events
             if (string.IsNullOrEmpty(eventType) || listener == null)
                 return false;
 
-            return m_listeners.ContainsKey(eventType) && m_listeners[eventType].Contains(listener);
+            return m_listeners != null && m_listeners.ContainsKey(eventType) && m_listeners[eventType].Contains(listener);
         }
 
         /// <summary>
@@ -146,7 +146,7 @@ namespace QuickUnity.Events
             if (string.IsNullOrEmpty(eventType) || listener == null)
                 return;
 
-            if (m_listeners.ContainsKey(eventType))
+            if (m_listeners != null && m_listeners.ContainsKey(eventType))
             {
                 ArrayList listeners = m_listeners[eventType];
 

@@ -127,7 +127,7 @@ namespace QuickUnity.Events
         {
             lock (this)
             {
-                if (m_events.Count == 0)
+                if (m_events != null && m_events.Count == 0)
                 {
                     foreach (string eventType in m_pendingListeners.Keys)
                     {

@@ -34,5 +34,58 @@ namespace QuickUnity.GameFramework
     /// <seealso cref="QuickUnity.Patterns.SingletonBehaviour{QuickUnity.GameFramework.GameInstance}"/>
     public abstract class GameInstance : SingletonBehaviour<GameInstance>
     {
+        /// <summary>
+        /// The application pause count number.
+        /// </summary>
+        private uint m_applicationPauseCount = 0;
+
+        /// <summary>
+        /// The GameObject instance.
+        /// </summary>
+        protected GameWorld m_gameWorld;
+
+        /// <summary>
+        /// Gets the GameWorld instance.
+        /// </summary>
+        /// <value>The GameWorld instance.</value>
+        public GameWorld GameWorld
+        {
+            get
+            {
+                return m_gameWorld;
+            }
+        }
+
+        /// <summary>
+        /// Initializes this game.
+        /// </summary>
+        protected virtual void Initialize()
+        {
+        }
+
+        /// <summary>
+        /// Sent to all game objects when the player pauses.
+        /// </summary>
+        /// <param name="pauseStatus">if set to <c>true</c> [pause status].</param>
+        private void OnApplicationPause(bool pauseStatus)
+        {
+            m_applicationPauseCount++;
+
+            if (m_applicationPauseCount == 1)
+            {
+                // Dispatch game start event.
+                Initialize();
+                DispatchEvent(new GameEvent(GameEvent.GameStart));
+            }
+        }
+
+        /// <summary>
+        /// Sent to all game objects before the application is quit.
+        /// </summary>
+        private void OnApplicationQuit()
+        {
+            // Dispatch game end event.
+            DispatchEvent(new GameEvent(GameEvent.GameEnd));
+        }
     }
 }
