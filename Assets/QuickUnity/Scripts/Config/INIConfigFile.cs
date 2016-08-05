@@ -25,7 +25,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Text.RegularExpressions;
+using UnityEngine;
 
 namespace QuickUnity.Config
 {
@@ -88,6 +90,64 @@ namespace QuickUnity.Config
     /// </summary>
     public class INIConfigFile
     {
+        /// <summary>
+        /// Parses the INI configuration file.
+        /// </summary>
+        /// <param name="filePath">The file path.</param>
+        /// <returns>INIConfigFile object.</returns>
+        public static INIConfigFile ParseINIConfigFile(string filePath)
+        {
+            INIConfigFile configFile = null;
+            string text = LoadINIFromResource(filePath);
+
+            if (!string.IsNullOrEmpty(text))
+            {
+                configFile = new INIConfigFile(text);
+            }
+            else
+            {
+                StreamReader sr = LoadINIFromFileStream(filePath);
+                configFile = new INIConfigFile(sr);
+            }
+
+            return configFile;
+        }
+
+        /// <summary>
+        /// Loads the INI file content from project Resources folder.
+        /// </summary>
+        /// <param name="filePath">The file path.</param>
+        /// <returns>The INI file text content.</returns>
+        private static string LoadINIFromResource(string filePath)
+        {
+            TextAsset asset = Resources.Load<TextAsset>(filePath);
+
+            if (asset != null)
+            {
+                return asset.text;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Loads the INI file content from FileStream.
+        /// </summary>
+        /// <param name="filePath">The file path.</param>
+        /// <returns>The INI file StreamReader object.</returns>
+        private static StreamReader LoadINIFromFileStream(string filePath)
+        {
+            StreamReader sr = null;
+
+            if (File.Exists(filePath))
+            {
+                FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.None);
+                sr = new StreamReader(fs, Encoding.UTF8);
+            }
+
+            return sr;
+        }
+
         /// <summary>
         /// The INI configuration section map.
         /// </summary>
@@ -179,7 +239,7 @@ namespace QuickUnity.Config
             int index = lineText.IndexOf(commentStr);
             commentCharIndex = -1;
 
-            if (index > 0)
+            if (index == 0)
             {
                 commentCharIndex = index;
                 return true;
@@ -209,9 +269,9 @@ namespace QuickUnity.Config
                 {
                     Match match = Regex.Match(lineText, pattern);
 
-                    if (match.Index < commentCharIndex)
+                    if (commentCharIndex == -1 || match.Index < commentCharIndex)
                     {
-                        sectionName = match.Captures[0].Value;
+                        sectionName = match.Groups[1].Value;
                         return true;
                     }
                 }
@@ -241,7 +301,7 @@ namespace QuickUnity.Config
                 {
                     Match match = Regex.Match(lineText, pattern);
 
-                    if (match.Index < commentCharIndex)
+                    if (commentCharIndex == -1 || match.Index < commentCharIndex)
                     {
                         string result = match.Value;
                         string[] resultArr = result.Split('=');
