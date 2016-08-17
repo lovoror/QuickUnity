@@ -27,17 +27,22 @@ using UnityEditor;
 namespace QuickUnity.Editor
 {
     /// <summary>
-    /// This script adds the QuinUnity/About menu item to the Unity Editor.
+    /// This script adds the QuinUnity/Help menu items to the Unity Editor.
     /// </summary>
-    public static class AboutMenu
+    public class HelpMenu
     {
+        /// <summary>
+        /// The menu item priority.
+        /// </summary>
+        private const int MenuItemPriority = int.MaxValue;
+
         /// <summary>
         /// Shows the about dialog.
         /// </summary>
-        [MenuItem("QuickUnity/About")]
+        [MenuItem("QuickUnity/Help/About QuickUnity", false, MenuItemPriority)]
         public static void ShowAboutDialog()
         {
-            EditorUtility.DisplayDialog("About",
+            EditorUtility.DisplayDialog("About QuickUnity",
                 "QuickUnity\nAuthor: Jerry Lee\nE-mail: cosmos53076@163.com",
                 "OK");
         }
