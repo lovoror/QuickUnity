@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using QuickUnity.Config;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace QuickUnity.Tests.UnitTests.ConfigTests
 {

@@ -174,7 +174,16 @@ namespace QuickUnity.Config
         /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
         public override string ToString()
         {
-            return base.ToString();
+            List<string> representList = new List<string>();
+
+            foreach (KeyValuePair<string, string> kvp in m_valueMap)
+            {
+                string represent = kvp.Key + ":" + kvp.Value;
+                representList.Add(represent);
+            }
+
+            string[] represents = representList.ToArray();
+            return string.Join("\n", represents);
         }
     }
 
@@ -372,7 +381,15 @@ namespace QuickUnity.Config
         /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
         public override string ToString()
         {
-            return base.ToString();
+            string value = string.Empty;
+
+            foreach (KeyValuePair<string, INIConfigSection> kvp in m_sectionMap)
+            {
+                value += "[" + kvp.Key + "]\n";
+                value += kvp.Value.ToString() + "\n\n";
+            }
+
+            return value;
         }
 
         #region Private Functions
