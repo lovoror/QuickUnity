@@ -22,31 +22,33 @@
  *	SOFTWARE.
  */
 
+using QuickUnity.Editor.Localization;
 using UnityEditor;
 using UnityEngine;
 
 namespace QuickUnity.Editor
 {
     /// <summary>
-    /// This script adds the QuinUnity/Help menu items to the Unity Editor.
+    /// This script adds the QuinUnity/Localization Dashboard menu item to the Unity Editor.
     /// </summary>
-    /// <seealso cref="ScriptableObject"/>
-    public class HelpMenu : ScriptableObject
+    /// <seealso cref="UnityEngine.ScriptableObject"/>
+    public class LocalizationDashboardMenu : ScriptableObject
     {
         /// <summary>
         /// The menu item priority.
         /// </summary>
-        public const int MenuItemPriority = int.MaxValue;
+        public const int MenuItemPriority = HelpMenu.MenuItemPriority - QuickUnityEditor.MenuItemSeparatedNumber;
 
         /// <summary>
-        /// Shows the about dialog.
+        /// Shows the localization dashboard window.
         /// </summary>
-        [MenuItem("QuickUnity/Help/About QuickUnity", false, MenuItemPriority)]
-        private static void ShowAboutDialog()
+        [MenuItem("QuickUnity/Localization Dashboard", false, MenuItemPriority)]
+        private static void ShowLocalizationDashboardWindow()
         {
-            EditorUtility.DisplayDialog("About QuickUnity",
-                "QuickUnity\nAuthor: Jerry Lee\nE-mail: cosmos53076@163.com",
-                "OK");
+            LocalizationDashboardWindow window = EditorWindow.GetWindow<LocalizationDashboardWindow>(
+                false, "Localization");
+            EditorWindow.FocusWindowIfItsOpen<LocalizationDashboardWindow>();
+            window.Show();
         }
     }
 }

@@ -22,31 +22,16 @@
  *	SOFTWARE.
  */
 
-using UnityEditor;
-using UnityEngine;
-
-namespace QuickUnity.Editor
+namespace QuickUnity.Editor.Localization
 {
     /// <summary>
-    /// This script adds the QuinUnity/Help menu items to the Unity Editor.
+    /// LocalizationModule value object.
     /// </summary>
-    /// <seealso cref="ScriptableObject"/>
-    public class HelpMenu : ScriptableObject
+    public class LocalizationModule
     {
         /// <summary>
-        /// The menu item priority.
+        /// The name of module.
         /// </summary>
-        public const int MenuItemPriority = int.MaxValue;
-
-        /// <summary>
-        /// Shows the about dialog.
-        /// </summary>
-        [MenuItem("QuickUnity/Help/About QuickUnity", false, MenuItemPriority)]
-        private static void ShowAboutDialog()
-        {
-            EditorUtility.DisplayDialog("About QuickUnity",
-                "QuickUnity\nAuthor: Jerry Lee\nE-mail: cosmos53076@163.com",
-                "OK");
-        }
+        public string name = "NewModule";
     }
 }

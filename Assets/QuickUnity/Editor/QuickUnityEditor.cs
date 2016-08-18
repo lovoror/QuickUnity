@@ -22,31 +22,16 @@
  *	SOFTWARE.
  */
 
-using UnityEditor;
-using UnityEngine;
-
 namespace QuickUnity.Editor
 {
     /// <summary>
-    /// This script adds the QuinUnity/Help menu items to the Unity Editor.
+    /// QuickUnityEditor is utility class for editor.
     /// </summary>
-    /// <seealso cref="ScriptableObject"/>
-    public class HelpMenu : ScriptableObject
+    public static class QuickUnityEditor
     {
         /// <summary>
-        /// The menu item priority.
+        /// The menu item separated number.
         /// </summary>
-        public const int MenuItemPriority = int.MaxValue;
-
-        /// <summary>
-        /// Shows the about dialog.
-        /// </summary>
-        [MenuItem("QuickUnity/Help/About QuickUnity", false, MenuItemPriority)]
-        private static void ShowAboutDialog()
-        {
-            EditorUtility.DisplayDialog("About QuickUnity",
-                "QuickUnity\nAuthor: Jerry Lee\nE-mail: cosmos53076@163.com",
-                "OK");
-        }
+        public const byte MenuItemSeparatedNumber = 11;
     }
 }

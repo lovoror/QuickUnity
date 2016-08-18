@@ -22,6 +22,7 @@
  *	SOFTWARE.
  */
 
+using QuickUnity.Utilities;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -82,6 +83,98 @@ namespace QuickUnity.Config
             {
                 m_valueMap.Add(key, value);
             }
+        }
+
+        /// <summary>
+        /// Gets the value.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        public string GetValue(string key)
+        {
+            if (m_valueMap.ContainsKey(key))
+            {
+                return m_valueMap[key];
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the value.
+        /// </summary>
+        /// <typeparam name="T">The type of value.</typeparam>
+        /// <param name="key">The key.</param>
+        /// <returns>The value of the type.</returns>
+        public T GetValue<T>(string key)
+        {
+            string strValue = GetValue(key);
+            T value = default(T);
+
+            if (!string.IsNullOrEmpty(strValue))
+            {
+                value = ObjectUtility.TryParse<T>(strValue);
+            }
+
+            return value;
+        }
+
+        /// <summary>
+        /// Gets the list value.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <returns>The list value.</returns>
+        public List<string> GetListValue(string key)
+        {
+            List<string> list = null;
+            string strValue = GetValue(key);
+
+            if (!string.IsNullOrEmpty(strValue))
+            {
+                string[] values = strValue.Split(new char[1] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                list = new List<string>(values);
+            }
+
+            return (list != null && list.Count > 0) ? list : null;
+        }
+
+        /// <summary>
+        /// Gets the list value.
+        /// </summary>
+        /// <typeparam name="T">The target type of object.</typeparam>
+        /// <param name="key">The key.</param>
+        /// <returns>The list value.</returns>
+        public List<T> GetListValue<T>(string key)
+        {
+            List<T> list = new List<T>();
+
+            string strValue = GetValue(key);
+
+            if (!string.IsNullOrEmpty(strValue))
+            {
+                string[] values = strValue.Split(new char[1] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+
+                for (int i = 0, length = values.Length; i < length; ++i)
+                {
+                    string value = values[i].Trim();
+                    T targetValue = ObjectUtility.TryParse<T>(value);
+
+                    if (targetValue != null)
+                    {
+                        list.Add(targetValue);
+                    }
+                }
+            }
+
+            return (list != null && list.Count > 0) ? list : null;
+        }
+
+        /// <summary>
+        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// </summary>
+        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+        public override string ToString()
+        {
+            return base.ToString();
         }
     }
 
@@ -161,6 +254,13 @@ namespace QuickUnity.Config
         /// <summary>
         /// Initializes a new instance of the <see cref="INIConfigFile"/> class.
         /// </summary>
+        public INIConfigFile()
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="INIConfigFile"/> class.
+        /// </summary>
         /// <param name="fileContent">Content of the file.</param>
         public INIConfigFile(string fileContent)
         {
@@ -191,6 +291,91 @@ namespace QuickUnity.Config
                 }
             }
         }
+
+        /// <summary>
+        /// Gets the value.
+        /// </summary>
+        /// <param name="sectionName">Name of the section.</param>
+        /// <param name="key">The key.</param>
+        /// <returns>The value object.</returns>
+        public string GetValue(string sectionName, string key)
+        {
+            string value = null;
+
+            if (m_sectionMap != null && m_sectionMap.ContainsKey(sectionName))
+            {
+                INIConfigSection section = m_sectionMap[sectionName];
+                return section.GetValue(key);
+            }
+
+            return value;
+        }
+
+        /// <summary>
+        /// Gets the value.
+        /// </summary>
+        /// <typeparam name="T">The type of value object.</typeparam>
+        /// <param name="sectionName">Name of the section.</param>
+        /// <param name="key">The key.</param>
+        /// <returns>The value object.</returns>
+        public T GetValue<T>(string sectionName, string key)
+        {
+            T value = default(T);
+
+            if (m_sectionMap != null && m_sectionMap.ContainsKey(sectionName))
+            {
+                INIConfigSection section = m_sectionMap[sectionName];
+                return section.GetValue<T>(key);
+            }
+
+            return value;
+        }
+
+        /// <summary>
+        /// Gets the list value.
+        /// </summary>
+        /// <param name="sectionName">Name of the section.</param>
+        /// <param name="key">The key.</param>
+        /// <returns>The list value.</returns>
+        public List<string> GetListValue(string sectionName, string key)
+        {
+            if (m_sectionMap != null && m_sectionMap.ContainsKey(sectionName))
+            {
+                INIConfigSection section = m_sectionMap[sectionName];
+                return section.GetListValue(key);
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the list value.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="sectionName">Name of the section.</param>
+        /// <param name="key">The key.</param>
+        /// <returns>The list value.</returns>
+        public List<T> GetListValue<T>(string sectionName, string key)
+        {
+            if (m_sectionMap != null && m_sectionMap.ContainsKey(sectionName))
+            {
+                INIConfigSection section = m_sectionMap[sectionName];
+                return section.GetListValue<T>(key);
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// </summary>
+        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+        public override string ToString()
+        {
+            return base.ToString();
+        }
+
+        #region Private Functions
 
         /// <summary>
         /// Parses the line text.
@@ -317,5 +502,7 @@ namespace QuickUnity.Config
 
             return null;
         }
+
+        #endregion Private Functions
     }
 }

@@ -22,31 +22,50 @@
  *	SOFTWARE.
  */
 
+using System.Collections.Generic;
 using UnityEditor;
+using UnityEditorInternal;
 using UnityEngine;
 
-namespace QuickUnity.Editor
+namespace QuickUnity.Editor.Localization
 {
     /// <summary>
-    /// This script adds the QuinUnity/Help menu items to the Unity Editor.
+    /// The Localization Dashboard Window.
     /// </summary>
-    /// <seealso cref="ScriptableObject"/>
-    public class HelpMenu : ScriptableObject
+    /// <seealso cref="UnityEditor.EditorWindow"/>
+    public class LocalizationDashboardWindow : EditorWindow
     {
-        /// <summary>
-        /// The menu item priority.
-        /// </summary>
-        public const int MenuItemPriority = int.MaxValue;
+        private const int TopPadding = 2;
 
         /// <summary>
-        /// Shows the about dialog.
+        /// The module list.
         /// </summary>
-        [MenuItem("QuickUnity/Help/About QuickUnity", false, MenuItemPriority)]
-        private static void ShowAboutDialog()
+        private ReorderableList m_moduleList;
+
+        private void OnEnable()
         {
-            EditorUtility.DisplayDialog("About QuickUnity",
-                "QuickUnity\nAuthor: Jerry Lee\nE-mail: cosmos53076@163.com",
-                "OK");
+            List<LocalizationModule> list = new List<LocalizationModule>();
+            m_moduleList = new ReorderableList(list, typeof(LocalizationModule), true, true, true, true);
+
+            m_moduleList.drawHeaderCallback = (rect) => EditorGUI.LabelField(rect, "Modules");
+            m_moduleList.drawElementCallback = (Rect rect, int index, bool isActive, bool isFocused) =>
+            {
+                rect.y += TopPadding;
+                rect.height = EditorGUIUtility.singleLineHeight;
+
+                EditorGUI.LabelField(rect, list[index].name);
+            };
+        }
+
+        /// <summary>
+        /// GUI Implementation.
+        /// </summary>
+        private void OnGUI()
+        {
+            if (m_moduleList != null)
+            {
+                m_moduleList.DoLayoutList();
+            }
         }
     }
 }
