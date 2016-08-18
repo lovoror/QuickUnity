@@ -22,6 +22,7 @@
  *	SOFTWARE.
  */
 
+using QuickUnity.Extensions;
 using QuickUnity.Utilities;
 using System;
 using System.Collections.Generic;
@@ -70,18 +71,43 @@ namespace QuickUnity.Config
         }
 
         /// <summary>
-        /// Adds the value.
+        /// Add or update the value.
         /// </summary>
         /// <param name="key">The key.</param>
         /// <param name="value">The value.</param>
-        public void AddValue(string key, string value)
+        public void AddOrUpdateValue(string key, object value)
         {
             key = key.Trim();
-            value = value.Trim();
+            string strValue = value.ToString().Trim();
 
             if (!m_valueMap.ContainsKey(key))
             {
-                m_valueMap.Add(key, value);
+                m_valueMap.Add(key, strValue);
+            }
+            else
+            {
+                m_valueMap[key] = strValue;
+            }
+        }
+
+        /// <summary>
+        /// Add or update list value.
+        /// </summary>
+        /// <typeparam name="T">The type of value.</typeparam>
+        /// <param name="key">The key.</param>
+        /// <param name="value">The list value.</param>
+        public void AddOrUpdateListValue<T>(string key, List<T> value)
+        {
+            key = key.Trim();
+            string strValue = value.ToString<T>().Trim();
+
+            if (!m_valueMap.ContainsKey(key))
+            {
+                m_valueMap.Add(key, strValue);
+            }
+            else
+            {
+                m_valueMap[key] = strValue;
             }
         }
 
@@ -178,7 +204,7 @@ namespace QuickUnity.Config
 
             foreach (KeyValuePair<string, string> kvp in m_valueMap)
             {
-                string represent = kvp.Key + ":" + kvp.Value;
+                string represent = kvp.Key + "=" + kvp.Value;
                 representList.Add(represent);
             }
 
@@ -199,17 +225,18 @@ namespace QuickUnity.Config
         /// <returns>INIConfigFile object.</returns>
         public static INIConfigFile ParseINIConfigFile(string filePath)
         {
+            string fileName = Path.GetFileNameWithoutExtension(filePath);
             INIConfigFile configFile = null;
             string text = LoadINIFromResource(filePath);
 
             if (!string.IsNullOrEmpty(text))
             {
-                configFile = new INIConfigFile(text);
+                configFile = new INIConfigFile(fileName, text);
             }
             else
             {
                 StreamReader sr = LoadINIFromFileStream(filePath);
-                configFile = new INIConfigFile(sr);
+                configFile = new INIConfigFile(fileName, sr);
             }
 
             return configFile;
@@ -261,18 +288,40 @@ namespace QuickUnity.Config
         private string m_currentSectionName;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="INIConfigFile"/> class.
+        /// The name of the configuration.
         /// </summary>
-        public INIConfigFile()
+        private string m_configName;
+
+        /// <summary>
+        /// Gets the name of the configuration.
+        /// </summary>
+        /// <value>The name of the configuration.</value>
+        public string configName
         {
+            get
+            {
+                return m_configName;
+            }
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="INIConfigFile"/> class.
         /// </summary>
-        /// <param name="fileContent">Content of the file.</param>
-        public INIConfigFile(string fileContent)
+        /// <param name="configName">Name of the configuration.</param>
+        public INIConfigFile(string configName)
         {
+            m_configName = configName;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="INIConfigFile"/> class.
+        /// </summary>
+        /// <param name="configName">Name of the configuration.</param>
+        /// <param name="fileContent">Content of the file.</param>
+        public INIConfigFile(string configName, string fileContent)
+        {
+            m_configName = configName;
+
             if (!string.IsNullOrEmpty(fileContent))
             {
                 string[] lines = fileContent.Split(new[] { "\n", "\r\n" }, StringSplitOptions.None);
@@ -288,9 +337,12 @@ namespace QuickUnity.Config
         /// <summary>
         /// Initializes a new instance of the <see cref="INIConfigFile"/> class.
         /// </summary>
+        /// <param name="configName">Name of the configuration.</param>
         /// <param name="reader">The file stream reader.</param>
-        public INIConfigFile(StreamReader reader)
+        public INIConfigFile(string configName, StreamReader reader)
         {
+            m_configName = configName;
+
             if (reader != null)
             {
                 while (!reader.EndOfStream)
@@ -298,6 +350,104 @@ namespace QuickUnity.Config
                     string lineText = reader.ReadLine().Trim();
                     ParseLineText(lineText);
                 }
+            }
+        }
+
+        /// <summary>
+        /// Adds the section.
+        /// </summary>
+        /// <param name="sectionName">Name of the section.</param>
+        public void AddSection(string sectionName)
+        {
+            sectionName = sectionName.Trim();
+
+            if (string.IsNullOrEmpty(sectionName))
+            {
+                return;
+            }
+
+            if (m_sectionMap != null && !m_sectionMap.ContainsKey(sectionName))
+            {
+                INIConfigSection configSection = new INIConfigSection(sectionName);
+                m_sectionMap.Add(sectionName, configSection);
+            }
+        }
+
+        /// <summary>
+        /// Removes the section.
+        /// </summary>
+        /// <param name="sectionName">Name of the section.</param>
+        public void RemoveSection(string sectionName)
+        {
+            sectionName = sectionName.Trim();
+
+            if (string.IsNullOrEmpty(sectionName))
+            {
+                return;
+            }
+
+            if (m_sectionMap != null && m_sectionMap.ContainsKey(sectionName))
+            {
+                m_sectionMap.Remove(sectionName);
+            }
+        }
+
+        /// <summary>
+        /// Add or update value.
+        /// </summary>
+        /// <param name="sectionName">Name of the section.</param>
+        /// <param name="key">The key.</param>
+        /// <param name="value">The value.</param>
+        public void AddOrUpdateValue(string sectionName, string key, object value)
+        {
+            sectionName = sectionName.Trim();
+            key = key.Trim();
+
+            if (string.IsNullOrEmpty(sectionName) || string.IsNullOrEmpty(key))
+            {
+                return;
+            }
+
+            if (m_sectionMap != null)
+            {
+                if (!m_sectionMap.ContainsKey(sectionName))
+                {
+                    // If have no section, add it.
+                    AddSection(sectionName);
+                }
+
+                INIConfigSection configSection = m_sectionMap[sectionName];
+                configSection.AddOrUpdateValue(key, value);
+            }
+        }
+
+        /// <summary>
+        /// Add or update list value.
+        /// </summary>
+        /// <typeparam name="T">The type of value.</typeparam>
+        /// <param name="sectionName">Name of the section.</param>
+        /// <param name="key">The key.</param>
+        /// <param name="value">The list value.</param>
+        public void AddOrUpdateListValue<T>(string sectionName, string key, List<T> value)
+        {
+            sectionName = sectionName.Trim();
+            key = key.Trim();
+
+            if (string.IsNullOrEmpty(sectionName) || string.IsNullOrEmpty(key))
+            {
+                return;
+            }
+
+            if (m_sectionMap != null)
+            {
+                if (!m_sectionMap.ContainsKey(sectionName))
+                {
+                    // If have no section, add it.
+                    AddSection(sectionName);
+                }
+
+                INIConfigSection configSection = m_sectionMap[sectionName];
+                configSection.AddOrUpdateListValue(key, value);
             }
         }
 
@@ -376,17 +526,69 @@ namespace QuickUnity.Config
         }
 
         /// <summary>
+        /// Saves file to the specified file path.
+        /// </summary>
+        /// <param name="filePath">The file path.</param>
+        /// <returns><c>true</c> file save succeed, <c>false</c> otherwise file save failed.</returns>
+        public bool Save(string filePath)
+        {
+            string fullFilePath = string.Empty;
+            bool isResourcesAsset = false;
+            string iniFileExtension = ".ini";
+            string resourcesAssetFileExtension = ".txt";
+
+            if (filePath.Contains(Application.dataPath) && filePath.Contains(Path.DirectorySeparatorChar + "Resources"))
+            {
+                isResourcesAsset = true;
+            }
+
+            if (isResourcesAsset)
+            {
+                fullFilePath = Path.Combine(filePath, m_configName + resourcesAssetFileExtension);
+            }
+            else
+            {
+                fullFilePath = Path.Combine(filePath, m_configName + iniFileExtension);
+            }
+
+            // If directory is not existed, then create it.
+            if (!Directory.Exists(filePath))
+            {
+                Directory.CreateDirectory(filePath);
+            }
+
+            try
+            {
+                File.WriteAllText(fullFilePath, this.ToString(), Encoding.UTF8);
+                return true;
+            }
+            catch (Exception error)
+            {
+                Debug.LogWarning(error.ToString());
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Returns a <see cref="System.String"/> that represents this instance.
         /// </summary>
         /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
         public override string ToString()
         {
             string value = string.Empty;
+            int count = 0;
 
             foreach (KeyValuePair<string, INIConfigSection> kvp in m_sectionMap)
             {
+                count++;
+
                 value += "[" + kvp.Key + "]\n";
-                value += kvp.Value.ToString() + "\n\n";
+                value += kvp.Value.ToString();
+
+                if (count < m_sectionMap.Count)
+                {
+                    value += "\n\n";
+                }
             }
 
             return value;
@@ -423,7 +625,7 @@ namespace QuickUnity.Config
                     if (m_sectionMap.ContainsKey(m_currentSectionName))
                     {
                         INIConfigSection section = m_sectionMap[m_currentSectionName];
-                        section.AddValue(key, value);
+                        section.AddOrUpdateValue(key, value);
                     }
                 }
             }
