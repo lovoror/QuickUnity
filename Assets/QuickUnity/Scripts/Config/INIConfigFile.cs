@@ -253,7 +253,9 @@ namespace QuickUnity.Config
 
             if (asset != null)
             {
-                return asset.text;
+                string result = asset.text;
+                Resources.UnloadAsset(asset);
+                return result;
             }
 
             return null;
@@ -350,6 +352,9 @@ namespace QuickUnity.Config
                     string lineText = reader.ReadLine().Trim();
                     ParseLineText(lineText);
                 }
+
+                reader.Close();
+                reader = null;
             }
         }
 

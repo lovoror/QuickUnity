@@ -22,6 +22,8 @@
  *	SOFTWARE.
  */
 
+using UnityEngine;
+
 namespace QuickUnity.Editor.Localization
 {
     /// <summary>
@@ -30,8 +32,42 @@ namespace QuickUnity.Editor.Localization
     public class LocalizationModule
     {
         /// <summary>
+        /// Try to parse string to Localization object.
+        /// </summary>
+        /// <param name="source">The source.</param>
+        /// <param name="result">The result.</param>
+        /// <returns><c>true</c> if convert succeed, <c>false</c> otherwise.</returns>
+        public static bool TryParse(string source, out LocalizationModule result)
+        {
+            if (!string.IsNullOrEmpty(source.Trim()))
+            {
+                result = JsonUtility.FromJson<LocalizationModule>(source.Trim());
+
+                if (result != null)
+                {
+                    return true;
+                }
+            }
+            else
+            {
+                result = null;
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// The name of module.
         /// </summary>
         public string name = "NewModule";
+
+        /// <summary>
+        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// </summary>
+        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+        public override string ToString()
+        {
+            return JsonUtility.ToJson(this);
+        }
     }
 }
