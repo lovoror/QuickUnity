@@ -156,7 +156,7 @@ namespace QuickUnity.Config
 
             if (!string.IsNullOrEmpty(strValue))
             {
-                string[] values = strValue.Split(new char[1] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                string[] values = strValue.Split(new char[1] { '|' }, StringSplitOptions.RemoveEmptyEntries);
                 list = new List<string>(values);
             }
 
@@ -177,7 +177,7 @@ namespace QuickUnity.Config
 
             if (!string.IsNullOrEmpty(strValue))
             {
-                string[] values = strValue.Split(new char[1] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                string[] values = strValue.Split(new char[1] { '|' }, StringSplitOptions.RemoveEmptyEntries);
 
                 for (int i = 0, length = values.Length; i < length; ++i)
                 {
@@ -349,7 +349,7 @@ namespace QuickUnity.Config
             {
                 while (!reader.EndOfStream)
                 {
-                    string lineText = reader.ReadLine().Trim();
+                    string lineText = reader.ReadLine();
                     ParseLineText(lineText);
                 }
 
@@ -671,7 +671,7 @@ namespace QuickUnity.Config
 
             if (!isCommentLine)
             {
-                const string pattern = @"\[([^\[^\]]*)\]";
+                const string pattern = @"^\[(.*)\]";
                 bool isMatch = Regex.IsMatch(lineText, pattern);
 
                 if (isMatch)

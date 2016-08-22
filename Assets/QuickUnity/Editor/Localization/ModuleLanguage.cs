@@ -22,32 +22,21 @@
  *	SOFTWARE.
  */
 
-using System.Collections.Generic;
+using System;
+using UnityEngine;
 
-namespace QuickUnity.Extensions
+namespace QuickUnity.Editor.Localization
 {
     /// <summary>
-    /// CSharp List extension methods collection.
+    /// The language of localization module.
     /// </summary>
-    public static class ListExtensions
+    [Serializable]
+    public class ModuleLanguage
     {
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// The locale name.
         /// </summary>
-        /// <typeparam name="T">The type of list element.</typeparam>
-        /// <param name="list">The list.</param>
-        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
-        public static string ToString<T>(this List<T> list)
-        {
-            List<string> strList = new List<string>();
-
-            for (int i = 0, length = list.Count; i < length; i++)
-            {
-                T element = list[i];
-                strList.Add(element.ToString());
-            }
-
-            return string.Join("|", strList.ToArray());
-        }
+        [SerializeField]
+        public string locale;
     }
 }

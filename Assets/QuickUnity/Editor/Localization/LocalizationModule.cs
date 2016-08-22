@@ -22,6 +22,8 @@
  *	SOFTWARE.
  */
 
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace QuickUnity.Editor.Localization
@@ -29,6 +31,7 @@ namespace QuickUnity.Editor.Localization
     /// <summary>
     /// LocalizationModule value object.
     /// </summary>
+    [Serializable]
     public class LocalizationModule
     {
         /// <summary>
@@ -60,6 +63,32 @@ namespace QuickUnity.Editor.Localization
         /// The name of module.
         /// </summary>
         public string name = "NewModule";
+
+        /// <summary>
+        /// The language list.
+        /// </summary>
+        [SerializeField]
+        public List<ModuleLanguage> languages;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LocalizationModule"/> class.
+        /// </summary>
+        public LocalizationModule()
+        {
+            languages = new List<ModuleLanguage>();
+        }
+
+        /// <summary>
+        /// Finalizes an instance of the <see cref="LocalizationModule"/> class.
+        /// </summary>
+        ~LocalizationModule()
+        {
+            if (languages != null)
+            {
+                languages.Clear();
+                languages = null;
+            }
+        }
 
         /// <summary>
         /// Returns a <see cref="System.String"/> that represents this instance.
