@@ -110,6 +110,26 @@ namespace QuickUnity.Editor.Localization
         /// </summary>
         private ReorderableList m_archivesReorderableList = null;
 
+        /// <summary>
+        /// The related archives.
+        /// </summary>
+        private List<LocalizationArchive> m_relatedArchives = null;
+
+        /// <summary>
+        /// The search string
+        /// </summary>
+        private string m_searchString = null;
+
+        /// <summary>
+        /// The related archives reorderable list.
+        /// </summary>
+        private ReorderableList m_relatedArchivesReorderableList = null;
+
+        /// <summary>
+        /// The search result scroll position.
+        /// </summary>
+        private Vector2 m_searchResultScrollPosition = default(Vector2);
+
         #region Messages
 
         /// <summary>
@@ -122,12 +142,56 @@ namespace QuickUnity.Editor.Localization
                 m_localizationArchives = new List<LocalizationArchive>();
             }
 
-            m_archivesReorderableList = new ReorderableList(m_localizationArchives, typeof(LocalizationArchive), false, false, true, true);
+            m_archivesReorderableList = new ReorderableList(m_localizationArchives, typeof(LocalizationArchive), false, true, true, true);
+
+            // Draw translations reorderable list header callback.
+            m_archivesReorderableList.drawHeaderCallback = (rect) =>
+            {
+                EditorGUI.LabelField(rect, "Translations", EditorStyles.boldLabel);
+            };
 
             // Draw element callback.
             m_archivesReorderableList.drawElementCallback = (Rect rect, int index, bool isActive, bool isFocused) =>
             {
                 LocalizationArchive element = m_localizationArchives[index];
+
+                if (element != null)
+                {
+                    rect.height -= 6;
+                    rect.width = 250;
+
+                    // Key field.
+                    rect.y += 2;
+                    EditorGUI.PrefixLabel(rect, new GUIContent("Key: "));
+
+                    rect.x += 90;
+                    element.key = EditorGUI.TextField(rect, element.key);
+
+                    // Translation field.
+                    rect.x += 300;
+                    EditorGUI.PrefixLabel(rect, new GUIContent("Translation: "));
+                    rect.x += 70;
+                    element.translation = EditorGUI.TextField(rect, element.translation);
+                }
+            };
+
+            if (m_relatedArchives == null)
+            {
+                m_relatedArchives = new List<LocalizationArchive>();
+            }
+
+            m_relatedArchivesReorderableList = new ReorderableList(m_relatedArchives, typeof(LocalizationArchive), false, true, false, false);
+
+            // Draw related archives reorderable list header callback.
+            m_relatedArchivesReorderableList.drawHeaderCallback = (rect) =>
+            {
+                EditorGUI.LabelField(rect, "Result", EditorStyles.boldLabel);
+            };
+
+            // Draw related archives reorderable list element callback.
+            m_relatedArchivesReorderableList.drawElementCallback = (Rect rect, int index, bool isActive, bool isFocused) =>
+            {
+                LocalizationArchive element = m_relatedArchives[index];
 
                 if (element != null)
                 {
@@ -169,10 +233,13 @@ namespace QuickUnity.Editor.Localization
             EditorGUILayout.BeginHorizontal();
             GUILayout.Space(10);
 
+            EditorGUILayout.BeginVertical();
+
             m_archivesScrollPosition = EditorGUILayout.BeginScrollView(m_archivesScrollPosition, false, false);
 
             EditorGUI.BeginChangeCheck();
 
+            // Draw archives reorderable list.
             if (m_archivesReorderableList != null)
             {
                 m_archivesReorderableList.DoLayoutList();
@@ -184,6 +251,47 @@ namespace QuickUnity.Editor.Localization
             }
 
             EditorGUILayout.EndScrollView();
+
+            GUILayout.Space(10);
+
+            // Search title.
+            GUILayout.Toolbar(0, new string[1] { "Search" }, GUILayout.Width(200));
+
+            m_searchResultScrollPosition = EditorGUILayout.BeginScrollView(m_searchResultScrollPosition, false, false);
+            GUILayout.Space(5);
+
+            // Draw search text field.
+            EditorGUI.BeginChangeCheck();
+            m_searchString = EditorGUILayout.TextField(m_searchString);
+
+            if (EditorGUI.EndChangeCheck())
+            {
+                m_relatedArchives.Clear();
+
+                if (!string.IsNullOrEmpty(m_searchString))
+                {
+                    List<LocalizationArchive> list = m_localizationArchives.FindAll((LocalizationArchive archive) =>
+                    {
+                        return archive.key.Contains(m_searchString) || archive.translation.Contains(m_searchString);
+                    });
+
+                    if (list != null)
+                    {
+                        m_relatedArchives.AddRange(list);
+                    }
+                }
+            }
+            GUILayout.Space(5);
+
+            // Draw related archives reorderable list.
+            if (m_relatedArchivesReorderableList != null)
+            {
+                m_relatedArchivesReorderableList.DoLayoutList();
+            }
+
+            EditorGUILayout.EndScrollView();
+
+            EditorGUILayout.EndVertical();
 
             GUILayout.Space(10);
             EditorGUILayout.EndHorizontal();
