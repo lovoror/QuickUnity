@@ -25,14 +25,15 @@
 namespace QuickUnity.Events
 {
     /// <summary>
-    /// The Event class is used as the base class for the creation of Event objects, which are passed as parameters to event listeners when an event occurs.
+    /// The Event class is used as the base class for the creation of Event objects, which are passed
+    /// as parameters to event listeners when an event occurs.
     /// </summary>
     public class Event
     {
         /// <summary>
         /// The type of event.
         /// </summary>
-        protected string m_eventType;
+        protected string m_eventType = null;
 
         /// <summary>
         /// The type of event.
@@ -46,7 +47,7 @@ namespace QuickUnity.Events
         /// <summary>
         /// The context object.
         /// </summary>
-        protected object m_context;
+        protected object m_context = null;
 
         /// <summary>
         /// The context object.
@@ -56,6 +57,7 @@ namespace QuickUnity.Events
         {
             get { return m_context; }
         }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Event"/> class.
         /// </summary>

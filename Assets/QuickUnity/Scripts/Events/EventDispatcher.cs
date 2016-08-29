@@ -37,7 +37,7 @@ namespace QuickUnity.Events
         /// <summary>
         /// The listeners dictionary.
         /// </summary>
-        private Dictionary<string, ArrayList> m_listeners;
+        private Dictionary<string, ArrayList> m_listeners = null;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EventDispatcher"/> class.
@@ -45,18 +45,6 @@ namespace QuickUnity.Events
         public EventDispatcher()
         {
             m_listeners = new Dictionary<string, ArrayList>();
-        }
-
-        /// <summary>
-        /// Finalizes an instance of the <see cref="EventDispatcher"/> class.
-        /// </summary>
-        ~EventDispatcher()
-        {
-            if (m_listeners != null)
-            {
-                m_listeners.Clear();
-                m_listeners = null;
-            }
         }
 
         #region IEventDispatcher Implementations

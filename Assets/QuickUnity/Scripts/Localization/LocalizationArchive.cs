@@ -22,32 +22,39 @@
  *	SOFTWARE.
  */
 
-using System.Collections.Generic;
-
-namespace QuickUnity.Extensions
+namespace QuickUnity.Localization
 {
     /// <summary>
-    /// CSharp List extension methods collection.
+    /// LocalizationArchive value object.
     /// </summary>
-    public static class ListExtensions
+    public class LocalizationArchive
     {
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// The key.
         /// </summary>
-        /// <typeparam name="T">The type of list element.</typeparam>
-        /// <param name="list">The list.</param>
-        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
-        public static string ToString<T>(this List<T> list)
+        public string key;
+
+        /// <summary>
+        /// The translation text.
+        /// </summary>
+        public string translation;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LocalizationArchive"/> class.
+        /// </summary>
+        public LocalizationArchive()
         {
-            List<string> strList = new List<string>();
+        }
 
-            for (int i = 0, length = list.Count; i < length; i++)
-            {
-                T element = list[i];
-                strList.Add(element.ToString());
-            }
-
-            return string.Join("|", strList.ToArray());
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LocalizationArchive"/> class.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="translation">The translation text.</param>
+        public LocalizationArchive(string key, string translation)
+        {
+            this.key = key;
+            this.translation = translation;
         }
     }
 }

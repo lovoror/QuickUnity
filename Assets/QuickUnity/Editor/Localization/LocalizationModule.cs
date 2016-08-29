@@ -22,52 +22,23 @@
  *	SOFTWARE.
  */
 
-using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace QuickUnity.Editor.Localization
 {
     /// <summary>
     /// LocalizationModule value object.
     /// </summary>
-    [Serializable]
     public class LocalizationModule
     {
         /// <summary>
-        /// Try to parse string to Localization object.
-        /// </summary>
-        /// <param name="source">The source.</param>
-        /// <param name="result">The result.</param>
-        /// <returns><c>true</c> if convert succeed, <c>false</c> otherwise.</returns>
-        public static bool TryParse(string source, out LocalizationModule result)
-        {
-            if (!string.IsNullOrEmpty(source.Trim()))
-            {
-                result = JsonUtility.FromJson<LocalizationModule>(source.Trim());
-
-                if (result != null)
-                {
-                    return true;
-                }
-            }
-            else
-            {
-                result = null;
-            }
-
-            return false;
-        }
-
-        /// <summary>
         /// The name of module.
         /// </summary>
-        public string name = "NewModule";
+        public string moduleName = "NewModule";
 
         /// <summary>
         /// The language list.
         /// </summary>
-        [SerializeField]
         public List<ModuleLanguage> languages;
 
         /// <summary>
@@ -76,27 +47,6 @@ namespace QuickUnity.Editor.Localization
         public LocalizationModule()
         {
             languages = new List<ModuleLanguage>();
-        }
-
-        /// <summary>
-        /// Finalizes an instance of the <see cref="LocalizationModule"/> class.
-        /// </summary>
-        ~LocalizationModule()
-        {
-            if (languages != null)
-            {
-                languages.Clear();
-                languages = null;
-            }
-        }
-
-        /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
-        /// </summary>
-        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
-        public override string ToString()
-        {
-            return JsonUtility.ToJson(this);
         }
     }
 }

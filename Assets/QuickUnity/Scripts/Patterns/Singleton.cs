@@ -43,12 +43,12 @@ namespace QuickUnity.Patterns
         /// <summary>
         /// The singleton instance.
         /// </summary>
-        private static T s_instance;
+        private static T s_instance = default(T);
 
         /// <summary>
         /// A value indicating whether this <see cref="Singleton{T}"/> instance is instantiated.
         /// </summary>
-        private static bool s_instantiated;
+        private static bool s_instantiated = false;
 
         /// <summary>
         /// Gets the static instance.

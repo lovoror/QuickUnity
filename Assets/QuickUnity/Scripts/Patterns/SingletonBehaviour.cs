@@ -109,23 +109,5 @@ namespace QuickUnity.Patterns
         }
 
         #endregion Protected Functions
-
-        #region Messages
-
-        /// <summary>
-        /// This function is called when the MonoBehaviour will be destroyed.
-        /// </summary>
-        protected override void OnDestroy()
-        {
-            base.OnDestroy();
-
-            // Destroy the singleton instance.
-            if (instance != null)
-            {
-                instance = null;
-            }
-        }
-
-        #endregion Messages
     }
 }

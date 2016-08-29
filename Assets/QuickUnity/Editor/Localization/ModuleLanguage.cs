@@ -22,21 +22,28 @@
  *	SOFTWARE.
  */
 
-using System;
-using UnityEngine;
-
 namespace QuickUnity.Editor.Localization
 {
     /// <summary>
-    /// The language of localization module.
+    /// ModuleLanguage value object.
     /// </summary>
-    [Serializable]
     public class ModuleLanguage
     {
         /// <summary>
-        /// The locale name.
+        /// The selected item index.
         /// </summary>
-        [SerializeField]
-        public string locale;
+        public int selectedItemIndex = 0;
+
+        /// <summary>
+        /// The word count.
+        /// </summary>
+        public int wordCount = 0;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ModuleLanguage"/> class.
+        /// </summary>
+        public ModuleLanguage()
+        {
+        }
     }
 }

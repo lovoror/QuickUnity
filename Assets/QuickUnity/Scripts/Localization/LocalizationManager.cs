@@ -22,33 +22,40 @@
  *	SOFTWARE.
  */
 
-using QuickUnity.Editor.Localization;
-using UnityEditor;
-using UnityEngine;
+using QuickUnity.Patterns;
 
-namespace QuickUnity.Editor
+namespace QuickUnity.Localization
 {
     /// <summary>
-    /// This script adds the QuinUnity/Localization Dashboard menu item to the Unity Editor.
+    /// LocalizationManager is class for handling all methods for feature localization.
     /// </summary>
-    /// <seealso cref="UnityEngine.ScriptableObject"/>
-    public class LocalizationDashboardMenu : ScriptableObject
+    /// <seealso cref="QuickUnity.Patterns.Singleton{QuickUnity.Localization.LocalizationManager}"/>
+    public class LocalizationManager : Singleton<LocalizationManager>
     {
         /// <summary>
-        /// The menu item priority.
+        /// The localization resources path.
         /// </summary>
-        public const int MenuItemPriority = HelpMenu.MenuItemPriority - QuickUnityEditor.MenuItemSeparatedNumber;
+        private string m_locresFilesPath;
 
         /// <summary>
-        /// Shows the localization dashboard window.
+        /// Gets the localization resources path.
         /// </summary>
-        [MenuItem("QuickUnity/Localization Dashboard", false, MenuItemPriority)]
-        private static void ShowLocalizationDashboardWindow()
+        /// <value>The localization resources path.</value>
+        public string locresFilesPath
         {
-            LocalizationDashboardWindow window = EditorWindow.GetWindow<LocalizationDashboardWindow>(
-                false, "Localization");
-            EditorWindow.FocusWindowIfItsOpen<LocalizationDashboardWindow>();
-            window.Show();
+            get
+            {
+                return m_locresFilesPath;
+            }
+        }
+
+        /// <summary>
+        /// Initializes.
+        /// </summary>
+        /// <param name="path">The localization resources path.</param>
+        public void Initialize(string path)
+        {
+            m_locresFilesPath = path;
         }
     }
 }

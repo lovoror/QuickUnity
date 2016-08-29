@@ -38,27 +38,22 @@ namespace QuickUnity.Events
         /// <summary>
         /// The listeners dictionary.
         /// </summary>
-        private Dictionary<string, List<Action<Event>>> m_listeners;
+        private Dictionary<string, List<Action<Event>>> m_listeners = null;
 
         /// <summary>
         /// The pending listeners dictionary.
         /// </summary>
-        private Dictionary<string, List<Action<Event>>> m_pendingListeners;
+        private Dictionary<string, List<Action<Event>>> m_pendingListeners = null;
 
         /// <summary>
         /// The events list.
         /// </summary>
-        private List<Event> m_events;
+        private List<Event> m_events = null;
 
         /// <summary>
         /// The pending events list.
         /// </summary>
-        private List<Event> m_pendingEvents;
-
-        /// <summary>
-        /// The dispatchable events list.
-        /// </summary>
-        private List<Event> m_dispatchableEvents;
+        private List<Event> m_pendingEvents = null;
 
         /// <summary>
         /// The pending state identify.
@@ -74,48 +69,6 @@ namespace QuickUnity.Events
             m_pendingListeners = new Dictionary<string, List<Action<Event>>>();
             m_events = new List<Event>();
             m_pendingEvents = new List<Event>();
-            m_dispatchableEvents = new List<Event>();
-        }
-
-        /// <summary>
-        /// Finalizes an instance of the <see cref="ThreadEventDispatcher"/> class.
-        /// </summary>
-        ~ThreadEventDispatcher()
-        {
-            // Clear listeners dictionary.
-            if (m_listeners != null)
-            {
-                m_listeners.Clear();
-                m_listeners = null;
-            }
-
-            // Clear pending listeners dictionary.
-            if (m_pendingListeners != null)
-            {
-                m_pendingListeners.Clear();
-                m_pendingListeners = null;
-            }
-
-            // Clear events list.
-            if (m_events != null)
-            {
-                m_events.Clear();
-                m_events = null;
-            }
-
-            // Clear pending events list.
-            if (m_pendingEvents != null)
-            {
-                m_pendingEvents.Clear();
-                m_pendingEvents = null;
-            }
-
-            // Clear dispatchable events list.
-            if (m_dispatchableEvents != null)
-            {
-                m_dispatchableEvents.Clear();
-                m_dispatchableEvents = null;
-            }
         }
 
         #region IThreadEventDispatcher Implements

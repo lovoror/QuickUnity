@@ -22,9 +22,12 @@
  *	SOFTWARE.
  */
 
+using Pathfinding.Serialization.JsonFx;
 using QuickUnity.Config;
+using QuickUnity.Localization;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
@@ -38,29 +41,44 @@ namespace QuickUnity.Editor.Localization
     public class LocalizationDashboardWindow : EditorWindow
     {
         /// <summary>
-        /// The ini configuration file section name.
+        /// The INI Configuration file.
         /// </summary>
-        private const string INIConfigFileSectionName = "Localization";
+        private INIConfigFile m_iniFile = null;
+
+        /// <summary>
+        /// The localization files path.
+        /// </summary>
+        private string m_localizationFilesPath = null;
 
         /// <summary>
         /// The module reorderable list.
         /// </summary>
-        private ReorderableList m_moduleReorderableList;
+        private ReorderableList m_moduleReorderableList = null;
 
         /// <summary>
         /// The module list.
         /// </summary>
-        private List<LocalizationModule> m_modules;
+        private List<LocalizationModule> m_modules = null;
+
+        /// <summary>
+        /// The language preset list.
+        /// </summary>
+        private List<LanguagePreset> m_languagePresets = null;
+
+        /// <summary>
+        /// The language display name list.
+        /// </summary>
+        private List<string> m_languageDisplayNames = new List<string>();
 
         /// <summary>
         /// The modules view scroll position.
         /// </summary>
-        private Vector2 m_modulesViewScrollPosition;
+        private Vector2 m_modulesViewScrollPosition = default(Vector2);
 
         /// <summary>
         /// The module detail view scroll position.
         /// </summary>
-        private Vector2 m_moduleDetailViewScrollPosition;
+        private Vector2 m_moduleDetailViewScrollPosition = default(Vector2);
 
         /// <summary>
         /// If can show module detail view.
@@ -70,12 +88,12 @@ namespace QuickUnity.Editor.Localization
         /// <summary>
         /// The selected module.
         /// </summary>
-        private LocalizationModule m_selectedModule;
+        private LocalizationModule m_selectedModule = null;
 
         /// <summary>
         /// The language reorderable list.
         /// </summary>
-        private ReorderableList m_languageReorderableList;
+        private ReorderableList m_languageReorderableList = null;
 
         #region Messages
 
@@ -86,6 +104,11 @@ namespace QuickUnity.Editor.Localization
         {
             LoadConfig();
 
+            if (m_languagePresets == null)
+            {
+                m_languagePresets = new List<LanguagePreset>();
+            }
+
             if (m_modules == null)
             {
                 m_modules = new List<LocalizationModule>();
@@ -93,29 +116,35 @@ namespace QuickUnity.Editor.Localization
 
             if (m_moduleReorderableList == null)
             {
-                m_moduleReorderableList = new ReorderableList(m_modules, typeof(LocalizationModule), true, true, true, true);
+                m_moduleReorderableList = new ReorderableList(m_modules, typeof(LocalizationModule), false, true, true, true);
 
-                // Draw header callback.
+                // Draw module reorderable list header callback.
                 m_moduleReorderableList.drawHeaderCallback = (rect) =>
                 {
-                    EditorGUI.LabelField(rect, "Modules");
+                    EditorGUI.LabelField(rect, "Modules", EditorStyles.boldLabel);
                 };
 
-                // Draw element callback.
+                // Draw module reorderable list element callback.
                 m_moduleReorderableList.drawElementCallback = (Rect rect, int index, bool isActive, bool isFocused) =>
                 {
-                    rect.height = EditorGUIUtility.singleLineHeight;
-                    string moduleName = m_modules[index].name;
-                    EditorGUI.LabelField(rect, moduleName);
+                    LocalizationModule module = m_modules[index];
+
+                    if (module != null)
+                    {
+                        rect.height = EditorGUIUtility.singleLineHeight;
+                        rect.y += 2;
+                        string moduleName = module.moduleName;
+                        EditorGUI.LabelField(rect, moduleName);
+                    }
                 };
 
-                // List change callback.
+                // On module reorderable list change callback.
                 m_moduleReorderableList.onChangedCallback = (list) =>
                 {
                     SaveConfig();
                 };
 
-                // On item selected callback.
+                // On module reorderable list item selected callback.
                 m_moduleReorderableList.onSelectCallback = (list) =>
                 {
                     m_selectedModule = m_modules[list.index];
@@ -124,23 +153,91 @@ namespace QuickUnity.Editor.Localization
 
             if (m_languageReorderableList == null)
             {
-                m_languageReorderableList = new ReorderableList(null, typeof(ModuleLanguage), true, true, true, true);
+                m_languageReorderableList = new ReorderableList(null, typeof(ModuleLanguage), false, true, true, true);
 
-                // Draw header callback.
+                // Draw language reorderable list header callback.
                 m_languageReorderableList.drawHeaderCallback = (rect) =>
                 {
                     EditorGUI.LabelField(rect, "Languages");
                 };
 
-                // Draw element callback.
+                // Draw language reorderable list element callback.
                 m_languageReorderableList.drawElementCallback = (Rect rect, int index, bool isActive, bool isFocused) =>
                 {
                     ModuleLanguage element = m_selectedModule.languages[index];
-                    rect.y += 2;
-                    EditorGUI.Popup(new Rect(rect.x, rect.y, 100, EditorGUIUtility.singleLineHeight), 0, new string[2] { "English", "Chinese" });
+                    LanguagePreset preset = m_languagePresets[element.selectedItemIndex];
+
+                    if (element != null)
+                    {
+                        rect.y += 2;
+
+                        if (m_languageDisplayNames.Count == 0)
+                        {
+                            element.selectedItemIndex = 0;
+                        }
+
+                        // Language popup.
+                        element.selectedItemIndex = EditorGUI.Popup(new Rect(rect.x, rect.y, 250, EditorGUIUtility.singleLineHeight), element.selectedItemIndex, m_languageDisplayNames.ToArray());
+
+                        // Word count.
+                        Rect wordCountRect = new Rect(rect.x + 275, rect.y, 180, rect.height - 5);
+                        EditorGUI.LabelField(wordCountRect, string.Format("Word Count: {0}", element.wordCount));
+
+                        // Edit translation texts.
+                        Rect editButtonRect = new Rect(wordCountRect.x + wordCountRect.width + 20, rect.y, 75, rect.height - 5);
+                        if (GUI.Button(editButtonRect, "Edit"))
+                        {
+                            LocalizationUtility.ShowLocalizationArchiveWindow(element, m_localizationFilesPath, preset.language, m_selectedModule.moduleName);
+                        }
+
+                        // Import file.
+                        Rect importButtonRect = new Rect(editButtonRect.x + editButtonRect.width + 10, rect.y, editButtonRect.width, editButtonRect.height);
+                        if (GUI.Button(importButtonRect, "Import"))
+                        {
+                            string translationTextFilePath = EditorUtility.OpenFilePanelWithFilters("Import", null, new string[4] { "txt", "json", "xls", "xlsx" });
+                            string text = LocalizationUtility.ImportTranslationTextFile(translationTextFilePath);
+
+                            // Write text to archive file.
+                            if (!string.IsNullOrEmpty(text))
+                            {
+                                List<LocalizationArchive> archives = JsonReader.Deserialize<List<LocalizationArchive>>(text);
+
+                                if (archives != null)
+                                {
+                                    element.wordCount = archives.Count;
+                                }
+
+                                string saveFilePath = Path.Combine(m_localizationFilesPath, preset.language);
+                                saveFilePath = Path.Combine(saveFilePath, m_selectedModule.moduleName + LocalizationUtility.LocalizationArchiveFileExtension);
+                                File.WriteAllText(saveFilePath, text, Encoding.UTF8);
+                            }
+                        }
+
+                        // Export file.
+                        Rect exportButtonRect = new Rect(importButtonRect.x + importButtonRect.width + 10, rect.y, editButtonRect.width, editButtonRect.height);
+                        if (GUI.Button(exportButtonRect, "Export"))
+                        {
+                            string defaultName = m_selectedModule.moduleName + "-" + preset.language + ".json";
+                            string targetPath = EditorUtility.SaveFilePanel("Export", null, defaultName, "json");
+
+                            if (!string.IsNullOrEmpty(targetPath))
+                            {
+                                string archiveFilePath = Path.Combine(m_localizationFilesPath, preset.language);
+                                archiveFilePath = Path.Combine(archiveFilePath, m_selectedModule.moduleName + LocalizationUtility.LocalizationArchiveFileExtension);
+                                LocalizationUtility.ExportTranslationArchiveFile(targetPath, archiveFilePath);
+                            }
+                        }
+
+                        // Compile translation archive.
+                        Rect compileButtonRect = new Rect(exportButtonRect.x + exportButtonRect.width + 10, rect.y, editButtonRect.width, editButtonRect.height);
+                        if (GUI.Button(compileButtonRect, "Compile"))
+                        {
+                            LocalizationUtility.CompileTranslationFile(m_localizationFilesPath, preset.language, m_selectedModule.moduleName);
+                        }
+                    }
                 };
 
-                // List change callback.
+                // On language reorderable list change callback.
                 m_languageReorderableList.onChangedCallback = (list) =>
                 {
                     m_selectedModule.languages = (List<ModuleLanguage>)list.list;
@@ -149,7 +246,13 @@ namespace QuickUnity.Editor.Localization
             }
         }
 
-        private Vector2 scrollPos;
+        /// <summary>
+        /// OnDestroy is called when the EditorWindow is closed.
+        /// </summary>
+        private void OnDestroy()
+        {
+            SaveConfig();
+        }
 
         /// <summary>
         /// GUI Implementation.
@@ -169,13 +272,35 @@ namespace QuickUnity.Editor.Localization
 
             EditorGUILayout.BeginVertical();
 
-            // Draw module list.
-            m_modulesViewScrollPosition = EditorGUILayout.BeginScrollView(m_modulesViewScrollPosition);
+            m_modulesViewScrollPosition = EditorGUILayout.BeginScrollView(m_modulesViewScrollPosition, false, false);
 
+            EditorGUILayout.BeginVertical();
+
+            EditorGUILayout.BeginHorizontal();
+
+            // Draw localization files path.
+            EditorGUILayout.PrefixLabel("Localization Files Path: ");
+
+            GUIStyle fileTextFieldStyle = new GUIStyle(EditorStyles.textField);
+            fileTextFieldStyle.fixedHeight = 20;
+            EditorGUILayout.SelectableLabel(m_localizationFilesPath, fileTextFieldStyle, GUILayout.Width(300), GUILayout.Height(EditorGUIUtility.singleLineHeight));
+            GUILayout.Space(5);
+            if (GUILayout.Button("Browse", GUILayout.Width(75), GUILayout.Height(18)))
+            {
+                m_localizationFilesPath = EditorUtility.OpenFolderPanel("Localization Files Path", null, null);
+            }
+
+            EditorGUILayout.EndHorizontal();
+
+            GUILayout.Space(10);
+
+            // Draw module list.
             if (m_moduleReorderableList != null)
             {
                 m_moduleReorderableList.DoLayoutList();
             }
+
+            EditorGUILayout.EndVertical();
 
             EditorGUILayout.EndScrollView();
 
@@ -189,17 +314,19 @@ namespace QuickUnity.Editor.Localization
             if (EditorGUILayout.BeginFadeGroup(m_showModuleDetailView))
             {
                 EditorGUILayout.BeginHorizontal();
-                GUILayout.Toolbar(0, new string[1] { m_selectedModule.name }, GUILayout.Width(200));
+                GUILayout.Toolbar(0, new string[1] { m_selectedModule.moduleName }, GUILayout.Width(200));
                 EditorGUILayout.EndHorizontal();
 
                 GUILayout.Space(5);
 
                 m_moduleDetailViewScrollPosition = EditorGUILayout.BeginScrollView(m_moduleDetailViewScrollPosition, false, false);
 
+                EditorGUI.BeginChangeCheck();
+
                 // Module Name.
                 EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.PrefixLabel("Module Name:");
-                m_selectedModule.name = EditorGUILayout.TextField(m_selectedModule.name, GUILayout.Width(200));
+                m_selectedModule.moduleName = EditorGUILayout.TextField(m_selectedModule.moduleName, GUILayout.Width(200));
                 EditorGUILayout.EndHorizontal();
 
                 GUILayout.Space(10);
@@ -209,6 +336,11 @@ namespace QuickUnity.Editor.Localization
                 {
                     m_languageReorderableList.list = m_selectedModule.languages;
                     m_languageReorderableList.DoLayoutList();
+                }
+
+                if (EditorGUI.EndChangeCheck())
+                {
+                    SaveConfig();
                 }
 
                 EditorGUILayout.EndScrollView();
@@ -234,8 +366,33 @@ namespace QuickUnity.Editor.Localization
         /// </summary>
         private void LoadConfig()
         {
-            INIConfigFile iniFile = INIConfigFile.ParseINIConfigFile(Path.Combine(Application.dataPath, "Config/Editor.ini"));
-            m_modules = iniFile.GetListValue<LocalizationModule>(INIConfigFileSectionName, "modules");
+            if (m_iniFile == null)
+            {
+                m_iniFile = INIConfigFile.ParseINIConfigFile(QuickUnityEditor.EditorConfigPath);
+                m_localizationFilesPath = m_iniFile.GetValue(LocalizationUtility.INIConfigFileSectionName, LocalizationUtility.LocalizationFilesPathConfigKey);
+                m_languagePresets = m_iniFile.GetListValue<LanguagePreset>(LocalizationUtility.INIConfigFileSectionName, LocalizationUtility.LanguagePresetsConfigKey);
+                m_modules = m_iniFile.GetListValue<LocalizationModule>(LocalizationUtility.INIConfigFileSectionName, LocalizationUtility.ModulesConfigKey);
+
+                if (m_languagePresets != null)
+                {
+                    if (m_languageDisplayNames.Count > 0)
+                    {
+                        m_languageDisplayNames.Clear();
+                    }
+
+                    m_languagePresets.ForEach((preset) =>
+                    {
+                        m_languageDisplayNames.Add(preset.displayName);
+                    });
+                }
+
+                // Check if the localization files path is valid.
+                if (!string.IsNullOrEmpty(m_localizationFilesPath) && !Directory.Exists(m_localizationFilesPath))
+                {
+                    m_localizationFilesPath = null;
+                    LocalizationUtility.DisplayInvalidLocalizationFilesPathDialog();
+                }
+            }
         }
 
         /// <summary>
@@ -243,11 +400,16 @@ namespace QuickUnity.Editor.Localization
         /// </summary>
         private void SaveConfig()
         {
-            if (m_modules != null)
+            if (m_iniFile == null)
             {
-                INIConfigFile iniFile = new INIConfigFile("Editor");
-                iniFile.AddOrUpdateListValue(INIConfigFileSectionName, "modules", m_modules);
-                iniFile.Save(Path.Combine(Application.dataPath, "Config"));
+                LoadConfig();
+            }
+
+            if (m_iniFile != null && m_modules != null)
+            {
+                m_iniFile.AddOrUpdateValue(LocalizationUtility.INIConfigFileSectionName, LocalizationUtility.LocalizationFilesPathConfigKey, m_localizationFilesPath);
+                m_iniFile.AddOrUpdateListValue(LocalizationUtility.INIConfigFileSectionName, LocalizationUtility.ModulesConfigKey, m_modules);
+                m_iniFile.Save(QuickUnityEditor.EditorConfigPath);
             }
         }
 

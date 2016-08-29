@@ -22,7 +22,7 @@
  *	SOFTWARE.
  */
 
-using QuickUnity.Extensions;
+using Pathfinding.Serialization.JsonFx;
 using QuickUnity.Utilities;
 using System;
 using System.Collections.Generic;
@@ -77,16 +77,19 @@ namespace QuickUnity.Config
         /// <param name="value">The value.</param>
         public void AddOrUpdateValue(string key, object value)
         {
-            key = key.Trim();
-            string strValue = value.ToString().Trim();
+            if (value != null)
+            {
+                key = key.Trim();
+                string strValue = value.ToString().Trim();
 
-            if (!m_valueMap.ContainsKey(key))
-            {
-                m_valueMap.Add(key, strValue);
-            }
-            else
-            {
-                m_valueMap[key] = strValue;
+                if (!m_valueMap.ContainsKey(key))
+                {
+                    m_valueMap.Add(key, strValue);
+                }
+                else
+                {
+                    m_valueMap[key] = strValue;
+                }
             }
         }
 
@@ -99,7 +102,7 @@ namespace QuickUnity.Config
         public void AddOrUpdateListValue<T>(string key, List<T> value)
         {
             key = key.Trim();
-            string strValue = value.ToString<T>().Trim();
+            string strValue = JsonWriter.Serialize(value);
 
             if (!m_valueMap.ContainsKey(key))
             {
@@ -156,8 +159,7 @@ namespace QuickUnity.Config
 
             if (!string.IsNullOrEmpty(strValue))
             {
-                string[] values = strValue.Split(new char[1] { '|' }, StringSplitOptions.RemoveEmptyEntries);
-                list = new List<string>(values);
+                list = JsonReader.Deserialize<List<string>>(strValue);
             }
 
             return (list != null && list.Count > 0) ? list : null;
@@ -171,24 +173,13 @@ namespace QuickUnity.Config
         /// <returns>The list value.</returns>
         public List<T> GetListValue<T>(string key)
         {
-            List<T> list = new List<T>();
+            List<T> list = null;
 
             string strValue = GetValue(key);
 
             if (!string.IsNullOrEmpty(strValue))
             {
-                string[] values = strValue.Split(new char[1] { '|' }, StringSplitOptions.RemoveEmptyEntries);
-
-                for (int i = 0, length = values.Length; i < length; ++i)
-                {
-                    string value = values[i].Trim();
-                    T targetValue = ObjectUtility.TryParse<T>(value);
-
-                    if (targetValue != null)
-                    {
-                        list.Add(targetValue);
-                    }
-                }
+                list = JsonReader.Deserialize<List<T>>(strValue);
             }
 
             return (list != null && list.Count > 0) ? list : null;
@@ -225,18 +216,21 @@ namespace QuickUnity.Config
         /// <returns>INIConfigFile object.</returns>
         public static INIConfigFile ParseINIConfigFile(string filePath)
         {
-            string fileName = Path.GetFileNameWithoutExtension(filePath);
             INIConfigFile configFile = null;
             string text = LoadINIFromResource(filePath);
 
             if (!string.IsNullOrEmpty(text))
             {
-                configFile = new INIConfigFile(fileName, text);
+                configFile = new INIConfigFile(text);
             }
             else
             {
-                StreamReader sr = LoadINIFromFileStream(filePath);
-                configFile = new INIConfigFile(fileName, sr);
+                text = LoadINIFromFile(filePath);
+
+                if (!string.IsNullOrEmpty(text))
+                {
+                    configFile = new INIConfigFile(text);
+                }
             }
 
             return configFile;
@@ -262,21 +256,20 @@ namespace QuickUnity.Config
         }
 
         /// <summary>
-        /// Loads the INI file content from FileStream.
+        /// Loads the INI file content from text file.
         /// </summary>
         /// <param name="filePath">The file path.</param>
-        /// <returns>The INI file StreamReader object.</returns>
-        private static StreamReader LoadINIFromFileStream(string filePath)
+        /// <returns>The INI file lines text.</returns>
+        private static string LoadINIFromFile(string filePath)
         {
-            StreamReader sr = null;
+            string text = null;
 
             if (File.Exists(filePath))
             {
-                FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.None);
-                sr = new StreamReader(fs, Encoding.UTF8);
+                text = File.ReadAllText(filePath);
             }
 
-            return sr;
+            return text;
         }
 
         /// <summary>
@@ -287,43 +280,21 @@ namespace QuickUnity.Config
         /// <summary>
         /// The current section name.
         /// </summary>
-        private string m_currentSectionName;
+        private string m_currentSectionName = null;
 
         /// <summary>
-        /// The name of the configuration.
+        /// Initializes a new instance of the <see cref="INIConfigFile"/> class.
         /// </summary>
-        private string m_configName;
-
-        /// <summary>
-        /// Gets the name of the configuration.
-        /// </summary>
-        /// <value>The name of the configuration.</value>
-        public string configName
+        public INIConfigFile()
         {
-            get
-            {
-                return m_configName;
-            }
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="INIConfigFile"/> class.
         /// </summary>
-        /// <param name="configName">Name of the configuration.</param>
-        public INIConfigFile(string configName)
-        {
-            m_configName = configName;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="INIConfigFile"/> class.
-        /// </summary>
-        /// <param name="configName">Name of the configuration.</param>
         /// <param name="fileContent">Content of the file.</param>
-        public INIConfigFile(string configName, string fileContent)
+        public INIConfigFile(string fileContent)
         {
-            m_configName = configName;
-
             if (!string.IsNullOrEmpty(fileContent))
             {
                 string[] lines = fileContent.Split(new[] { "\n", "\r\n" }, StringSplitOptions.None);
@@ -333,28 +304,6 @@ namespace QuickUnity.Config
                     string lineText = lines[i].Trim();
                     ParseLineText(lineText);
                 }
-            }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="INIConfigFile"/> class.
-        /// </summary>
-        /// <param name="configName">Name of the configuration.</param>
-        /// <param name="reader">The file stream reader.</param>
-        public INIConfigFile(string configName, StreamReader reader)
-        {
-            m_configName = configName;
-
-            if (reader != null)
-            {
-                while (!reader.EndOfStream)
-                {
-                    string lineText = reader.ReadLine();
-                    ParseLineText(lineText);
-                }
-
-                reader.Close();
-                reader = null;
             }
         }
 
@@ -537,34 +486,9 @@ namespace QuickUnity.Config
         /// <returns><c>true</c> file save succeed, <c>false</c> otherwise file save failed.</returns>
         public bool Save(string filePath)
         {
-            string fullFilePath = string.Empty;
-            bool isResourcesAsset = false;
-            string iniFileExtension = ".ini";
-            string resourcesAssetFileExtension = ".txt";
-
-            if (filePath.Contains(Application.dataPath) && filePath.Contains(Path.DirectorySeparatorChar + "Resources"))
-            {
-                isResourcesAsset = true;
-            }
-
-            if (isResourcesAsset)
-            {
-                fullFilePath = Path.Combine(filePath, m_configName + resourcesAssetFileExtension);
-            }
-            else
-            {
-                fullFilePath = Path.Combine(filePath, m_configName + iniFileExtension);
-            }
-
-            // If directory is not existed, then create it.
-            if (!Directory.Exists(filePath))
-            {
-                Directory.CreateDirectory(filePath);
-            }
-
             try
             {
-                File.WriteAllText(fullFilePath, this.ToString(), Encoding.UTF8);
+                File.WriteAllText(filePath, this.ToString(), Encoding.UTF8);
                 return true;
             }
             catch (Exception error)
@@ -703,7 +627,7 @@ namespace QuickUnity.Config
 
             if (!isCommentLine)
             {
-                const string pattern = @"([^=\s]+)=([^=\s]+)";
+                const string pattern = @"([^=\n]+)=([^=\n]+)";
                 bool isMatch = Regex.IsMatch(lineText, pattern);
 
                 if (isMatch)

@@ -38,7 +38,7 @@ namespace QuickUnity.Events
         /// <summary>
         /// The event dispatcher.
         /// </summary>
-        protected IEventDispatcher m_eventDispatcher;
+        protected IEventDispatcher m_eventDispatcher = null;
 
         #region Protected Functions
 
