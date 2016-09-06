@@ -23,6 +23,9 @@
  */
 
 using QuickUnity.Patterns;
+using System.Collections.Generic;
+using System.IO;
+using UnityEngine;
 
 namespace QuickUnity.Localization
 {
@@ -32,6 +35,11 @@ namespace QuickUnity.Localization
     /// <seealso cref="QuickUnity.Patterns.Singleton{QuickUnity.Localization.LocalizationManager}"/>
     public class LocalizationManager : Singleton<LocalizationManager>
     {
+        /// <summary>
+        /// The default empty text.
+        /// </summary>
+        private const string DefaultEmptyText = "EmptyText";
+
         /// <summary>
         /// The localization resources path.
         /// </summary>
@@ -50,12 +58,99 @@ namespace QuickUnity.Localization
         }
 
         /// <summary>
+        /// The current language.
+        /// </summary>
+        private string m_currentLanguage;
+
+        #region Public Functions
+
+        /// <summary>
         /// Initializes.
         /// </summary>
         /// <param name="path">The localization resources path.</param>
         public void Initialize(string path)
         {
             m_locresFilesPath = path;
+
+            // Initialize languages.
+            InitializeLanguages();
+
+            // Initialize archives.
+            InitializeArchives();
         }
+
+        /// <summary>
+        /// Gets the current language.
+        /// </summary>
+        /// <returns>The current language.</returns>
+        public string GetCurrentLanguage()
+        {
+            return m_currentLanguage;
+        }
+
+        /// <summary>
+        /// Sets the current language.
+        /// </summary>
+        /// <param name="language">The language.</param>
+        public void SetCurrentLanguage(string language)
+        {
+            m_currentLanguage = language;
+        }
+
+        /// <summary>
+        /// Gets the localization text.
+        /// </summary>
+        /// <param name="moduleName">Name of the module.</param>
+        /// <param name="key">The key.</param>
+        /// <returns>The localization text.</returns>
+        public string GetLocalizationText(string moduleName, string key)
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the localization text.
+        /// </summary>
+        /// <param name="language">The language.</param>
+        /// <param name="moduleName">Name of the module.</param>
+        /// <param name="key">The key.</param>
+        /// <returns>The localization text.</returns>
+        public string GetLocalizationText(string language, string moduleName, string key)
+        {
+            return null;
+        }
+
+        #endregion Public Functions
+
+        #region Private Functions
+
+        /// <summary>
+        /// Initializes languages.
+        /// </summary>
+        private void InitializeLanguages()
+        {
+            DirectoryInfo dirInfo = new DirectoryInfo(m_locresFilesPath);
+            DirectoryInfo[] subDirInfos = dirInfo.GetDirectories();
+
+            if (subDirInfos.Length > 0)
+            {
+                for (int i = 0, length = subDirInfos.Length; i < length; ++i)
+                {
+                    DirectoryInfo subDirInfo = subDirInfos[i];
+                    string dirName = subDirInfo.Name;
+                }
+
+                SetCurrentLanguage(subDirInfos[0].Name);
+            }
+        }
+
+        /// <summary>
+        /// Initializes archives.
+        /// </summary>
+        private void InitializeArchives()
+        {
+        }
+
+        #endregion Private Functions
     }
 }

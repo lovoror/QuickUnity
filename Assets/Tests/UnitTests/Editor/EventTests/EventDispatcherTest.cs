@@ -5,7 +5,7 @@ using System;
 namespace QuickUnity.Tests.UnitTests
 {
     /// <summary>
-    /// Test cases for class EventDispatchers.
+    /// Unit Test cases for class EventDispatchers.
     /// </summary>
     [TestFixture]
     [Category("QuickUnity Tests/Unit Tests/EventDispatcher Test")]
