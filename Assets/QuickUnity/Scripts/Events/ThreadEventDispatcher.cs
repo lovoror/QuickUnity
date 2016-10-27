@@ -76,7 +76,7 @@ namespace QuickUnity.Events
         /// <summary>
         /// Update is called every frame.
         /// </summary>
-        public void Update()
+        public virtual void Update()
         {
             lock (this)
             {
@@ -110,6 +110,8 @@ namespace QuickUnity.Events
                         }
                     }
                 }
+
+                m_events.Clear();
             }
 
             m_pending = false;
