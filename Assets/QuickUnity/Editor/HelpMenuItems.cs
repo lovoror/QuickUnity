@@ -22,30 +22,29 @@
  *	SOFTWARE.
  */
 
-using Pathfinding.Serialization.JsonFx;
+using UnityEditor;
 
-namespace QuickUnity.Editor.Localization
+namespace QuickUnity.Editor
 {
     /// <summary>
-    /// The LanguagePreset value object.
+    /// This script adds the QuinUnity/Help menu items to the Unity Editor.
     /// </summary>
-    public class LanguagePreset
+    public class HelpUtility
     {
         /// <summary>
-        /// The display name.
+        /// The menu item priority.
         /// </summary>
-        public string displayName = null;
+        public const int MenuItemPriority = int.MaxValue;
 
         /// <summary>
-        /// The language.
+        /// Shows the about dialog.
         /// </summary>
-        public string language = null;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LanguagePreset"/> class.
-        /// </summary>
-        public LanguagePreset()
+        [MenuItem("QuickUnity/Help/About QuickUnity...", false, MenuItemPriority)]
+        public static void ShowAboutDialog()
         {
+            EditorUtility.DisplayDialog("About QuickUnity",
+                "QuickUnity\nAuthor: Jerry Lee\nE-mail: cosmos53076@163.com",
+                "OK");
         }
     }
 }
