@@ -51,16 +51,34 @@ namespace QuickUnity.Timers
         uint repeatCount { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether this <see cref="ITimer"/> is enabled.
+        /// </summary>
+        /// <value><c>true</c> if enabled Tick function will be invoked; otherwise, <c>false</c>.</value>
+        bool enabled { get; set; }
+
+        /// <summary>
         /// Gets a value indicating whether this <see cref="ITimer"/> is running.
         /// </summary>
         /// <value><c>true</c> if running; otherwise, <c>false</c>.</value>
         bool running { get; }
 
         /// <summary>
+        /// Gets a value indicating whether this <see cref="ITimer"/> is paused.
+        /// </summary>
+        /// <value><c>true</c> if paused; otherwise, <c>false</c>.</value>
+        bool paused { get; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether [ignore time scale].
         /// </summary>
         /// <value><c>true</c> if [ignore time scale]; otherwise, <c>false</c>.</value>
         bool ignoreTimeScale { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [stop on disable].
+        /// </summary>
+        /// <value><c>true</c> if [stop on disable]; otherwise, <c>false</c>.</value>
+        bool stopOnDisable { get; set; }
 
         /// <summary>
         /// This timer start timing.

@@ -4,12 +4,12 @@ using UnityEngine;
 namespace QuickUnity.Tests.IntegrationTests
 {
     /// <summary>
-    /// Integration test of scaled Timer.
+    /// Integration test of Timer with stopOnDisable is true.
     /// </summary>
     /// <seealso cref="UnityEngine.MonoBehaviour"/>
-    [IntegrationTest.DynamicTestAttribute("TimerTest")]
+    [IntegrationTest.DynamicTestAttribute("StopOnDisableTimerTest")]
     [IntegrationTest.SucceedWithAssertions]
-    public class TimerTest : MonoBehaviour
+    public class StopOnDisableTimerTest : MonoBehaviour
     {
         /// <summary>
         /// The test timer.
@@ -21,10 +21,11 @@ namespace QuickUnity.Tests.IntegrationTests
         /// </summary>
         private void Start()
         {
-            m_testTimer = new Timer(1.0f, 3);
+            m_testTimer = new Timer(1.0f, 3, true, false);
             m_testTimer.AddEventListener<TimerEvent>(TimerEvent.Timer, OnTimer);
             m_testTimer.AddEventListener<TimerEvent>(TimerEvent.TimerComplete, OnTimerComplete);
             TimerManager.instance.AddTimer(m_testTimer);
+            Invoke("DisableTimerManager", 2f);
         }
 
         private void OnDestroy()
@@ -46,6 +47,17 @@ namespace QuickUnity.Tests.IntegrationTests
         private void OnTimerComplete(TimerEvent timerEvent)
         {
             IntegrationTest.Pass(gameObject);
+        }
+
+        private void DisableTimerManager()
+        {
+            TimerManager.instance.enabled = false;
+            Invoke("EnableTimerManager", 2f);
+        }
+
+        private void EnableTimerManager()
+        {
+            TimerManager.instance.enabled = true;
         }
     }
 }

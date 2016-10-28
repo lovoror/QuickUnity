@@ -89,6 +89,45 @@ namespace QuickUnity.Timers
         }
 
         /// <summary>
+        /// Whether this timer is enabled.
+        /// </summary>
+        protected bool m_enabled = true;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this <see cref="ITimer"/> is enabled.
+        /// </summary>
+        /// <value><c>true</c> if enabled Tick function will be invoked; otherwise, <c>false</c>.</value>
+        public bool enabled
+        {
+            get { return m_enabled; }
+            set
+            {
+                if (!value)
+                {
+                    // Disable timer object.
+                    if (stopOnDisable)
+                    {
+                        Reset();
+                    }
+                    else
+                    {
+                        Pause();
+                    }
+                }
+                else
+                {
+                    // Enable timer object.
+                    if (!stopOnDisable && m_paused)
+                    {
+                        Resume();
+                    }
+                }
+
+                m_enabled = value;
+            }
+        }
+
+        /// <summary>
         /// The state of timer. If the timer is running, it is true, or false.
         /// </summary>
         protected bool m_running;
@@ -101,6 +140,17 @@ namespace QuickUnity.Timers
         public bool running
         {
             get { return m_running; }
+        }
+
+        protected bool m_paused;
+
+        /// <summary>
+        /// Gets a value indicating whether this <see cref="ITimer"/> is paused.
+        /// </summary>
+        /// <value><c>true</c> if paused; otherwise, <c>false</c>.</value>
+        public bool paused
+        {
+            get { return m_paused; }
         }
 
         /// <summary>
@@ -119,12 +169,28 @@ namespace QuickUnity.Timers
         }
 
         /// <summary>
+        /// Whether [stop on disable].
+        /// </summary>
+        protected bool m_stopOnDisable = true;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [stop on disable].
+        /// </summary>
+        /// <value><c>true</c> if [stop on disable]; otherwise, <c>false</c>.</value>
+        public bool stopOnDisable
+        {
+            get { return m_stopOnDisable; }
+            set { m_stopOnDisable = value; }
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Timer"/> class.
         /// </summary>
         /// <param name="delay">The delay.</param>
         /// <param name="repeatCount">The repeat count.</param>
         /// <param name="ignoreTimeScale">if set to <c>true</c> [ignore time scale].</param>
-        public Timer(float delay, uint repeatCount = 0, bool ignoreTimeScale = true)
+        /// <param name="stopOnDisable">if set to <c>true</c> [stop on disable].</param>
+        public Timer(float delay, uint repeatCount = 0, bool ignoreTimeScale = true, bool stopOnDisable = true)
         {
             if (delay > MinDelayTime)
             {
@@ -137,6 +203,7 @@ namespace QuickUnity.Timers
 
             m_repeatCount = repeatCount;
             m_ignoreTimeScale = ignoreTimeScale;
+            m_stopOnDisable = stopOnDisable;
         }
 
         /// <summary>
@@ -145,6 +212,7 @@ namespace QuickUnity.Timers
         public void Start()
         {
             m_running = true;
+            m_paused = false;
             DispatchEvent(new TimerEvent(TimerEvent.TimerStart, this));
         }
 
@@ -154,6 +222,7 @@ namespace QuickUnity.Timers
         public void Pause()
         {
             m_running = false;
+            m_paused = true;
             DispatchEvent(new TimerEvent(TimerEvent.TimerPause, this));
         }
 
@@ -163,6 +232,7 @@ namespace QuickUnity.Timers
         public void Resume()
         {
             m_running = true;
+            m_paused = false;
             DispatchEvent(new TimerEvent(TimerEvent.TimerResume, this));
         }
 
@@ -172,6 +242,7 @@ namespace QuickUnity.Timers
         public void Stop()
         {
             m_running = false;
+            m_paused = false;
             DispatchEvent(new TimerEvent(TimerEvent.TimerStop, this));
         }
 
@@ -195,7 +266,7 @@ namespace QuickUnity.Timers
         /// <param name="deltaTime">The delta time.</param>
         public void Tick(float deltaTime)
         {
-            if (m_running)
+            if (m_enabled && m_running && !m_paused)
             {
                 m_time += deltaTime;
 

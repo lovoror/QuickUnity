@@ -4,24 +4,29 @@ using UnityEngine;
 namespace QuickUnity.Tests.IntegrationTests
 {
     /// <summary>
-    /// Integration test of scaled Timer.
+    /// Integration test of class unscaled Timer.
     /// </summary>
     /// <seealso cref="UnityEngine.MonoBehaviour"/>
-    [IntegrationTest.DynamicTestAttribute("TimerTest")]
+    [IntegrationTest.DynamicTestAttribute("UnscaledTimerTest")]
     [IntegrationTest.SucceedWithAssertions]
-    public class TimerTest : MonoBehaviour
+    public class UnscaledTimerTest : MonoBehaviour
     {
         /// <summary>
         /// The test timer.
         /// </summary>
         private ITimer m_testTimer;
 
+        private void Awake()
+        {
+            Time.timeScale = 0.5f;
+        }
+
         /// <summary>
         /// Start is called just before any of the Update methods is called the first time.
         /// </summary>
         private void Start()
         {
-            m_testTimer = new Timer(1.0f, 3);
+            m_testTimer = new Timer(1.0f, 5, false);
             m_testTimer.AddEventListener<TimerEvent>(TimerEvent.Timer, OnTimer);
             m_testTimer.AddEventListener<TimerEvent>(TimerEvent.TimerComplete, OnTimerComplete);
             TimerManager.instance.AddTimer(m_testTimer);

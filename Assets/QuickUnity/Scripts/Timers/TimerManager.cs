@@ -81,6 +81,22 @@ namespace QuickUnity.Timers
         }
 
         /// <summary>
+        /// This function is called when the object becomes enabled and active.
+        /// </summary>
+        private void OnEnable()
+        {
+            SetAllTimersEnabled(true);
+        }
+
+        /// <summary>
+        /// This function is called when the behaviour becomes disabled () or inactive.
+        /// </summary>
+        private void OnDisable()
+        {
+            SetAllTimersEnabled(false);
+        }
+
+        /// <summary>
         /// This function is called when the MonoBehaviour will be destroyed.
         /// </summary>
         protected override void OnDestroy()
@@ -89,6 +105,24 @@ namespace QuickUnity.Timers
 
             RemoveAllTimers();
             m_timers = null;
+        }
+
+        /// <summary>
+        /// This function is called when the application pauses.
+        /// </summary>
+        /// <param name="pauseStatus">if set to <c>true</c> [pause status].</param>
+        private void OnApplicationPause(bool pauseStatus)
+        {
+            if (pauseStatus)
+            {
+                // Pause all timers.
+                PauseAllTimers();
+            }
+            else
+            {
+                // Resume all timers.
+                ResumeAllTimers();
+            }
         }
 
         #region Public Functions
@@ -115,6 +149,55 @@ namespace QuickUnity.Timers
         /// <param name="autoStart">if set to <c>true</c> [automatic start] timer object.</param>
         public void AddTimer(ITimer timer, bool autoStart = true)
         {
+            if (m_timers != null && !ContainsTimer(timer))
+            {
+                m_timers.Add(timer);
+
+                if (autoStart)
+                {
+                    timer.Start();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Sets all timers enabled.
+        /// </summary>
+        /// <param name="enabled">The enabled value.</param>
+        public void SetAllTimersEnabled(bool enabled = true)
+        {
+            if (m_timers != null)
+            {
+                for (int i = 0, length = m_timers.Count; i < length; ++i)
+                {
+                    ITimer timer = m_timers[i];
+                    timer.enabled = enabled;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Pauses all timers.
+        /// </summary>
+        public void PauseAllTimers()
+        {
+            for (int i = 0, length = m_timers.Count; i < length; ++i)
+            {
+                ITimer timer = m_timers[i];
+                timer.Pause();
+            }
+        }
+
+        /// <summary>
+        /// Resumes all timers.
+        /// </summary>
+        public void ResumeAllTimers()
+        {
+            for (int i = 0, length = m_timers.Count; i < length; ++i)
+            {
+                ITimer timer = m_timers[i];
+                timer.Resume();
+            }
         }
 
         /// <summary>
