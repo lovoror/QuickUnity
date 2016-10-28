@@ -6,7 +6,7 @@ using UnityEngine;
 namespace QuickUnity.Tests.IntegrationTests
 {
     /// <summary>
-    /// Class ThreadTextReader.
+    /// Text reader by thread.
     /// </summary>
     /// <seealso cref="QuickUnity.Events.ThreadEventDispatcher"/>
     public class ThreadTextReader : ThreadEventDispatcher

@@ -7,7 +7,7 @@ using UnityEngine;
 namespace QuickUnity.Tests.UnitTests.ConfigTests
 {
     /// <summary>
-    /// Unit Test cases for class INIConfigFile.
+    /// Unit test cases for class INIConfigFile.
     /// </summary>
     internal class INIConfigFileTest
     {

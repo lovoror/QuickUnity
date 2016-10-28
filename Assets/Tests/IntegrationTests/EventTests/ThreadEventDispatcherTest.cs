@@ -3,7 +3,7 @@
 namespace QuickUnity.Tests.IntegrationTests
 {
     /// <summary>
-    /// Class ThreadEventDispatcherTest.
+    /// Integration test of class ThreadEventDispatcher.
     /// </summary>
     /// <seealso cref="UnityEngine.MonoBehaviour"/>
     [IntegrationTest.DynamicTestAttribute("ThreadEventDispatcherTest")]

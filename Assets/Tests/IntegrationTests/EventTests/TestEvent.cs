@@ -3,7 +3,7 @@
 namespace QuickUnity.Tests.IntegrationTests
 {
     /// <summary>
-    /// Class TestEvent.
+    /// Test event object.
     /// </summary>
     /// <seealso cref="QuickUnity.Events.Event"/>
     public class TestEvent : Event

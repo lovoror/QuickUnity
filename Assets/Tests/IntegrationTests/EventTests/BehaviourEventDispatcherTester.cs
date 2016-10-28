@@ -5,7 +5,7 @@ using UnityEngine;
 namespace QuickUnity.Tests.IntegrationTests
 {
     /// <summary>
-    /// Class BehaviourEventDispatcherTester.
+    /// Tester simulation for integration test of BehaviourEventDispatcher.
     /// </summary>
     /// <seealso cref="UnityEngine.MonoBehaviour"/>
     public class BehaviourEventDispatcherTester : BehaviourEventDispatcher
