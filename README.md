@@ -1,4 +1,4 @@
-# QuickUnity
+# **QuickUnity**
 
 QuickUnity is a code library and toolkit for Unity engine. You can find something useful like this:
 
