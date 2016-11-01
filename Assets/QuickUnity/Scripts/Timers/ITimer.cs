@@ -110,5 +110,10 @@ namespace QuickUnity.Timers
         /// </summary>
         /// <param name="deltaTime">The delta time.</param>
         void Tick(float deltaTime);
+
+        /// <summary>
+        /// Destroys this timer instance.
+        /// </summary>
+        void Destroy();
     }
 }

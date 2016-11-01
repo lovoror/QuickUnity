@@ -190,7 +190,8 @@ namespace QuickUnity.Timers
         /// <param name="repeatCount">The repeat count.</param>
         /// <param name="ignoreTimeScale">if set to <c>true</c> [ignore time scale].</param>
         /// <param name="stopOnDisable">if set to <c>true</c> [stop on disable].</param>
-        public Timer(float delay, uint repeatCount = 0, bool ignoreTimeScale = true, bool stopOnDisable = true)
+        /// <param name="autoStart">if set to <c>true</c> [automatic start].</param>
+        public Timer(float delay, uint repeatCount = 0, bool ignoreTimeScale = true, bool stopOnDisable = true, bool autoStart = true)
         {
             if (delay > MinDelayTime)
             {
@@ -204,6 +205,9 @@ namespace QuickUnity.Timers
             m_repeatCount = repeatCount;
             m_ignoreTimeScale = ignoreTimeScale;
             m_stopOnDisable = stopOnDisable;
+
+            // Add timer instance into timer manager.
+            TimerManager.instance.AddTimer(this, autoStart);
         }
 
         /// <summary>
@@ -287,6 +291,14 @@ namespace QuickUnity.Timers
                     m_time -= m_delay;
                 }
             }
+        }
+
+        /// <summary>
+        /// Destroys this timer instance.
+        /// </summary>
+        public void Destroy()
+        {
+            TimerManager.instance.RemoveTimer(this);
         }
     }
 }

@@ -29,7 +29,6 @@ namespace QuickUnity.Tests.IntegrationTests
             m_testTimer = new Timer(1.0f, 5, false);
             m_testTimer.AddEventListener<TimerEvent>(TimerEvent.Timer, OnTimer);
             m_testTimer.AddEventListener<TimerEvent>(TimerEvent.TimerComplete, OnTimerComplete);
-            TimerManager.instance.AddTimer(m_testTimer);
         }
 
         private void OnDestroy()
@@ -38,6 +37,7 @@ namespace QuickUnity.Tests.IntegrationTests
             {
                 m_testTimer.RemoveEventListener<TimerEvent>(TimerEvent.Timer, OnTimer);
                 m_testTimer.RemoveEventListener<TimerEvent>(TimerEvent.TimerComplete, OnTimerComplete);
+                m_testTimer.Destroy();
                 m_testTimer = null;
             }
         }
