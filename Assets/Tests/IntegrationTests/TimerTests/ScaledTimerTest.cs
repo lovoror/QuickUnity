@@ -4,12 +4,12 @@ using UnityEngine;
 namespace QuickUnity.Tests.IntegrationTests
 {
     /// <summary>
-    /// Integration test of class unscaled Timer.
+    /// Integration test of class scaled Timer.
     /// </summary>
     /// <seealso cref="UnityEngine.MonoBehaviour"/>
-    [IntegrationTest.DynamicTestAttribute("UnscaledTimerTest")]
+    [IntegrationTest.DynamicTestAttribute("ScaledTimerTest")]
     [IntegrationTest.SucceedWithAssertions]
-    public class UnscaledTimerTest : MonoBehaviour
+    public class ScaledTimerTest : MonoBehaviour
     {
         /// <summary>
         /// The test timer.

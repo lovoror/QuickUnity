@@ -39,6 +39,8 @@ dispatcher.DispatchEvent<TestEvent>(new TestEvent(TestEvent.Test));
 
 Then you can write your logic codes and see what gonna happen.
 
+
+
 ## **BehaviourEventDispatcher**
 
 As you knew, the basic class of Unity is **MonoBehaviour**. So if you want to dispatch event or add event listener in class **MonoBehaviour**, you need to use class **BehaviourEventDispatcher**. Because the class **BehaviourEventDispatcher** is inherited from class **MonoBehaviour**.
@@ -73,6 +75,8 @@ testObj.AddEventListener<TestEvent>(TestEvent.Test, (testEvent) =>
 ```
 
 Ok, all done.
+
+
 
 ## **ThreadEventDispatcher**
 
