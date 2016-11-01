@@ -262,6 +262,8 @@ namespace QuickUnity.Timers
 
             m_currentCount = 0;
             m_time = 0f;
+
+            DispatchEvent(new TimerEvent(TimerEvent.TimerReset, this));
         }
 
         /// <summary>

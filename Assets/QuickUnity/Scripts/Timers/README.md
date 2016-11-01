@@ -64,3 +64,19 @@ By default, the timer will stop when it be disabled (**TimerManager.instance.ena
 // Set parameter 'stopOnDisable' to false to implement that.
 ITimer timer = new Timer(1.0f, 3, true, false);
 ```
+
+
+## **TimerGroup**
+
+**TimerGroup** is a feature that allow you to gather some timers into a group. For example, skill cooldown timers. To use **TimerGroup** is simple, example usage:
+
+```c#
+// Skill A CD Timer.
+ITimer skillACDTimer = new Timer(1, 3, true, true, false);
+
+// Skill B CD Timer.
+ITimer skillBCDTimer = new Timer(1, 5, true, true, false);
+
+// Initialize skill CDs timer group.
+ITimerGroup skillCDsTimerGroup = new TimerGroup("SkillCDTimers", true, skillACDTimer, skillBCDTimer);
+```

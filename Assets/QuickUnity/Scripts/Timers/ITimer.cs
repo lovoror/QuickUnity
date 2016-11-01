@@ -27,7 +27,7 @@ using QuickUnity.Events;
 namespace QuickUnity.Timers
 {
     /// <summary>
-    /// The interface definition for the Timer component.
+    /// The interface definition for the Timer object.
     /// </summary>
     /// <seealso cref="QuickUnity.Events.IEventDispatcher"/>
     public interface ITimer : IEventDispatcher

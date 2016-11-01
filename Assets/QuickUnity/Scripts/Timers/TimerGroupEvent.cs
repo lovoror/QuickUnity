@@ -25,64 +25,52 @@
 namespace QuickUnity.Timers
 {
     /// <summary>
-    /// The TimerEvent class represents event objects that are specific to the Timer object.
+    /// Class TimerGroupEvent.
     /// </summary>
     /// <seealso cref="QuickUnity.Events.Event"/>
-    public class TimerEvent : Events.Event
+    public class TimerGroupEvent : Events.Event
     {
         /// <summary>
-        /// Dispatched whenever a Timer start to run.
+        /// Dispatched whenever a TimerGroup start to run.
         /// </summary>
-        public const string TimerStart = "TimerStart";
+        public const string TimerGroupStart = "TimerGroupStart";
 
         /// <summary>
-        /// Dispatched whenever a Timer object reaches an interval specified according to the
-        /// Timer.delay property.
+        /// Dispatched whenever a TimerGroup pause.
         /// </summary>
-        public const string Timer = "Timer";
+        public const string TimerGroupPause = "TimerGroupPause";
 
         /// <summary>
-        /// Dispatched whenever a Timer pause.
+        /// Dispatched whenever a TimerGroup resume to run.
         /// </summary>
-        public const string TimerPause = "TimerPause";
+        public const string TimerGroupResume = "TimerGroupResume";
 
         /// <summary>
-        /// Dispatched whenever a Timer resume to run.
+        /// Dispatched whenever a TimerGroup stop.
         /// </summary>
-        public const string TimerResume = "TimerResume";
+        public const string TimerGroupStop = "TimerGroupStop";
 
         /// <summary>
-        /// Dispatched whenever a Timer stop.
+        /// Dispatched whenever a TimerGroup reset.
         /// </summary>
-        public const string TimerStop = "TimerStop";
+        public const string TimerGroupReset = "TimerGroupReset";
 
         /// <summary>
-        /// Dispatched whenever a Timer reset.
+        /// Gets the timer group.
         /// </summary>
-        public const string TimerReset = "TimerReset";
-
-        /// <summary>
-        /// Dispatched whenever it has completed the number of requests set by Timer.repeatCount.
-        /// </summary>
-        public const string TimerComplete = "TimerComplete";
-
-        /// <summary>
-        /// Gets or sets the timer object.
-        /// </summary>
-        /// <value>The timer object.</value>
-        public ITimer timer
+        /// <value>The timer group.</value>
+        public ITimerGroup timerGroup
         {
-            get { return (ITimer)m_context; }
-            set { m_context = value; }
+            get { return (ITimerGroup)m_context; }
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TimerEvent"/> class.
+        /// Initializes a new instance of the <see cref="TimerGroupEvent"/> class.
         /// </summary>
-        /// <param name="type">The event type.</param>
-        /// <param name="context">The timer object.</param>
-        public TimerEvent(string eventType, ITimer timer = null)
-            : base(eventType, timer)
+        /// <param name="eventType">Type of the event.</param>
+        /// <param name="group">The timer group.</param>
+        public TimerGroupEvent(string eventType, ITimerGroup group)
+            : base(eventType, group)
         {
         }
     }
