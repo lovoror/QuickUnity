@@ -7,7 +7,7 @@ namespace QuickUnity.Tests.IntegrationTests
     /// Integration test of class scaled Timer.
     /// </summary>
     /// <seealso cref="UnityEngine.MonoBehaviour"/>
-    [IntegrationTest.DynamicTestAttribute("ScaledTimerTest")]
+    [IntegrationTest.DynamicTestAttribute("TimerTests")]
     [IntegrationTest.SucceedWithAssertions]
     public class ScaledTimerTest : MonoBehaviour
     {

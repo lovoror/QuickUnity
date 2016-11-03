@@ -67,10 +67,9 @@ namespace QuickUnity.Timers
         {
             if (m_timers != null)
             {
-                for (int i = 0, length = m_timers.Count; i < length; ++i)
+                m_timers.ForEach(timer =>
                 {
                     float deltaTime = Time.deltaTime;
-                    ITimer timer = m_timers[i];
 
                     try
                     {
@@ -85,7 +84,7 @@ namespace QuickUnity.Timers
                     {
                         Debug.LogWarning(error.StackTrace);
                     }
-                }
+                });
             }
         }
 
@@ -179,11 +178,10 @@ namespace QuickUnity.Timers
         {
             if (m_timers != null)
             {
-                for (int i = 0, length = m_timers.Count; i < length; ++i)
+                m_timers.ForEach(timer =>
                 {
-                    ITimer timer = m_timers[i];
                     timer.enabled = enabled;
-                }
+                });
             }
         }
 
@@ -194,11 +192,10 @@ namespace QuickUnity.Timers
         {
             if (m_timers != null)
             {
-                for (int i = 0, length = m_timers.Count; i < length; ++i)
+                m_timers.ForEach(timer =>
                 {
-                    ITimer timer = m_timers[i];
                     timer.Start();
-                }
+                });
             }
         }
 
@@ -209,11 +206,10 @@ namespace QuickUnity.Timers
         {
             if (m_timers != null)
             {
-                for (int i = 0, length = m_timers.Count; i < length; ++i)
+                m_timers.ForEach(timer =>
                 {
-                    ITimer timer = m_timers[i];
                     timer.Pause();
-                }
+                });
             }
         }
 
@@ -224,11 +220,10 @@ namespace QuickUnity.Timers
         {
             if (m_timers != null)
             {
-                for (int i = 0, length = m_timers.Count; i < length; ++i)
+                m_timers.ForEach(timer =>
                 {
-                    ITimer timer = m_timers[i];
                     timer.Resume();
-                }
+                });
             }
         }
 
@@ -239,11 +234,10 @@ namespace QuickUnity.Timers
         {
             if (m_timers != null)
             {
-                for (int i = 0, length = m_timers.Count; i < length; ++i)
+                m_timers.ForEach(timer =>
                 {
-                    ITimer timer = m_timers[i];
                     timer.Stop();
-                }
+                });
             }
         }
 
@@ -254,11 +248,10 @@ namespace QuickUnity.Timers
         {
             if (m_timers != null)
             {
-                for (int i = 0, length = m_timers.Count; i < length; ++i)
+                m_timers.ForEach(timer =>
                 {
-                    ITimer timer = m_timers[i];
                     timer.Reset();
-                }
+                });
             }
         }
 
@@ -302,11 +295,10 @@ namespace QuickUnity.Timers
             {
                 if (autoStop)
                 {
-                    for (int i = 0, length = m_timers.Count; i < length; ++i)
+                    m_timers.ForEach(timer =>
                     {
-                        ITimer timer = m_timers[i];
                         timer.Stop();
-                    }
+                    });
                 }
 
                 m_timers.Clear();
@@ -389,11 +381,10 @@ namespace QuickUnity.Timers
         {
             if (m_timerGroups != null)
             {
-                for (int i = 0, length = m_timerGroups.Count; i < length; ++i)
+                m_timerGroups.ForEach(timerGroup =>
                 {
-                    ITimerGroup timerGroup = m_timerGroups[i];
                     timerGroup.Stop();
-                }
+                });
 
                 m_timerGroups.Clear();
             }

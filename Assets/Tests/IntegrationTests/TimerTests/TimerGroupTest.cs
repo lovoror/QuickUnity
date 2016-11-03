@@ -7,7 +7,7 @@ namespace QuickUnity.Tests.IntegrationTests
     /// Integration test of TimerGroup.
     /// </summary>
     /// <seealso cref="UnityEngine.MonoBehaviour"/>
-    [IntegrationTest.DynamicTestAttribute("TimerGroupTest")]
+    [IntegrationTest.DynamicTestAttribute("TimerTests")]
     [IntegrationTest.SucceedWithAssertions]
     public class TimerGroupTest : MonoBehaviour
     {
