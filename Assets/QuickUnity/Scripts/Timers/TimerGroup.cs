@@ -181,11 +181,13 @@ namespace QuickUnity.Timers
         {
             if (m_timers != null)
             {
-                for (int i = 0, length = m_timers.Count; i < length; ++i)
+                m_timers.ForEach(timer =>
                 {
-                    ITimer timer = m_timers[i];
-                    timer.Start();
-                }
+                    if (timer != null)
+                    {
+                        timer.Start();
+                    }
+                });
 
                 DispatchEvent(new TimerGroupEvent(TimerGroupEvent.TimerGroupStart, this));
             }
@@ -198,11 +200,13 @@ namespace QuickUnity.Timers
         {
             if (m_timers != null)
             {
-                for (int i = 0, length = m_timers.Count; i < length; ++i)
+                m_timers.ForEach(timer =>
                 {
-                    ITimer timer = m_timers[i];
-                    timer.Pause();
-                }
+                    if (timer != null)
+                    {
+                        timer.Pause();
+                    }
+                });
 
                 DispatchEvent(new TimerGroupEvent(TimerGroupEvent.TimerGroupPause, this));
             }
@@ -215,11 +219,13 @@ namespace QuickUnity.Timers
         {
             if (m_timers != null)
             {
-                for (int i = 0, length = m_timers.Count; i < length; ++i)
+                m_timers.ForEach(timer =>
                 {
-                    ITimer timer = m_timers[i];
-                    timer.Resume();
-                }
+                    if (timer != null)
+                    {
+                        timer.Resume();
+                    }
+                });
 
                 DispatchEvent(new TimerGroupEvent(TimerGroupEvent.TimerGroupResume, this));
             }
@@ -232,11 +238,13 @@ namespace QuickUnity.Timers
         {
             if (m_timers != null)
             {
-                for (int i = 0, length = m_timers.Count; i < length; ++i)
+                m_timers.ForEach(timer =>
                 {
-                    ITimer timer = m_timers[i];
-                    timer.Stop();
-                }
+                    if (timer != null)
+                    {
+                        timer.Stop();
+                    }
+                });
 
                 DispatchEvent(new TimerGroupEvent(TimerGroupEvent.TimerGroupStop, this));
             }
@@ -249,11 +257,13 @@ namespace QuickUnity.Timers
         {
             if (m_timers != null)
             {
-                for (int i = 0, length = m_timers.Count; i < length; ++i)
+                m_timers.ForEach(timer =>
                 {
-                    ITimer timer = m_timers[i];
-                    timer.Reset();
-                }
+                    if (timer != null)
+                    {
+                        timer.Reset();
+                    }
+                });
 
                 DispatchEvent(new TimerGroupEvent(TimerGroupEvent.TimerGroupReset, this));
             }
