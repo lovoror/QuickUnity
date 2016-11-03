@@ -205,8 +205,11 @@ namespace QuickUnity.Timers
         /// </summary>
         public void Start()
         {
-            m_timerState = TimerState.Running;
-            DispatchEvent(new TimerEvent(TimerEvent.TimerStart, this));
+            if (m_timerState != TimerState.Running)
+            {
+                m_timerState = TimerState.Running;
+                DispatchEvent(new TimerEvent(TimerEvent.TimerStart, this));
+            }
         }
 
         /// <summary>
@@ -214,8 +217,11 @@ namespace QuickUnity.Timers
         /// </summary>
         public void Pause()
         {
-            m_timerState = TimerState.Pause;
-            DispatchEvent(new TimerEvent(TimerEvent.TimerPause, this));
+            if (m_timerState != TimerState.Pause)
+            {
+                m_timerState = TimerState.Pause;
+                DispatchEvent(new TimerEvent(TimerEvent.TimerPause, this));
+            }
         }
 
         /// <summary>
@@ -223,8 +229,11 @@ namespace QuickUnity.Timers
         /// </summary>
         public void Resume()
         {
-            m_timerState = TimerState.Running;
-            DispatchEvent(new TimerEvent(TimerEvent.TimerResume, this));
+            if (m_timerState == TimerState.Pause)
+            {
+                m_timerState = TimerState.Running;
+                DispatchEvent(new TimerEvent(TimerEvent.TimerResume, this));
+            }
         }
 
         /// <summary>
@@ -232,8 +241,11 @@ namespace QuickUnity.Timers
         /// </summary>
         public void Stop()
         {
-            m_timerState = TimerState.Stop;
-            DispatchEvent(new TimerEvent(TimerEvent.TimerStop, this));
+            if (m_timerState != TimerState.Stop)
+            {
+                m_timerState = TimerState.Stop;
+                DispatchEvent(new TimerEvent(TimerEvent.TimerStop, this));
+            }
         }
 
         /// <summary>
@@ -241,10 +253,7 @@ namespace QuickUnity.Timers
         /// </summary>
         public void Reset()
         {
-            if (m_timerState != TimerState.Running)
-            {
-                Stop();
-            }
+            Stop();
 
             m_currentCount = 0;
             m_time = 0f;
