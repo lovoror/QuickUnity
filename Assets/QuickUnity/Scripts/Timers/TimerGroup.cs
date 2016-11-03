@@ -70,7 +70,8 @@ namespace QuickUnity.Timers
                 return;
             }
 
-            m_timers = new List<ITimer>(timers);
+            m_timers = new List<ITimer>();
+            AddTimers(timers);
             m_groupName = groupName;
             TimerManager.instance.AddTimerGroup(this);
 
@@ -112,6 +113,18 @@ namespace QuickUnity.Timers
                 {
                     timer.Start();
                 }
+            }
+        }
+
+        /// <summary>
+        /// Adds the timers.
+        /// </summary>
+        /// <param name="timers">The timers.</param>
+        public void AddTimers(params ITimer[] timers)
+        {
+            if (m_timers != null && timers != null)
+            {
+                m_timers.AddRangeUnique(timers);
             }
         }
 
