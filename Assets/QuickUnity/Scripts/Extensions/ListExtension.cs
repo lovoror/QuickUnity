@@ -44,5 +44,26 @@ namespace QuickUnity.Extensions
                 source.Add(item);
             }
         }
+
+        /// <summary>
+        /// Adds the range unique.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source">The source.</param>
+        /// <param name="collection">The collection.</param>
+        public static void AddRangeUnique<T>(this List<T> source, IEnumerable<T> collection)
+        {
+            List<T> newCollection = new List<T>();
+
+            foreach (T item in collection)
+            {
+                if (!source.Contains(item) && !newCollection.Contains(item))
+                {
+                    newCollection.Add(item);
+                }
+            }
+
+            source.AddRange(newCollection);
+        }
     }
 }
