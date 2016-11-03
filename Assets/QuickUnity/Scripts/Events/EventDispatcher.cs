@@ -86,6 +86,7 @@ namespace QuickUnity.Events
                 return;
 
             string eventType = eventObject.eventType;
+            eventObject.target = this;
 
             if (m_listeners != null && m_listeners.ContainsKey(eventType))
             {

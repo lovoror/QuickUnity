@@ -33,7 +33,7 @@ namespace QuickUnity.Events
         /// <summary>
         /// The type of event.
         /// </summary>
-        protected string m_eventType = null;
+        protected string m_eventType;
 
         /// <summary>
         /// The type of event.
@@ -47,7 +47,7 @@ namespace QuickUnity.Events
         /// <summary>
         /// The context object.
         /// </summary>
-        protected object m_context = null;
+        protected object m_context;
 
         /// <summary>
         /// The context object.
@@ -56,6 +56,21 @@ namespace QuickUnity.Events
         public object context
         {
             get { return m_context; }
+        }
+
+        /// <summary>
+        /// The event target.
+        /// </summary>
+        protected object m_target;
+
+        /// <summary>
+        /// Gets or sets the event target.
+        /// </summary>
+        /// <value>The event target.</value>
+        public object target
+        {
+            get { return m_target; }
+            set { m_target = value; }
         }
 
         /// <summary>

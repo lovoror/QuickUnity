@@ -22,6 +22,7 @@
  *	SOFTWARE.
  */
 
+using QuickUnity.Extensions;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -84,34 +85,47 @@ namespace QuickUnity.Events
                 {
                     foreach (string eventType in m_pendingListeners.Keys)
                     {
-                        foreach (Action<Event> listener in m_pendingListeners[eventType])
-                            AddEventListener(eventType, listener);
+                        List<Action<Event>> pendingListeners = m_pendingListeners[eventType];
+
+                        if (pendingListeners != null)
+                        {
+                            pendingListeners.ForEach(listener =>
+                            {
+                                AddEventListener(eventType, listener);
+                            });
+                        }
                     }
 
                     m_pendingListeners.Clear();
 
-                    m_events.AddRange(m_pendingEvents);
+                    m_events.AddRangeUnique(m_pendingEvents);
                     m_pendingEvents.Clear();
                     return;
                 }
 
                 m_pending = true;
 
-                foreach (Event eventObject in m_events)
+                if (m_events != null && m_events.Count != 0)
                 {
-                    if (m_listeners.ContainsKey(eventObject.eventType))
+                    m_events.ForEach(eventObject =>
                     {
-                        List<Action<Event>> listeners = m_listeners[eventObject.eventType];
-
-                        foreach (Action<Event> listener in listeners)
+                        if (eventObject != null && m_listeners.ContainsKey(eventObject.eventType))
                         {
-                            if (listener != null)
-                                listener.Invoke(eventObject);
-                        }
-                    }
-                }
+                            List<Action<Event>> listeners = m_listeners[eventObject.eventType];
+                            eventObject.target = this;
 
-                m_events.Clear();
+                            listeners.ForEach(listener =>
+                            {
+                                if (listener != null)
+                                {
+                                    listener.Invoke(eventObject);
+                                }
+                            });
+                        }
+                    });
+
+                    m_events.Clear();
+                }
             }
 
             m_pending = false;

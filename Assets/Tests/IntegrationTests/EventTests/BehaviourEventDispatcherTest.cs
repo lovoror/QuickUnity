@@ -57,6 +57,13 @@ namespace QuickUnity.Tests.IntegrationTests
         /// <param name="mockEvent">The mock event.</param>
         private void MockEventTestHandler(TestEvent mockEvent)
         {
+            BehaviourEventDispatcherTester mock = GameObject.FindObjectOfType<BehaviourEventDispatcherTester>();
+
+            if ((mockEvent.target as BehaviourEventDispatcherTester) == mock)
+            {
+                Debug.Log("Event target is right!");
+            }
+
             IntegrationTest.Pass(gameObject);
         }
     }
