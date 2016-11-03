@@ -22,40 +22,38 @@
  *	SOFTWARE.
  */
 
-using System.Collections.Generic;
+using System.Collections;
 
 namespace QuickUnity.Extensions
 {
     /// <summary>
-    /// Extension methods collection for List.
+    /// Extension methods collection for ArrayList.
     /// </summary>
-    public static class ListExtension
+    public static class ArrayListExtension
     {
         /// <summary>
-        /// Adds the unique item.
+        /// Adds the unique value to the list.
         /// </summary>
-        /// <typeparam name="T">The type of element in List.</typeparam>
-        /// <param name="source">The source List object.</param>
-        /// <param name="item">The item.</param>
-        public static void AddUnique<T>(this List<T> source, T item)
+        /// <param name="source">The source.</param>
+        /// <param name="value">The value.</param>
+        public static void AddUnique(this ArrayList source, object value)
         {
-            if (!source.Contains(item))
+            if (!source.Contains(value))
             {
-                source.Add(item);
+                source.Add(value);
             }
         }
 
         /// <summary>
         /// Adds the range unique collection.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
         /// <param name="source">The source.</param>
         /// <param name="collection">The collection.</param>
-        public static void AddRangeUnique<T>(this List<T> source, IEnumerable<T> collection)
+        public static void AddRangeUnique(this ArrayList source, ICollection collection)
         {
-            List<T> newCollection = new List<T>();
+            ArrayList newCollection = new ArrayList();
 
-            foreach (T item in collection)
+            foreach (object item in collection)
             {
                 if (!source.Contains(item) && !newCollection.Contains(item))
                 {
