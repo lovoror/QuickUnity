@@ -57,16 +57,10 @@ namespace QuickUnity.Timers
         bool enabled { get; set; }
 
         /// <summary>
-        /// Gets a value indicating whether this <see cref="ITimer"/> is running.
+        /// Gets the state of the timer.
         /// </summary>
-        /// <value><c>true</c> if running; otherwise, <c>false</c>.</value>
-        bool running { get; }
-
-        /// <summary>
-        /// Gets a value indicating whether this <see cref="ITimer"/> is paused.
-        /// </summary>
-        /// <value><c>true</c> if paused; otherwise, <c>false</c>.</value>
-        bool paused { get; }
+        /// <value>The state of the timer.</value>
+        TimerState timerState { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether [ignore time scale].

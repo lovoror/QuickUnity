@@ -117,7 +117,7 @@ namespace QuickUnity.Timers
                 else
                 {
                     // Enable timer object.
-                    if (!stopOnDisable && m_paused)
+                    if (!stopOnDisable && m_timerState == TimerState.Pause)
                     {
                         Resume();
                     }
@@ -128,29 +128,17 @@ namespace QuickUnity.Timers
         }
 
         /// <summary>
-        /// The state of timer. If the timer is running, it is true, or false.
+        /// The state of timer.
         /// </summary>
-        protected bool m_running;
+        protected TimerState m_timerState;
 
         /// <summary>
-        /// Gets a value indicating whether this <see cref="Timer"/> is running.
+        /// Gets the state of the timer.
         /// </summary>
-        /// If the timer is running, this is
-        /// <value><c>true</c>; otherwise, <c>false</c>.</value>
-        public bool running
+        /// <value>The state of the timer.</value>
+        public TimerState timerState
         {
-            get { return m_running; }
-        }
-
-        protected bool m_paused;
-
-        /// <summary>
-        /// Gets a value indicating whether this <see cref="ITimer"/> is paused.
-        /// </summary>
-        /// <value><c>true</c> if paused; otherwise, <c>false</c>.</value>
-        public bool paused
-        {
-            get { return m_paused; }
+            get { return m_timerState; }
         }
 
         /// <summary>
@@ -193,6 +181,8 @@ namespace QuickUnity.Timers
         /// <param name="autoStart">if set to <c>true</c> [automatic start].</param>
         public Timer(float delay, uint repeatCount = 0, bool ignoreTimeScale = true, bool stopOnDisable = true, bool autoStart = true)
         {
+            m_timerState = TimerState.Stop;
+
             if (delay > MinDelayTime)
             {
                 m_delay = delay;
@@ -215,8 +205,7 @@ namespace QuickUnity.Timers
         /// </summary>
         public void Start()
         {
-            m_running = true;
-            m_paused = false;
+            m_timerState = TimerState.Running;
             DispatchEvent(new TimerEvent(TimerEvent.TimerStart, this));
         }
 
@@ -225,8 +214,7 @@ namespace QuickUnity.Timers
         /// </summary>
         public void Pause()
         {
-            m_running = false;
-            m_paused = true;
+            m_timerState = TimerState.Pause;
             DispatchEvent(new TimerEvent(TimerEvent.TimerPause, this));
         }
 
@@ -235,8 +223,7 @@ namespace QuickUnity.Timers
         /// </summary>
         public void Resume()
         {
-            m_running = true;
-            m_paused = false;
+            m_timerState = TimerState.Running;
             DispatchEvent(new TimerEvent(TimerEvent.TimerResume, this));
         }
 
@@ -245,8 +232,7 @@ namespace QuickUnity.Timers
         /// </summary>
         public void Stop()
         {
-            m_running = false;
-            m_paused = false;
+            m_timerState = TimerState.Stop;
             DispatchEvent(new TimerEvent(TimerEvent.TimerStop, this));
         }
 
@@ -255,7 +241,7 @@ namespace QuickUnity.Timers
         /// </summary>
         public void Reset()
         {
-            if (m_running)
+            if (m_timerState != TimerState.Running)
             {
                 Stop();
             }
@@ -272,7 +258,7 @@ namespace QuickUnity.Timers
         /// <param name="deltaTime">The delta time.</param>
         public void Tick(float deltaTime)
         {
-            if (m_enabled && m_running && !m_paused)
+            if (m_enabled && m_timerState == TimerState.Running)
             {
                 m_time += deltaTime;
 
