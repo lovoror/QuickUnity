@@ -180,7 +180,10 @@ namespace QuickUnity.Timers
             {
                 m_timers.ForEach(timer =>
                 {
-                    timer.enabled = enabled;
+                    if (timer != null)
+                    {
+                        timer.enabled = enabled;
+                    }
                 });
             }
         }
@@ -194,7 +197,10 @@ namespace QuickUnity.Timers
             {
                 m_timers.ForEach(timer =>
                 {
-                    timer.Start();
+                    if (timer != null)
+                    {
+                        timer.Start();
+                    }
                 });
             }
         }
@@ -208,7 +214,10 @@ namespace QuickUnity.Timers
             {
                 m_timers.ForEach(timer =>
                 {
-                    timer.Pause();
+                    if (timer != null)
+                    {
+                        timer.Pause();
+                    }
                 });
             }
         }
@@ -222,7 +231,10 @@ namespace QuickUnity.Timers
             {
                 m_timers.ForEach(timer =>
                 {
-                    timer.Resume();
+                    if (timer != null)
+                    {
+                        timer.Resume();
+                    }
                 });
             }
         }
@@ -236,7 +248,10 @@ namespace QuickUnity.Timers
             {
                 m_timers.ForEach(timer =>
                 {
-                    timer.Stop();
+                    if (timer != null)
+                    {
+                        timer.Stop();
+                    }
                 });
             }
         }
@@ -250,7 +265,10 @@ namespace QuickUnity.Timers
             {
                 m_timers.ForEach(timer =>
                 {
-                    timer.Reset();
+                    if (timer != null)
+                    {
+                        timer.Reset();
+                    }
                 });
             }
         }
@@ -297,7 +315,10 @@ namespace QuickUnity.Timers
                 {
                     m_timers.ForEach(timer =>
                     {
-                        timer.Stop();
+                        if (timer != null)
+                        {
+                            timer.Stop();
+                        }
                     });
                 }
 
@@ -383,7 +404,10 @@ namespace QuickUnity.Timers
             {
                 m_timerGroups.ForEach(timerGroup =>
                 {
-                    timerGroup.Stop();
+                    if (timerGroup != null)
+                    {
+                        timerGroup.Stop();
+                    }
                 });
 
                 m_timerGroups.Clear();
@@ -400,7 +424,7 @@ namespace QuickUnity.Timers
             {
                 m_timerGroups.ForEach(timerGroup =>
                 {
-                    if (timerGroup.ContainsTimer(timer))
+                    if (timerGroup != null && timerGroup.ContainsTimer(timer))
                     {
                         timerGroup.RemoveTimer(timer);
                     }
