@@ -280,7 +280,7 @@ namespace QuickUnity.Timers
                     // Dispatch timer complete event.
                     if (m_repeatCount != 0 && m_currentCount >= m_repeatCount)
                     {
-                        Stop();
+                        Reset();
                         DispatchEvent(new TimerEvent(TimerEvent.TimerComplete, this));
                     }
 
