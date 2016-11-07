@@ -22,6 +22,7 @@
  *	SOFTWARE.
  */
 
+using QuickUnity.Core.Miscs;
 using QuickUnity.Extensions;
 using QuickUnity.Patterns;
 using System;
@@ -80,9 +81,9 @@ namespace QuickUnity.Timers
 
                         timer.Tick(deltaTime);
                     }
-                    catch (Exception error)
+                    catch (Exception exception)
                     {
-                        Debug.LogWarning(error.StackTrace);
+                        DebugLogger.LogException(exception, this);
                     }
                 });
             }

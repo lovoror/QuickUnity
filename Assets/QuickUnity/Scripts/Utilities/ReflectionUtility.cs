@@ -103,13 +103,13 @@ namespace QuickUnity.Utilities
                 {
                     return Convert.ChangeType(value, GetPropertyType(targetType));
                 }
-                catch (Exception ex)
+                catch (Exception exception)
                 {
                     TypeConverter cnv = TypeDescriptor.GetConverter(GetPropertyType(targetType));
                     if (cnv != null && cnv.CanConvertFrom(value.GetType()))
                         return cnv.ConvertFrom(value);
                     else
-                        throw ex;
+                        throw exception;
                 }
             }
         }

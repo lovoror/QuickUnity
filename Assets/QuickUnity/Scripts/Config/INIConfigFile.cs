@@ -23,6 +23,7 @@
  */
 
 using Pathfinding.Serialization.JsonFx;
+using QuickUnity.Core.Miscs;
 using QuickUnity.Utilities;
 using System;
 using System.Collections.Generic;
@@ -491,9 +492,9 @@ namespace QuickUnity.Config
                 File.WriteAllText(filePath, this.ToString(), Encoding.UTF8);
                 return true;
             }
-            catch (Exception error)
+            catch (Exception exception)
             {
-                Debug.LogWarning(error.ToString());
+                DebugLogger.LogException(exception, this);
                 return false;
             }
         }
