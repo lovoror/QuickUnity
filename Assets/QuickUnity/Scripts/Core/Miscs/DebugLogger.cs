@@ -47,7 +47,7 @@ namespace QuickUnity.Core.Miscs
         /// <summary>
         /// The log files root path
         /// </summary>
-        private static readonly string s_rootPath = Application.persistentDataPath;
+        private static readonly string s_rootPath = Directory.GetCurrentDirectory();
 
         /// <summary>
         /// The log files path.
@@ -192,17 +192,7 @@ namespace QuickUnity.Core.Miscs
         {
             if (exception != null)
             {
-                string message = null;
-
-                if (!string.IsNullOrEmpty(exception.StackTrace))
-                {
-                    message = exception.StackTrace;
-                }
-                else
-                {
-                    message = exception.ToString();
-                }
-
+                string message = exception.ToString();
                 LogMessage(message, LogType.Exception, context);
             }
         }
