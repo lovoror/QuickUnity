@@ -24,12 +24,12 @@
 
 using UnityEditor;
 
-namespace QuickUnity.Editor
+namespace QuickUnityEditor
 {
     /// <summary>
-    /// This script adds the QuinUnity/Help menu items to the Unity Editor.
+    /// This script is for showing about dialog.
     /// </summary>
-    public class HelpUtility
+    internal sealed class AboutDialog
     {
         /// <summary>
         /// The menu item priority.
@@ -37,7 +37,7 @@ namespace QuickUnity.Editor
         public const int MenuItemPriority = int.MaxValue;
 
         /// <summary>
-        /// Shows the about dialog.
+        /// Show the about dialog.
         /// </summary>
         [MenuItem("QuickUnity/Help/About QuickUnity...", false, MenuItemPriority)]
         public static void ShowAboutDialog()

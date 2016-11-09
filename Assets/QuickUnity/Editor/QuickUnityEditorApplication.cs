@@ -25,12 +25,12 @@
 using System.IO;
 using UnityEngine;
 
-namespace QuickUnity.Editor
+namespace QuickUnityEditor
 {
     /// <summary>
-    /// QuickUnityEditor is utility class for editor.
+    /// Main Application class for QuickUnity.
     /// </summary>
-    public static class QuickUnityEditor
+    public sealed class QuickUnityEditorApplication
     {
         /// <summary>
         /// The editor configuration path.
