@@ -23,21 +23,15 @@
  */
 
 using QuickUnity.Events;
-using System.Collections.Generic;
 
 namespace QuickUnity.Timers
 {
     /// <summary>
-    /// The interface definition for the TimerGroup object.
+    /// The interface definition for the TimerManager object.
     /// </summary>
     /// <seealso cref="QuickUnity.Events.IEventDispatcher"/>
     /// <seealso cref="QuickUnity.Timers.ITimerList"/>
-    public interface ITimerGroup : ITimerList, IEventDispatcher
+    public interface ITimerManager : ITimerList, IEventDispatcher
     {
-        /// <summary>
-        /// Gets or sets the name of the group.
-        /// </summary>
-        /// <value>The name of the group.</value>
-        string groupName { get; }
     }
 }

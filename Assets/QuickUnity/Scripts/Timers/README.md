@@ -20,6 +20,9 @@ timer.AddEventListener<TimerEvent>(TimerEvent.TimerComplete, (timerEvent) =>
 {
   // Your logic codes.
 });
+
+// Add timer object into timer manager.
+TimerManager.instance.Add(timer);
 ```
 
 
@@ -41,6 +44,9 @@ timer.AddEventListener<TimerEvent>(TimerEvent.TimerComplete, (timerEvent) =>
 {
   // Your logic codes.
 });
+
+// Add timer object into timer manager.
+TimerManager.instance.Add(timer);
 ```
 
 
@@ -52,6 +58,9 @@ By default, the timer frequency will not change with **Time.timeScale**. Just be
 ```c#
 // Set parameter 'ignoreTimeScale' to false to implement scaled timer.
 ITimer timer = new Timer(1.0f, 3, false);
+
+// Add timer object into timer manager.
+TimerManager.instance.Add(timer);
 ```
 
 
@@ -63,6 +72,9 @@ By default, the timer will stop when it be disabled (**TimerManager.instance.ena
 ```c#
 // Set parameter 'stopOnDisable' to false to implement that.
 ITimer timer = new Timer(1.0f, 3, true, false);
+
+// Add timer object into timer manager.
+TimerManager.instance.Add(timer);
 ```
 
 
@@ -79,4 +91,7 @@ ITimer skillBCDTimer = new Timer(1, 5, true, true, false);
 
 // Initialize skill CDs timer group.
 ITimerGroup skillCDsTimerGroup = new TimerGroup("SkillCDTimers", true, skillACDTimer, skillBCDTimer);
+
+// Add timer group object into timer manager.
+TimerManager.instance.AddTimerGroup(skillCDsTimerGroup);
 ```

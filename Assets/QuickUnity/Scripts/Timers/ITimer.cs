@@ -54,7 +54,7 @@ namespace QuickUnity.Timers
         /// Gets or sets a value indicating whether this <see cref="ITimer"/> is enabled.
         /// </summary>
         /// <value><c>true</c> if enabled Tick function will be invoked; otherwise, <c>false</c>.</value>
-        bool enabled { get; set; }
+        bool enabled { set; }
 
         /// <summary>
         /// Gets the state of the timer.
@@ -104,10 +104,5 @@ namespace QuickUnity.Timers
         /// </summary>
         /// <param name="deltaTime">The delta time.</param>
         void Tick(float deltaTime);
-
-        /// <summary>
-        /// Destroys this timer instance.
-        /// </summary>
-        void Destroy();
     }
 }

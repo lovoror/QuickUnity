@@ -28,6 +28,7 @@ namespace QuickUnity.Tests.IntegrationTests
             m_skillBCDTimer.AddEventListener<TimerEvent>(TimerEvent.Timer, OnSkillBCDTimer);
             m_skillCDTimerGroup = new TimerGroup("SkillCDTimers", true, m_skillACDTimer, m_skillBCDTimer);
             m_skillCDTimerGroup.AddEventListener<TimerGroupEvent>(TimerGroupEvent.TimerGroupReset, OnSkillTimersReset);
+            TimerManager.instance.AddTimerGroup(m_skillCDTimerGroup);
             Invoke("ResetAllSkills", 2.5f);
         }
 
@@ -38,21 +39,19 @@ namespace QuickUnity.Tests.IntegrationTests
         {
             if (m_skillACDTimer != null)
             {
-                m_skillACDTimer.Destroy();
                 m_skillACDTimer.RemoveEventListener<TimerEvent>(TimerEvent.Timer, OnSkillACDTimer);
                 m_skillACDTimer = null;
             }
 
             if (m_skillBCDTimer != null)
             {
-                m_skillBCDTimer.Destroy();
                 m_skillBCDTimer.RemoveEventListener<TimerEvent>(TimerEvent.Timer, OnSkillBCDTimer);
                 m_skillBCDTimer = null;
             }
 
             if (m_skillCDTimerGroup != null)
             {
-                m_skillCDTimerGroup.Destroy();
+                TimerManager.instance.RemoveTimerGroup(m_skillCDTimerGroup);
                 m_skillCDTimerGroup.RemoveEventListener<TimerGroupEvent>(TimerGroupEvent.TimerGroupReset, OnSkillTimersReset);
                 m_skillCDTimerGroup = null;
             }

@@ -65,5 +65,19 @@ namespace QuickUnity.Extensions
 
             source.AddRange(newCollection);
         }
+
+        /// <summary>
+        /// Removes a range of elements from the List.
+        /// </summary>
+        /// <typeparam name="T">The type of elements in the list.</typeparam>
+        /// <param name="source">The source.</param>
+        /// <param name="collection">The collection.</param>
+        public static void RemoveRange<T>(this List<T> source, ICollection<T> collection)
+        {
+            foreach (T item in collection)
+            {
+                source.Remove(item);
+            }
+        }
     }
 }

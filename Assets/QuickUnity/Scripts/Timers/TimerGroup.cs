@@ -23,7 +23,7 @@
  */
 
 using QuickUnity.Events;
-using QuickUnity.Extensions;
+using System;
 using System.Collections.Generic;
 
 namespace QuickUnity.Timers
@@ -35,9 +35,26 @@ namespace QuickUnity.Timers
     public class TimerGroup : EventDispatcher, ITimerGroup
     {
         /// <summary>
-        /// The timers list.
+        /// The timer list object.
         /// </summary>
-        protected List<ITimer> m_timers;
+        protected ITimerList m_timerList;
+
+        /// <summary>
+        /// Gets all the timers.
+        /// </summary>
+        /// <value>All the timers.</value>
+        public List<ITimer> timers
+        {
+            get
+            {
+                if (m_timerList != null)
+                {
+                    return m_timerList.timers;
+                }
+
+                return null;
+            }
+        }
 
         /// <summary>
         /// The name of the group.
@@ -70,14 +87,24 @@ namespace QuickUnity.Timers
                 return;
             }
 
-            m_timers = new List<ITimer>();
-            AddTimers(timers);
             m_groupName = groupName;
-            TimerManager.instance.AddTimerGroup(this);
+            m_timerList = new TimerList(timers);
 
             if (autoStart)
             {
                 Start();
+            }
+        }
+
+        /// <summary>
+        /// Performs the specified action on each element of the timer list.
+        /// </summary>
+        /// <param name="action">The action.</param>
+        public void ForEach(Action<ITimer> action)
+        {
+            if (m_timerList != null)
+            {
+                m_timerList.ForEach(action);
             }
         }
 
@@ -88,11 +115,11 @@ namespace QuickUnity.Timers
         /// <returns>
         /// <c>true</c> if this timer group contains the specified timer; otherwise, <c>false</c>.
         /// </returns>
-        public bool ContainsTimer(ITimer timer)
+        public bool Contains(ITimer timer)
         {
-            if (m_timers != null && timer != null)
+            if (m_timerList != null)
             {
-                return m_timers.Contains(timer);
+                return m_timerList.Contains(timer);
             }
 
             return false;
@@ -103,28 +130,23 @@ namespace QuickUnity.Timers
         /// </summary>
         /// <param name="timer">The timer.</param>
         /// <param name="autoStart">if set to <c>true</c> [automatic start].</param>
-        public void AddTimer(ITimer timer, bool autoStart = false)
+        public void Add(ITimer timer, bool autoStart = false)
         {
-            if (m_timers != null && timer != null)
+            if (m_timerList != null)
             {
-                m_timers.AddUnique(timer);
-
-                if (autoStart)
-                {
-                    timer.Start();
-                }
+                m_timerList.Add(timer);
             }
         }
 
         /// <summary>
         /// Adds the timers.
         /// </summary>
-        /// <param name="timers">The timers.</param>
-        public void AddTimers(params ITimer[] timers)
+        /// <param name="collection">The timer collection.</param>
+        public void AddRange(IEnumerable<ITimer> collection)
         {
-            if (m_timers != null && timers != null)
+            if (m_timerList != null)
             {
-                m_timers.AddRangeUnique(timers);
+                m_timerList.AddRange(collection);
             }
         }
 
@@ -137,40 +159,50 @@ namespace QuickUnity.Timers
         /// <c>true</c> if timer is successfully removed; otherwise, <c>false</c>. This method also
         /// returns false if timer was not found.
         /// </returns>
-        public bool RemoveTimer(ITimer timer, bool autoStop = false)
+        public bool Remove(ITimer timer, bool autoStop = false)
         {
-            if (m_timers != null && timer != null)
+            if (m_timerList != null)
             {
-                bool success = m_timers.Remove(timer);
-
-                if (success)
-                {
-                    if (autoStop)
-                    {
-                        timer.Stop();
-                    }
-                }
-
-                return success;
+                return m_timerList.Remove(timer, autoStop);
             }
 
             return false;
         }
 
         /// <summary>
+        /// Removes a range of elements from the timer list.
+        /// </summary>
+        /// <param name="collection">The collection.</param>
+        /// <param name="autoStop">if set to <c>true</c> [automatic stop].</param>
+        public void RemoveRange(ICollection<ITimer> collection, bool autoStop = true)
+        {
+            if (m_timerList != null)
+            {
+                m_timerList.RemoveRange(collection, autoStop);
+            }
+        }
+
+        /// <summary>
         /// Removes all timers.
         /// </summary>
         /// <param name="autoStop">if set to <c>true</c> [automatic stop].</param>
-        public void RemoveAllTimers(bool autoStop = false)
+        public void RemoveAll(bool autoStop = false)
         {
-            if (m_timers != null)
+            if (m_timerList != null)
             {
-                if (autoStop)
-                {
-                    Stop();
-                }
+                m_timerList.RemoveAll(autoStop);
+            }
+        }
 
-                m_timers.Clear();
+        /// <summary>
+        /// Sets all timers enabled.
+        /// </summary>
+        /// <param name="enabled">The enabled value.</param>
+        public void SetAllEnabled(bool enabled = true)
+        {
+            if (m_timerList != null)
+            {
+                m_timerList.SetAllEnabled(enabled);
             }
         }
 
@@ -179,16 +211,9 @@ namespace QuickUnity.Timers
         /// </summary>
         public void Start()
         {
-            if (m_timers != null)
+            if (m_timerList != null)
             {
-                m_timers.ForEach(timer =>
-                {
-                    if (timer != null)
-                    {
-                        timer.Start();
-                    }
-                });
-
+                m_timerList.Start();
                 DispatchEvent(new TimerGroupEvent(TimerGroupEvent.TimerGroupStart, this));
             }
         }
@@ -198,16 +223,9 @@ namespace QuickUnity.Timers
         /// </summary>
         public void Pause()
         {
-            if (m_timers != null)
+            if (m_timerList != null)
             {
-                m_timers.ForEach(timer =>
-                {
-                    if (timer != null)
-                    {
-                        timer.Pause();
-                    }
-                });
-
+                m_timerList.Pause();
                 DispatchEvent(new TimerGroupEvent(TimerGroupEvent.TimerGroupPause, this));
             }
         }
@@ -217,16 +235,9 @@ namespace QuickUnity.Timers
         /// </summary>
         public void Resume()
         {
-            if (m_timers != null)
+            if (m_timerList != null)
             {
-                m_timers.ForEach(timer =>
-                {
-                    if (timer != null)
-                    {
-                        timer.Resume();
-                    }
-                });
-
+                m_timerList.Resume();
                 DispatchEvent(new TimerGroupEvent(TimerGroupEvent.TimerGroupResume, this));
             }
         }
@@ -236,16 +247,9 @@ namespace QuickUnity.Timers
         /// </summary>
         public void Stop()
         {
-            if (m_timers != null)
+            if (m_timerList != null)
             {
-                m_timers.ForEach(timer =>
-                {
-                    if (timer != null)
-                    {
-                        timer.Stop();
-                    }
-                });
-
+                m_timerList.Stop();
                 DispatchEvent(new TimerGroupEvent(TimerGroupEvent.TimerGroupStop, this));
             }
         }
@@ -255,16 +259,9 @@ namespace QuickUnity.Timers
         /// </summary>
         public void Reset()
         {
-            if (m_timers != null)
+            if (m_timerList != null)
             {
-                m_timers.ForEach(timer =>
-                {
-                    if (timer != null)
-                    {
-                        timer.Reset();
-                    }
-                });
-
+                m_timerList.Reset();
                 DispatchEvent(new TimerGroupEvent(TimerGroupEvent.TimerGroupReset, this));
             }
         }
@@ -274,15 +271,10 @@ namespace QuickUnity.Timers
         /// </summary>
         public void Destroy()
         {
-            Stop();
-
-            if (m_timers != null)
+            if (m_timerList != null)
             {
-                m_timers.Clear();
-                m_timers = null;
+                m_timerList.Destroy();
             }
-
-            TimerManager.instance.RemoveTimerGroup(this);
         }
     }
 }

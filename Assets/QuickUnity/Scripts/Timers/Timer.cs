@@ -88,17 +88,11 @@ namespace QuickUnity.Timers
         }
 
         /// <summary>
-        /// Whether this timer is enabled.
-        /// </summary>
-        protected bool m_enabled = true;
-
-        /// <summary>
         /// Gets or sets a value indicating whether this <see cref="ITimer"/> is enabled.
         /// </summary>
         /// <value><c>true</c> if enabled Tick function will be invoked; otherwise, <c>false</c>.</value>
         public bool enabled
         {
-            get { return m_enabled; }
             set
             {
                 if (!value)
@@ -121,8 +115,6 @@ namespace QuickUnity.Timers
                         Resume();
                     }
                 }
-
-                m_enabled = value;
             }
         }
 
@@ -195,8 +187,10 @@ namespace QuickUnity.Timers
             m_ignoreTimeScale = ignoreTimeScale;
             m_stopOnDisable = stopOnDisable;
 
-            // Add timer instance into timer manager.
-            TimerManager.instance.AddTimer(this, autoStart);
+            if (autoStart)
+            {
+                Start();
+            }
         }
 
         /// <summary>
@@ -266,7 +260,7 @@ namespace QuickUnity.Timers
         /// <param name="deltaTime">The delta time.</param>
         public void Tick(float deltaTime)
         {
-            if (m_enabled && m_timerState == TimerState.Running)
+            if (m_timerState == TimerState.Running)
             {
                 m_time += deltaTime;
 
@@ -287,14 +281,6 @@ namespace QuickUnity.Timers
                     m_time -= m_delay;
                 }
             }
-        }
-
-        /// <summary>
-        /// Destroys this timer instance.
-        /// </summary>
-        public void Destroy()
-        {
-            TimerManager.instance.RemoveTimer(this);
         }
     }
 }
