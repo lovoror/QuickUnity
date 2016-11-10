@@ -195,6 +195,17 @@ namespace QuickUnity.Timers
         }
 
         /// <summary>
+        /// Destroys this timer group instance.
+        /// </summary>
+        public void Destroy()
+        {
+            if (m_timerList != null)
+            {
+                m_timerList.Destroy();
+            }
+        }
+
+        /// <summary>
         /// Sets all timers enabled.
         /// </summary>
         /// <param name="enabled">The enabled value.</param>
@@ -263,17 +274,6 @@ namespace QuickUnity.Timers
             {
                 m_timerList.Reset();
                 DispatchEvent(new TimerGroupEvent(TimerGroupEvent.TimerGroupReset, this));
-            }
-        }
-
-        /// <summary>
-        /// Destroys this timer group instance.
-        /// </summary>
-        public void Destroy()
-        {
-            if (m_timerList != null)
-            {
-                m_timerList.Destroy();
             }
         }
     }

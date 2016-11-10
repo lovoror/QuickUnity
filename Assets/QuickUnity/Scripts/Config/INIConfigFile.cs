@@ -119,14 +119,16 @@ namespace QuickUnity.Config
         /// Gets the value.
         /// </summary>
         /// <param name="key">The key.</param>
-        public string GetValue(string key)
+        /// <param name="defaultValue">The default value.</param>
+        /// <returns>The mapped value.</returns>
+        public string GetValue(string key, string defaultValue = null)
         {
             if (m_valueMap.ContainsKey(key))
             {
                 return m_valueMap[key];
             }
 
-            return null;
+            return defaultValue;
         }
 
         /// <summary>
@@ -134,11 +136,12 @@ namespace QuickUnity.Config
         /// </summary>
         /// <typeparam name="T">The type of value.</typeparam>
         /// <param name="key">The key.</param>
+        /// <param name="defaultValue">The default value.</param>
         /// <returns>The value of the type.</returns>
-        public T GetValue<T>(string key)
+        public T GetValue<T>(string key, T defaultValue = default(T))
         {
             string strValue = GetValue(key);
-            T value = default(T);
+            T value = defaultValue;
 
             if (!string.IsNullOrEmpty(strValue))
             {
@@ -411,15 +414,16 @@ namespace QuickUnity.Config
         /// </summary>
         /// <param name="sectionName">Name of the section.</param>
         /// <param name="key">The key.</param>
+        /// <param name="defaultValue">The default value.</param>
         /// <returns>The value object.</returns>
-        public string GetValue(string sectionName, string key)
+        public string GetValue(string sectionName, string key, string defaultValue = null)
         {
             string value = null;
 
             if (m_sectionMap != null && m_sectionMap.ContainsKey(sectionName))
             {
                 INIConfigSection section = m_sectionMap[sectionName];
-                return section.GetValue(key);
+                return section.GetValue(key, defaultValue);
             }
 
             return value;
@@ -431,15 +435,16 @@ namespace QuickUnity.Config
         /// <typeparam name="T">The type of value object.</typeparam>
         /// <param name="sectionName">Name of the section.</param>
         /// <param name="key">The key.</param>
+        /// <param name="defaultValue">The default value.</param>
         /// <returns>The value object.</returns>
-        public T GetValue<T>(string sectionName, string key)
+        public T GetValue<T>(string sectionName, string key, T defaultValue = default(T))
         {
             T value = default(T);
 
             if (m_sectionMap != null && m_sectionMap.ContainsKey(sectionName))
             {
                 INIConfigSection section = m_sectionMap[sectionName];
-                return section.GetValue<T>(key);
+                return section.GetValue<T>(key, defaultValue);
             }
 
             return value;
@@ -487,6 +492,19 @@ namespace QuickUnity.Config
         /// <returns><c>true</c> file save succeed, <c>false</c> otherwise file save failed.</returns>
         public bool Save(string filePath)
         {
+            if (string.IsNullOrEmpty(filePath))
+            {
+                return false;
+            }
+
+            // If directory of the file doesn't exist, create it.
+            FileInfo fileInfo = new FileInfo(filePath);
+
+            if (!fileInfo.Directory.Exists)
+            {
+                fileInfo.Directory.Create();
+            }
+
             try
             {
                 File.WriteAllText(filePath, this.ToString(), Encoding.UTF8);
