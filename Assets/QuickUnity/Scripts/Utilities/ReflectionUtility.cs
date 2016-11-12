@@ -492,5 +492,31 @@ namespace QuickUnity.Utilities
                     info.SetValue(obj, value, null);
             }
         }
+
+        /// <summary>
+        /// Gets the types from assembly.
+        /// </summary>
+        /// <param name="assembly">The assembly.</param>
+        /// <returns>The Type array.</returns>
+        public static Type[] GetTypesFromAssembly(Assembly assembly)
+        {
+            if (assembly == null)
+            {
+                return new Type[0];
+            }
+
+            Type[] result;
+
+            try
+            {
+                result = assembly.GetTypes();
+            }
+            catch (ReflectionTypeLoadException)
+            {
+                result = new Type[0];
+            }
+
+            return result;
+        }
     }
 }

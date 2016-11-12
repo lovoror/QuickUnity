@@ -22,8 +22,10 @@
  *	SOFTWARE.
  */
 
+using QuickUnity.Config;
+using System.Collections.Generic;
 using System.IO;
-using UnityEngine;
+using UnityEditor;
 
 namespace QuickUnityEditor
 {
@@ -33,13 +35,136 @@ namespace QuickUnityEditor
     public sealed class QuickUnityEditorApplication
     {
         /// <summary>
-        /// The editor configuration path.
+        /// The enum of config file domain.
         /// </summary>
-        public static readonly string EditorConfigPath = Path.Combine(Application.dataPath, "Config/Editor.ini");
+        public enum ConfigFileDomain
+        {
+            Editor,
+            Project
+        }
+
+        /// <summary>
+        /// The editor configuration file path.
+        /// </summary>
+        public static readonly string editorConfigFilePath = Path.Combine(new FileInfo(EditorApplication.applicationPath).DirectoryName, "Config/Editor.ini");
+
+        /// <summary>
+        /// The editor configuration file path of the project.
+        /// </summary>
+        public static readonly string projectEditorConfigFilePath = Path.Combine(Directory.GetCurrentDirectory(), "Config/Editor.ini");
 
         /// <summary>
         /// The menu item separated number.
         /// </summary>
         public const byte MenuItemSeparatedNumber = 11;
+
+        /// <summary>
+        /// Gets the editor configuration value.
+        /// </summary>
+        /// <typeparam name="T">The type definition.</typeparam>
+        /// <param name="sectionName">Name of the section.</param>
+        /// <param name="key">The key.</param>
+        /// <param name="defaultValue">The default value.</param>
+        /// <param name="configFileDomain">The configuration file domain.</param>
+        /// <returns>The value to get.</returns>
+        public static T GetEditorConfigValue<T>(string sectionName, string key, T defaultValue = default(T), ConfigFileDomain configFileDomain = ConfigFileDomain.Editor)
+        {
+            string configFilePath = editorConfigFilePath;
+
+            if (configFileDomain == ConfigFileDomain.Project)
+            {
+                configFilePath = projectEditorConfigFilePath;
+            }
+
+            INIConfigFile configFileObj = INIConfigFile.ParseINIConfigFile(configFilePath);
+
+            if (configFileObj != null)
+            {
+                return configFileObj.GetValue<T>(sectionName, key, defaultValue);
+            }
+
+            return default(T);
+        }
+
+        /// <summary>
+        /// Sets the editor configuration value.
+        /// </summary>
+        /// <typeparam name="T">The type definition.</typeparam>
+        /// <param name="sectionName">Name of the section.</param>
+        /// <param name="key">The key.</param>
+        /// <param name="value">The value.</param>
+        /// <param name="configFileDomain">The configuration file domain.</param>
+        public static void SetEditorConfigValue<T>(string sectionName, string key, T value, ConfigFileDomain configFileDomain = ConfigFileDomain.Editor)
+        {
+            string configFilePath = editorConfigFilePath;
+
+            if (configFileDomain == ConfigFileDomain.Project)
+            {
+                configFilePath = projectEditorConfigFilePath;
+            }
+
+            INIConfigFile configFileObj = INIConfigFile.ParseINIConfigFile(configFilePath);
+
+            if (configFileObj == null)
+            {
+                configFileObj = new INIConfigFile();
+            }
+
+            configFileObj.AddOrUpdateValue(sectionName, key, value);
+            configFileObj.Save(configFilePath);
+        }
+
+        /// <summary>
+        /// Gets the editor configuration list value.
+        /// </summary>
+        /// <typeparam name="T">The type definition.</typeparam>
+        /// <param name="sectionName">Name of the section.</param>
+        /// <param name="key">The key.</param>
+        /// <param name="configFileDomain">The configuration file domain.</param>
+        /// <returns>The list value to get.</returns>
+        public static List<T> GetEditorConfigListValue<T>(string sectionName, string key, ConfigFileDomain configFileDomain = ConfigFileDomain.Editor)
+        {
+            string configFilePath = editorConfigFilePath;
+
+            if (configFileDomain == ConfigFileDomain.Project)
+            {
+                configFilePath = projectEditorConfigFilePath;
+            }
+
+            INIConfigFile configFileObj = INIConfigFile.ParseINIConfigFile(configFilePath);
+
+            if (configFileObj != null)
+            {
+                return configFileObj.GetListValue<T>(sectionName, key);
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Sets the editor configuration list value.
+        /// </summary>
+        /// <typeparam name="T">The type definition.</typeparam>
+        /// <param name="sectionName">Name of the section.</param>
+        /// <param name="key">The key.</param>
+        /// <param name="value">The list value.</param>
+        /// <param name="configFileDomain">The configuration file domain.</param>
+        public static void SetEditorConfigListValue<T>(string sectionName, string key, List<T> value, ConfigFileDomain configFileDomain = ConfigFileDomain.Editor)
+        {
+            string configFilePath = editorConfigFilePath;
+
+            if (configFileDomain == ConfigFileDomain.Project)
+            {
+                configFilePath = projectEditorConfigFilePath;
+            }
+
+            INIConfigFile configFileObj = INIConfigFile.ParseINIConfigFile(configFilePath);
+
+            if (configFileObj != null)
+            {
+                configFileObj.AddOrUpdateListValue(sectionName, key, value);
+                configFileObj.Save(configFilePath);
+            }
+        }
     }
 }
