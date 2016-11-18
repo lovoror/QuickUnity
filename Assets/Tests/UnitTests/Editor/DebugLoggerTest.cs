@@ -8,7 +8,7 @@ namespace QuickUnity.Tests.UnitTests
     /// Unit test cases for class DebugLogger.
     /// </summary>
     [TestFixture]
-    [Category("QuickUnity Tests/Unit Tests/Core Test")]
+    [Category("QuickUnity Tests/Unit Tests/DebugLogger Test")]
     internal class DebugLoggerTest
     {
         /// <summary>

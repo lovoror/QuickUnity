@@ -9,6 +9,8 @@ namespace QuickUnity.Tests.UnitTests.ConfigTests
     /// <summary>
     /// Unit test cases for class INIConfigFile.
     /// </summary>
+    [TestFixture]
+    [Category("QuickUnity Tests/Unit Tests/INIConfigFile Test")]
     internal class INIConfigFileTest
     {
         /// <summary>
