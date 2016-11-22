@@ -22,39 +22,16 @@
  *	SOFTWARE.
  */
 
-using System;
-
-namespace QuickUnityEditor.Attributes
+namespace QuickUnity.Data
 {
     /// <summary>
-    /// Allow an editor class to be initialized when Unity loads without action from the user.
+    /// The enumeration of data table storage location.
     /// </summary>
-    /// <seealso cref="System.Attribute"/>
-    [AttributeUsage(AttributeTargets.Class)]
-    public class InitializeOnEditorStartup : Attribute
+    public enum DataTableStorageLocation
     {
-        /// <summary>
-        /// The execution order.
-        /// </summary>
-        private int m_executionOrder;
-
-        /// <summary>
-        /// Gets the execution order.
-        /// </summary>
-        /// <value>The execution order.</value>
-        public int executionOrder
-        {
-            get { return m_executionOrder; }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="InitializeOnEditorStartup"/> class.
-        /// </summary>
-        /// <param name="executionOrder">The execution order.</param>
-        public InitializeOnEditorStartup(int executionOrder = 0)
-            : base()
-        {
-            m_executionOrder = executionOrder;
-        }
+        Resources,
+        StreamingAssets,
+        AssetBundles,
+        Custom
     }
 }

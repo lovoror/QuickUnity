@@ -22,39 +22,22 @@
  *	SOFTWARE.
  */
 
-using System;
+using UnityEditor;
 
-namespace QuickUnityEditor.Attributes
+namespace QuickUnityEditor.Data
 {
     /// <summary>
-    /// Allow an editor class to be initialized when Unity loads without action from the user.
+    /// The editor window of DataTable.
     /// </summary>
-    /// <seealso cref="System.Attribute"/>
-    [AttributeUsage(AttributeTargets.Class)]
-    public class InitializeOnEditorStartup : Attribute
+    /// <seealso cref="UnityEditor.EditorWindow"/>
+    public class DataTableEditorWindow : EditorWindow
     {
         /// <summary>
-        /// The execution order.
+        /// Shows the editor window.
         /// </summary>
-        private int m_executionOrder;
-
-        /// <summary>
-        /// Gets the execution order.
-        /// </summary>
-        /// <value>The execution order.</value>
-        public int executionOrder
+        [MenuItem("QuickUnity/DataTable/DataTable Editor", false, 101)]
+        public static void ShowEditorWindow()
         {
-            get { return m_executionOrder; }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="InitializeOnEditorStartup"/> class.
-        /// </summary>
-        /// <param name="executionOrder">The execution order.</param>
-        public InitializeOnEditorStartup(int executionOrder = 0)
-            : base()
-        {
-            m_executionOrder = executionOrder;
         }
     }
 }

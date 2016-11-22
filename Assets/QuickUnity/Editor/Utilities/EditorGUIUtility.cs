@@ -23,6 +23,8 @@
  */
 
 using System.Collections.Generic;
+using System.IO;
+using UnityEditor;
 using UnityEngine;
 
 namespace QuickUnityEditor.Utilities
@@ -33,6 +35,33 @@ namespace QuickUnityEditor.Utilities
     /// <seealso cref="UnityEngine.GUIUtility"/>
     public sealed class EditorGUIUtility : GUIUtility
     {
+        /// <summary>
+        /// The collection of GUI styles.
+        /// </summary>
+        private class Styles
+        {
+            /// <summary>
+            /// The style of path field.
+            /// </summary>
+            public static readonly GUIStyle pathFieldStyle = new GUIStyle(EditorStyles.textField)
+            {
+                normal = {
+                    background = EditorStyles.textField.normal.background,
+                    scaledBackgrounds =  EditorStyles.textField.normal.scaledBackgrounds,
+                    textColor = Color.grey
+                }
+            };
+
+            /// <summary>
+            /// The style of browse button.
+            /// </summary>
+            public static readonly GUIStyle browseButtonStyle = new GUIStyle(EditorStyles.miniButton)
+            {
+                fixedWidth = 75,
+                fixedHeight = EditorStyles.miniButton.fixedHeight + 16
+            };
+        }
+
         /// <summary>
         /// The cached GUI contents.
         /// </summary>
@@ -78,6 +107,79 @@ namespace QuickUnityEditor.Utilities
             }
 
             return guiContent;
+        }
+
+        /// <summary>
+        /// Make a file field.
+        /// </summary>
+        /// <param name="label">The label.</param>
+        /// <param name="filePath">The file path.</param>
+        /// <param name="title">The title.</param>
+        /// <param name="directory">The directory.</param>
+        /// <param name="filters">The filters.</param>
+        /// <returns>The path of the file.</returns>
+        public static string FileField(GUIContent label, string filePath, string title, string directory = "", string[] filters = null)
+        {
+            string text = filePath;
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField(label, new GUIContent(text), Styles.pathFieldStyle);
+            bool buttonClicked = GUILayout.Button("Browse...", Styles.browseButtonStyle);
+
+            if (buttonClicked)
+            {
+                string newPath = UnityEditor.EditorUtility.OpenFilePanelWithFilters(title, directory, filters);
+
+                if (!string.IsNullOrEmpty(newPath))
+                {
+                    text = newPath;
+                }
+            }
+
+            EditorGUILayout.EndHorizontal();
+            return text;
+        }
+
+        /// <summary>
+        /// Make a folder field.
+        /// </summary>
+        /// <param name="label">The label.</param>
+        /// <param name="filePath">The file path.</param>
+        /// <param name="title">The title.</param>
+        /// <param name="folder">The folder.</param>
+        /// <param name="defaultName">The default name.</param>
+        /// <returns>The path of the folder.</returns>
+        public static string FolderField(GUIContent label, string filePath, string title, string folder = "", string defaultName = "")
+        {
+            string text = filePath;
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField(label, new GUIContent(text), Styles.pathFieldStyle);
+            bool buttonClicked = GUILayout.Button("Browse...", Styles.browseButtonStyle);
+
+            if (buttonClicked)
+            {
+                string newPath = UnityEditor.EditorUtility.OpenFolderPanel(title, folder, defaultName);
+
+                if (!string.IsNullOrEmpty(newPath))
+                {
+                    text = newPath;
+                }
+            }
+
+            EditorGUILayout.EndHorizontal();
+            return text;
+        }
+
+        /// <summary>
+        /// Gets the width of the label.
+        /// </summary>
+        /// <param name="style">The style.</param>
+        /// <param name="content">The content.</param>
+        /// <returns>The width of label.</returns>
+        public static float GetLabelWidth(GUIStyle style, GUIContent content)
+        {
+            Vector2 size = style.CalcSize(content);
+            size = style.CalcScreenSize(size);
+            return size.x;
         }
     }
 }

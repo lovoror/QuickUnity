@@ -27,12 +27,15 @@ using UnityEngine;
 
 namespace QuickUnityEditor.Preferences
 {
+    /// <summary>
+    /// This class provide method for adding preference section "Auto Save".
+    /// </summary>
     public sealed class AutoSavePreferenceItem
     {
         /// <summary>
         /// The collections of GUI contents.
         /// </summary>
-        private class Styles
+        private static class Styles
         {
             /// <summary>
             /// The style of field isAutoSaveEnabled.

@@ -27,15 +27,14 @@ using QuickUnity.Timers;
 using QuickUnityEditor.Attributes;
 using UnityEditor;
 using UnityEditor.SceneManagement;
-using UnityEngine;
 
-namespace QuickUnityEditor.Preferences
+namespace QuickUnityEditor
 {
     /// <summary>
     /// Class to implement the feature of AutoSave.
     /// </summary>
     /// <seealso cref="QuickUnity.Patterns.Singleton{QuickUnityEditor.AutoSave}"/>
-    [InitializeOnEditorStartup(0)]
+    [InitializeOnEditorStartup]
     internal class AutoSave : Singleton<AutoSave>
     {
         /// <summary>

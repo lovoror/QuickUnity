@@ -22,39 +22,35 @@
  *	SOFTWARE.
  */
 
-using System;
+using QuickUnity.Data;
+using UnityEngine;
 
-namespace QuickUnityEditor.Attributes
+namespace QuickUnityEditor.Data
 {
     /// <summary>
-    /// Allow an editor class to be initialized when Unity loads without action from the user.
+    /// ScriptableObject class to save preferences of DataTable.
     /// </summary>
-    /// <seealso cref="System.Attribute"/>
-    [AttributeUsage(AttributeTargets.Class)]
-    public class InitializeOnEditorStartup : Attribute
+    /// <seealso cref="UnityEngine.ScriptableObject"/>
+    public class DataTablePreferences : ScriptableObject
     {
         /// <summary>
-        /// The execution order.
+        /// The data tables storage location.
         /// </summary>
-        private int m_executionOrder;
+        public DataTableStorageLocation dataTablesStorageLocation = DataTableStorageLocation.Resources;
 
         /// <summary>
-        /// Gets the execution order.
+        /// The data table row scripts storage location.
         /// </summary>
-        /// <value>The execution order.</value>
-        public int executionOrder
-        {
-            get { return m_executionOrder; }
-        }
+        public string dataTableRowScriptsStorageLocation;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="InitializeOnEditorStartup"/> class.
+        /// Whether to generate namespace automatically.
         /// </summary>
-        /// <param name="executionOrder">The execution order.</param>
-        public InitializeOnEditorStartup(int executionOrder = 0)
-            : base()
-        {
-            m_executionOrder = executionOrder;
-        }
+        public bool autoGenerateScriptsNamespace = true;
+
+        /// <summary>
+        /// The namespace of DataTableRow scripts.
+        /// </summary>
+        public string dataTableRowScriptsNamespace = "";
     }
 }

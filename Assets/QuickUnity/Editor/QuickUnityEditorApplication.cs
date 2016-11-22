@@ -35,6 +35,11 @@ namespace QuickUnityEditor
     public sealed class QuickUnityEditorApplication
     {
         /// <summary>
+        /// The label of Ok button.
+        /// </summary>
+        public const string OkButtonLabel = "Ok";
+
+        /// <summary>
         /// The enum of config file domain.
         /// </summary>
         public enum ConfigFileDomain
@@ -52,11 +57,6 @@ namespace QuickUnityEditor
         /// The editor configuration file path of the project.
         /// </summary>
         public static readonly string projectEditorConfigFilePath = Path.Combine(Directory.GetCurrentDirectory(), "Config/Editor.ini");
-
-        /// <summary>
-        /// The menu item separated number.
-        /// </summary>
-        public const byte MenuItemSeparatedNumber = 11;
 
         /// <summary>
         /// Gets the editor configuration value.
