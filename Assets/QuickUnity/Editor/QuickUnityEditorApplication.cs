@@ -23,6 +23,7 @@
  */
 
 using QuickUnity.Config;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
@@ -38,6 +39,21 @@ namespace QuickUnityEditor
         /// The label of Ok button.
         /// </summary>
         public const string OkButtonLabel = "Ok";
+
+        /// <summary>
+        /// The folder name of Assets.
+        /// </summary>
+        public const string AssetsFolderName = "Assets";
+
+        /// <summary>
+        /// The folder name of Resources.
+        /// </summary>
+        public const string ResourcesFolderName = "Resources";
+
+        /// <summary>
+        /// The folder name of Scripts.
+        /// </summary>
+        public const string ScriptsFolderName = "Scripts";
 
         /// <summary>
         /// The enum of config file domain.
@@ -164,6 +180,23 @@ namespace QuickUnityEditor
             {
                 configFileObj.AddOrUpdateListValue(sectionName, key, value);
                 configFileObj.Save(configFilePath);
+            }
+        }
+
+        /// <summary>
+        /// Displays the simple dialog.
+        /// </summary>
+        /// <param name="title">The title.</param>
+        /// <param name="message">The message.</param>
+        /// <param name="okButtonClickedDelegate">The ok button clicked delegate.</param>
+        public static void DisplaySimpleDialog(string title, string message, Action okButtonClickedDelegate = null)
+        {
+            if (EditorUtility.DisplayDialog(title, message, OkButtonLabel))
+            {
+                if (okButtonClickedDelegate != null)
+                {
+                    okButtonClickedDelegate.Invoke();
+                }
             }
         }
     }

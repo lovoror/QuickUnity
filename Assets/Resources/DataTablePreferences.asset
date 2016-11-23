@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Name: DataTablePreferences
   m_EditorClassIdentifier: 
   dataTablesStorageLocation: 0
-  dataTableRowScriptsStorageLocation: 
+  dataTableRowScriptsStorageLocation: Assets/Tests/IntegrationTests/DataTableTests
   autoGenerateScriptsNamespace: 1
   dataTableRowScriptsNamespace: 
+  dataRowsStartRow: 4

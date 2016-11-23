@@ -81,7 +81,7 @@ namespace QuickUnityEditor.Utilities
         {
             if (!string.IsNullOrEmpty(path))
             {
-                int index = path.IndexOf("Assets");
+                int index = path.IndexOf(QuickUnityEditorApplication.AssetsFolderName);
 
                 if (index == 0)
                 {
@@ -118,9 +118,11 @@ namespace QuickUnityEditor.Utilities
         /// <returns>The asset path for project.</returns>
         public static string ConvertToAssetPath(string absolutePath)
         {
-            if (!string.IsNullOrEmpty(absolutePath))
+            string projectPath = Application.dataPath;
+
+            if (!string.IsNullOrEmpty(absolutePath) && absolutePath.IndexOf(projectPath) != -1)
             {
-                int index = absolutePath.IndexOf("Assets");
+                int index = absolutePath.IndexOf(QuickUnityEditorApplication.AssetsFolderName);
 
                 if (index != -1)
                 {
@@ -129,6 +131,45 @@ namespace QuickUnityEditor.Utilities
             }
 
             return absolutePath;
+        }
+
+        /// <summary>
+        /// Gets the asset paths.
+        /// </summary>
+        /// <param name="nameFilter">The name filter.</param>
+        /// <param name="typeFilter">The type filter.</param>
+        /// <param name="searchInFolders">The search in folders.</param>
+        /// <returns>System.String[]. The paths about this asset name.</returns>
+        public static string[] GetAssetPath(string nameFilter, string typeFilter = null, string[] searchInFolders = null)
+        {
+            if (string.IsNullOrEmpty(nameFilter))
+                return null;
+
+            string[] assetPaths = null;
+            string fileter = nameFilter;
+
+            if (!string.IsNullOrEmpty(typeFilter))
+                fileter = string.Concat(fileter, string.Concat(" ", typeFilter));
+
+            string[] guids = AssetDatabase.FindAssets(fileter, searchInFolders);
+
+            if (guids != null && guids.Length > 0)
+            {
+                assetPaths = new string[guids.Length];
+
+                for (int i = 0, length = guids.Length; i < length; ++i)
+                {
+                    string guid = guids[i];
+                    string assetPath = AssetDatabase.GUIDToAssetPath(guid);
+
+                    if (!string.IsNullOrEmpty(assetPath))
+                    {
+                        assetPaths[i] = assetPath;
+                    }
+                }
+            }
+
+            return assetPaths;
         }
     }
 }

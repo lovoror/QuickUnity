@@ -34,6 +34,11 @@ namespace QuickUnityEditor.Data
     public class DataTablePreferences : ScriptableObject
     {
         /// <summary>
+        /// The minimum row number of data rows start.
+        /// </summary>
+        public const int MinDataRowsStartRow = 4;
+
+        /// <summary>
         /// The data tables storage location.
         /// </summary>
         public DataTableStorageLocation dataTablesStorageLocation = DataTableStorageLocation.Resources;
@@ -52,5 +57,10 @@ namespace QuickUnityEditor.Data
         /// The namespace of DataTableRow scripts.
         /// </summary>
         public string dataTableRowScriptsNamespace = "";
+
+        /// <summary>
+        /// The start row of data rows.
+        /// </summary>
+        public int dataRowsStartRow = MinDataRowsStartRow;
     }
 }

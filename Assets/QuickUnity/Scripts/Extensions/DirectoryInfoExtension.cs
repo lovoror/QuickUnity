@@ -22,38 +22,46 @@
  *	SOFTWARE.
  */
 
-using QuickUnity.Utilities;
 using System.Collections.Generic;
+using System.IO;
 
-namespace QuickUnity.Data
+namespace QuickUnity.Extensions
 {
     /// <summary>
-    /// Class DataTable.
+    /// Extension methods collection for DirectoryInfo.
     /// </summary>
-    public abstract class DataTableRow
+    public static class DirectoryInfoExtension
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DataTableRow"/> class.
+        /// Gets the files.
         /// </summary>
-        public DataTableRow()
+        /// <param name="source">The DirectoryInfo source.</param>
+        /// <param name="searchPatterns">The search patterns.</param>
+        /// <param name="searchOption">The search option.</param>
+        /// <returns>FileInfo[]. The array of FileInfo objects.</returns>
+        public static FileInfo[] GetFiles(this DirectoryInfo source, string[] searchPatterns, SearchOption searchOption = SearchOption.TopDirectoryOnly)
         {
-        }
+            List<FileInfo> result = new List<FileInfo>();
 
-        /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
-        /// </summary>
-        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
-        public override string ToString()
-        {
-            string output = string.Empty;
-            Dictionary<string, object> map = ReflectionUtility.GetObjectFields(this);
-
-            foreach (KeyValuePair<string, object> kvp in map)
+            if (searchPatterns != null)
             {
-                output += string.Format("{0}: {1}, ", kvp.Key, kvp.Value);
+                for (int i = 0, length = searchPatterns.Length; i < length; ++i)
+                {
+                    string searchPattern = searchPatterns[i];
+
+                    if (!string.IsNullOrEmpty(searchPattern))
+                    {
+                        FileInfo[] array = source.GetFiles(searchPattern, searchOption);
+
+                        if (array != null && array.Length > 0)
+                        {
+                            result.AddRangeUnique(array);
+                        }
+                    }
+                }
             }
 
-            return base.ToString() + string.Format("({0})", output.Substring(0, output.Length - 2));
+            return result.ToArray();
         }
     }
 }
