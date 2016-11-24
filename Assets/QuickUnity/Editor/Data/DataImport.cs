@@ -24,9 +24,7 @@
 
 using Excel;
 using QuickUnity.Core.Miscs;
-using QuickUnity.Extensions;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using UnityEditor;
@@ -39,6 +37,40 @@ namespace QuickUnityEditor.Data
     /// </summary>
     public static class DataImport
     {
+        /// <summary>
+        /// Struct DataTableRowInfo.
+        /// </summary>
+        private struct DataTableRowInfo
+        {
+            /// <summary>
+            /// The field name.
+            /// </summary>
+            public string fieldName;
+
+            /// <summary>
+            /// The type string.
+            /// </summary>
+            public string type;
+
+            /// <summary>
+            /// The comments.
+            /// </summary>
+            public string comments;
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="DataTableRowInfo"/> struct.
+            /// </summary>
+            /// <param name="fieldName">Name of the field.</param>
+            /// <param name="dataType">Type of the data.</param>
+            /// <param name="comments">The comments.</param>
+            public DataTableRowInfo(string fieldName, string type, string comments)
+            {
+                this.fieldName = fieldName;
+                this.type = type;
+                this.comments = comments;
+            }
+        }
+
         /// <summary>
         /// The message collection of dialog.
         /// </summary>
