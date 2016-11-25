@@ -25,8 +25,11 @@
 using Excel;
 using QuickUnity.Core.Miscs;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.IO;
+using System.Text;
+using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEngine;
 
@@ -72,7 +75,28 @@ namespace QuickUnityEditor.Data
         }
 
         /// <summary>
-        /// The message collection of dialog.
+        /// The specifiers collection of script template.
+        /// </summary>
+        private static class ScriptTemplateSpecifiers
+        {
+            /// <summary>
+            /// The specifier of namespace.
+            /// </summary>
+            public const string NamespaceSpecifier = "#NAMESPACE#";
+
+            /// <summary>
+            /// The specifier of script name.
+            /// </summary>
+            public const string ScriptNameSpecifier = "#SCRIPTNAME#";
+
+            /// <summary>
+            /// The specifier of fields.
+            /// </summary>
+            public const string FieldsSpecifier = "#FIELDS#";
+        }
+
+        /// <summary>
+        /// The messages collection of dialog.
         /// </summary>
         private static class DialogMessages
         {
@@ -88,14 +112,19 @@ namespace QuickUnityEditor.Data
         }
 
         /// <summary>
-        /// The file name of DataTableRow class template.
+        /// The file name of DataTableRow script template.
         /// </summary>
-        private const string DataTableRowClassTemplateFileName = "DataTableRowClassTemplate";
+        private const string DataTableRowScriptTemplateFileName = "NewDataTableRowScript";
 
         /// <summary>
         /// The extension of excel file.
         /// </summary>
         private const string ExcelFileExtension = ".xls";
+
+        /// <summary>
+        /// The extension of script file.
+        /// </summary>
+        private const string ScriptFileExtension = ".cs";
 
         /// <summary>
         /// The search patterns of excel files.
@@ -117,9 +146,51 @@ namespace QuickUnityEditor.Data
                 {
                     DirectoryInfo dirInfo = new DirectoryInfo(filesFolderPath);
                     FileInfo[] fileInfos = dirInfo.GetFiles(s_excelFileSearchPatterns, SearchOption.AllDirectories);
+                    string tplText = GetTplText();
+                    string namespaceString = GetNamespace();
 
-                    // Generate DataTableRow scripts.
-                    GenerateDataTableRowScripts(fileInfos);
+                    for (int i = 0, length = fileInfos.Length; i < length; ++i)
+                    {
+                        FileInfo fileInfo = fileInfos[i];
+
+                        if (fileInfo != null)
+                        {
+                            string filePath = fileInfo.FullName;
+                            string fileName = Path.GetFileNameWithoutExtension(fileInfo.Name);
+                            string fileExtension = Path.GetExtension(fileInfo.Name).ToLower();
+
+                            try
+                            {
+                                FileStream fileStream = File.Open(filePath, FileMode.Open, FileAccess.Read);
+                                IExcelDataReader excelReader = null;
+
+                                if (fileExtension == ExcelFileExtension)
+                                {
+                                    // '97-2003 format; *.xls
+                                    excelReader = ExcelReaderFactory.CreateBinaryReader(fileStream);
+                                }
+                                else
+                                {
+                                    // 2007 format; *.xlsx
+                                    excelReader = ExcelReaderFactory.CreateOpenXmlReader(fileStream);
+                                }
+
+                                if (excelReader != null)
+                                {
+                                    DataSet result = excelReader.AsDataSet();
+                                    DataTable table = result.Tables[0];
+                                    List<DataTableRowInfo> rowInfos = GenerateDataTableRowInfos(table);
+                                    GenerateDataTableRowScript((string)tplText.Clone(), namespaceString, fileName, rowInfos);
+                                    fileStream.Close();
+                                    fileStream = null;
+                                }
+                            }
+                            catch (Exception exception)
+                            {
+                                DebugLogger.LogException(exception);
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -155,66 +226,12 @@ namespace QuickUnityEditor.Data
         }
 
         /// <summary>
-        /// Generates the DataTableRow scripts.
-        /// </summary>
-        /// <param name="fileInfos">The array of FileInfo.</param>
-        private static void GenerateDataTableRowScripts(FileInfo[] fileInfos)
-        {
-            string tplText = GetTplText();
-            string namespaceString = GetNamespace();
-
-            if (!string.IsNullOrEmpty(tplText))
-            {
-                for (int i = 0, length = fileInfos.Length; i < length; ++i)
-                {
-                    FileInfo fileInfo = fileInfos[i];
-
-                    if (fileInfo != null)
-                    {
-                        string filePath = fileInfo.FullName;
-                        string fileName = Path.GetFileNameWithoutExtension(fileInfo.Name);
-                        string fileExtension = Path.GetExtension(fileInfo.Name).ToLower();
-
-                        try
-                        {
-                            FileStream fileStream = File.Open(filePath, FileMode.Open, FileAccess.Read);
-                            IExcelDataReader excelReader = null;
-
-                            if (fileExtension == ExcelFileExtension)
-                            {
-                                // '97-2003 format; *.xls
-                                excelReader = ExcelReaderFactory.CreateBinaryReader(fileStream);
-                            }
-                            else
-                            {
-                                // 2007 format; *.xlsx
-                                excelReader = ExcelReaderFactory.CreateOpenXmlReader(fileStream);
-                            }
-
-                            if (excelReader != null)
-                            {
-                                DataSet result = excelReader.AsDataSet();
-                                DataTable table = result.Tables[0];
-                                fileStream.Close();
-                                fileStream = null;
-                            }
-                        }
-                        catch (Exception exception)
-                        {
-                            DebugLogger.LogException(exception);
-                        }
-                    }
-                }
-            }
-        }
-
-        /// <summary>
         /// Gets the text content of template.
         /// </summary>
         /// <returns>System.String. The text content of template.</returns>
         private static string GetTplText()
         {
-            string[] assetPaths = Utilities.EditorUtility.GetAssetPath(DataTableRowClassTemplateFileName, "t:TextAsset");
+            string[] assetPaths = Utilities.EditorUtility.GetAssetPath(DataTableRowScriptTemplateFileName, "t:TextAsset");
             string tplPath = null;
             string tplText = null;
 
@@ -307,6 +324,125 @@ namespace QuickUnityEditor.Data
             }
 
             return namespaceString;
+        }
+
+        /// <summary>
+        /// Generates the list of DataTableRowInfo.
+        /// </summary>
+        /// <param name="dataTable">The data table.</param>
+        /// <returns>List&lt;DataTableRowInfo&gt; The list of DataTableRowInfo.</returns>
+        private static List<DataTableRowInfo> GenerateDataTableRowInfos(DataTable dataTable)
+        {
+            DataColumnCollection columns = dataTable.Columns;
+            DataRowCollection rows = dataTable.Rows;
+            int columnCount = columns.Count;
+            List<DataTableRowInfo> infos = new List<DataTableRowInfo>();
+
+            for (int i = 0; i < columnCount; i++)
+            {
+                string fieldName = rows[0][i].ToString().Trim();
+                string type = rows[1][i].ToString().Trim();
+                string comments = rows[2][i].ToString().Trim();
+
+                if (!string.IsNullOrEmpty(fieldName) && !string.IsNullOrEmpty(type))
+                {
+                    DataTableRowInfo info = new DataTableRowInfo(fieldName, type, FormatCommentsString(comments));
+                    infos.Add(info);
+                }
+            }
+
+            return infos;
+        }
+
+        /// <summary>
+        /// Generates the script of DataTableRow.
+        /// </summary>
+        /// <param name="tplText">The script template text.</param>
+        /// <param name="namesapceString">The string of namesapce.</param>
+        /// <param name="scriptName">Name of the script.</param>
+        /// <param name="rowInfos">The list of DataTableRowInfo.</param>
+        private static void GenerateDataTableRowScript(string tplText, string namesapceString, string scriptName, List<DataTableRowInfo> rowInfos)
+        {
+            tplText = tplText.Replace(ScriptTemplateSpecifiers.NamespaceSpecifier, namesapceString);
+            tplText = tplText.Replace(ScriptTemplateSpecifiers.ScriptNameSpecifier, scriptName);
+            tplText = tplText.Replace(ScriptTemplateSpecifiers.FieldsSpecifier, GenerateScriptFieldsString(rowInfos));
+
+            DataTablePreferences preferencesData = DataTablePreferencesWindow.LoadPreferencesData();
+
+            if (preferencesData)
+            {
+                string scriptFilePath = Path.Combine(preferencesData.dataTableRowScriptsStorageLocation, scriptName + ScriptFileExtension);
+                UnityEngine.Object scriptAsset = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(scriptFilePath);
+
+                if (scriptAsset)
+                {
+                    EditorUtility.SetDirty(scriptAsset);
+                }
+
+                try
+                {
+                    FileStream fileStream = File.Open(scriptFilePath, FileMode.Create, FileAccess.Write);
+                    StreamWriter writer = new StreamWriter(fileStream, new UTF8Encoding(true));
+                    writer.Write(tplText);
+                    writer.Close();
+                    writer.Dispose();
+                }
+                catch (Exception exception)
+                {
+                    DebugLogger.LogException(exception);
+                }
+
+                AssetDatabase.SaveAssets();
+                AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
+                Utilities.EditorUtility.ClearConsole();
+            }
+        }
+
+        /// <summary>
+        /// Generates the script fields string.
+        /// </summary>
+        /// <param name="rowInfos">The row infos.</param>
+        /// <returns>System.String The fields string.</returns>
+        private static string GenerateScriptFieldsString(List<DataTableRowInfo> rowInfos)
+        {
+            string fieldsString = string.Empty;
+
+            if (rowInfos != null && rowInfos.Count > 0)
+            {
+                for (int i = 0, length = rowInfos.Count; i < length; ++i)
+                {
+                    DataTableRowInfo rowInfo = rowInfos[i];
+                    fieldsString += string.Format("\t\t/// <summary>{0}\t\t/// {1}{2}\t\t/// </summary>{3}\t\tpublic {4} {5};",
+                        Environment.NewLine,
+                        rowInfo.comments,
+                        Environment.NewLine,
+                        Environment.NewLine,
+                        rowInfo.type,
+                        rowInfo.fieldName);
+
+                    if (i < length - 1)
+                        fieldsString += Environment.NewLine + Environment.NewLine;
+                }
+            }
+
+            return fieldsString;
+        }
+
+        /// <summary>
+        /// Format the comments string.
+        /// </summary>
+        /// <param name="comments">The comments.</param>
+        /// <returns>The formatted comments string.</returns>
+        private static string FormatCommentsString(string comments)
+        {
+            if (!string.IsNullOrEmpty(comments))
+            {
+                const string pattern = @"\r*\n";
+                Regex rgx = new Regex(pattern);
+                return rgx.Replace(comments, Environment.NewLine + "\t\t/// ");
+            }
+
+            return comments;
         }
     }
 }

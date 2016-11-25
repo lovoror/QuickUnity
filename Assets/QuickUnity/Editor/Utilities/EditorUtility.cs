@@ -22,6 +22,8 @@
  *	SOFTWARE.
  */
 
+using QuickUnity.Utilities;
+using System;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
@@ -36,7 +38,7 @@ namespace QuickUnityEditor.Utilities
         /// <summary>
         /// The extension of ScriptableObject asset.
         /// </summary>
-        private static readonly string scriptableObjectAssetExtension = ".asset";
+        private static readonly string s_scriptableObjectAssetExtension = ".asset";
 
         /// <summary>
         /// Loads the asset of ScriptableObject.
@@ -52,7 +54,7 @@ namespace QuickUnityEditor.Utilities
                 assetName = typeof(T).Name;
             }
 
-            string assetPath = Path.Combine(path, assetName + scriptableObjectAssetExtension);
+            string assetPath = Path.Combine(path, assetName + s_scriptableObjectAssetExtension);
             return AssetDatabase.LoadAssetAtPath<T>(assetPath);
         }
 
@@ -90,7 +92,7 @@ namespace QuickUnityEditor.Utilities
                         assetName = typeof(T).Name;
                     }
 
-                    assetName += scriptableObjectAssetExtension;
+                    assetName += s_scriptableObjectAssetExtension;
                     string assetPath = Path.Combine(path, assetName);
 
                     T targetAsset = AssetDatabase.LoadAssetAtPath<T>(assetPath);
@@ -170,6 +172,15 @@ namespace QuickUnityEditor.Utilities
             }
 
             return assetPaths;
+        }
+
+        /// <summary>
+        /// Clears messages of console.
+        /// </summary>
+        public static void ClearConsole()
+        {
+            Type type = Type.GetType("UnityEditorInternal.LogEntries,UnityEditor.dll");
+            ReflectionUtility.InvokeStaticMethod(type, "Clear");
         }
     }
 }
