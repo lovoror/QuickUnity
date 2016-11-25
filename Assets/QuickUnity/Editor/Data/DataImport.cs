@@ -112,6 +112,16 @@ namespace QuickUnityEditor.Data
         }
 
         /// <summary>
+        /// The title of import progress bar.
+        /// </summary>
+        private const string ImportProgressBarTitle = "Data Import Progress";
+
+        /// <summary>
+        /// The information of import progress bar.
+        /// </summary>
+        private const string ImportProgressBarInfo = "Processing file {0}... {1}/{2}";
+
+        /// <summary>
         /// The file name of DataTableRow script template.
         /// </summary>
         private const string DataTableRowScriptTemplateFileName = "NewDataTableRowScript";
@@ -159,6 +169,10 @@ namespace QuickUnityEditor.Data
                             string fileName = Path.GetFileNameWithoutExtension(fileInfo.Name);
                             string fileExtension = Path.GetExtension(fileInfo.Name).ToLower();
 
+                            float progress = (float)((i + 1) / length);
+                            string info = string.Format(ImportProgressBarInfo, fileName + fileExtension, i + 1, length);
+                            EditorUtility.DisplayProgressBar(ImportProgressBarTitle, info, progress);
+
                             try
                             {
                                 FileStream fileStream = File.Open(filePath, FileMode.Open, FileAccess.Read);
@@ -191,6 +205,8 @@ namespace QuickUnityEditor.Data
                             }
                         }
                     }
+
+                    EditorUtility.ClearProgressBar();
                 }
             }
         }
