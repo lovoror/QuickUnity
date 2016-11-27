@@ -302,7 +302,7 @@ namespace QuickUnityEditor
         /// <param name="timerEvent">The timer event.</param>
         private void OnAutosaveTimerComplete(TimerEvent timerEvent)
         {
-            if (isAutoSaveEnabled)
+            if (isAutoSaveEnabled && !EditorApplication.isPlaying)
             {
                 if (askWhenSaving)
                 {
