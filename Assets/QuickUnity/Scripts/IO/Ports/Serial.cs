@@ -26,6 +26,7 @@ using QuickUnity.Core.Miscs;
 using QuickUnity.Events;
 using System;
 using System.IO.Ports;
+using System.Text;
 using System.Threading;
 
 namespace QuickUnity.IO.Ports
@@ -93,7 +94,7 @@ namespace QuickUnity.IO.Ports
         {
             try
             {
-                if (m_serialPort != null && !m_serialPort.IsOpen)
+                if (!isOpen)
                 {
                     m_serialPort.WriteTimeout = 500;
                     m_serialPort.ReadTimeout = 500;
@@ -173,12 +174,13 @@ namespace QuickUnity.IO.Ports
             {
                 try
                 {
-                    byte receivedByte = (byte)m_serialPort.ReadChar();
+                    string data = Convert.ToChar(m_serialPort.ReadChar()).ToString();
+                    byte[] receivedBytes = Encoding.UTF8.GetBytes(data);
 
                     // Disptach data event.
                     if (m_packetHandler != null)
                     {
-                        ISerialPacket[] dataPackets = m_packetHandler.Unpack(new byte[1] { receivedByte });
+                        ISerialPacket[] dataPackets = m_packetHandler.Unpack(receivedBytes);
 
                         if (dataPackets != null && dataPackets.Length > 0)
                         {
