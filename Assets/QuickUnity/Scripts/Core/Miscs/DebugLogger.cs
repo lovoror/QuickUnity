@@ -268,10 +268,16 @@ namespace QuickUnity.Core.Miscs
         /// <param name="message">The message content.</param>
         private static void WriteIntoLogFile(string message)
         {
-            string dirPath = CheckPaths();
-            string timestamp = DateTime.Now.ToString("yyyyMMddHH");
-            string filePath = Path.Combine(dirPath, timestamp + LogFileExtension);
-            File.AppendAllText(filePath, message);
+            try
+            {
+                string dirPath = CheckPaths();
+                string timestamp = DateTime.Now.ToString("yyyyMMddHH");
+                string filePath = Path.Combine(dirPath, timestamp + LogFileExtension);
+                File.AppendAllText(filePath, message);
+            }
+            catch (Exception)
+            {
+            }
         }
 
         /// <summary>
