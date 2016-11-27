@@ -144,12 +144,12 @@ namespace QuickUnity.Timers
             if (pauseStatus)
             {
                 // Pause all timers.
-                Pause();
+                PauseAll();
             }
             else
             {
                 // Resume all timers.
-                Resume();
+                ResumeAll();
             }
         }
 
@@ -287,55 +287,55 @@ namespace QuickUnity.Timers
         /// <summary>
         /// Starts all timers.
         /// </summary>
-        public void Start()
+        public void StartAll()
         {
-            if (m_timerList != null)
-            {
-                m_timerList.Start();
-            }
+            //if (m_timerList != null)
+            //{
+            //    m_timerList.Start();
+            //}
         }
 
         /// <summary>
         /// Pauses all timers.
         /// </summary>
-        public void Pause()
+        public void PauseAll()
         {
             if (m_timerList != null)
             {
-                m_timerList.Pause();
+                m_timerList.PauseAll();
             }
         }
 
         /// <summary>
         /// Resumes all timers.
         /// </summary>
-        public void Resume()
+        public void ResumeAll()
         {
             if (m_timerList != null)
             {
-                m_timerList.Resume();
+                m_timerList.ResumeAll();
             }
         }
 
         /// <summary>
         /// Stops all timers.
         /// </summary>
-        public void Stop()
+        public void StopAll()
         {
             if (m_timerList != null)
             {
-                m_timerList.Stop();
+                m_timerList.StopAll();
             }
         }
 
         /// <summary>
         /// Resets all timers.
         /// </summary>
-        public void Reset()
+        public void ResetAll()
         {
             if (m_timerList != null)
             {
-                m_timerList.Reset();
+                m_timerList.ResetAll();
             }
         }
 
@@ -403,7 +403,7 @@ namespace QuickUnity.Timers
                     // Auto Stop.
                     if (autoStop)
                     {
-                        timerGroup.Stop();
+                        timerGroup.StopAll();
                     }
                 }
 
@@ -455,7 +455,7 @@ namespace QuickUnity.Timers
 
                         if (autoStop)
                         {
-                            timerGroup.Stop();
+                            timerGroup.StopAll();
                         }
                     }
                 }

@@ -261,23 +261,26 @@ namespace QuickUnityEditor
         /// </summary>
         public void Initialize()
         {
-            m_initialized = false;
-
-            m_isAutoSaveEnabled = isAutoSaveEnabled;
-            m_isAutoSaveScenesEnabled = isAutoSaveScenesEnabled;
-            m_isAutoSaveAssetsEnabled = isAutoSaveAssetsEnabled;
-            m_autoSaveTimeMinutes = autoSaveTimeMinutes;
-            m_askWhenSaving = askWhenSaving;
-
-            m_initialized = true;
-
-            // Initialize autosave timer.
-            if (m_autosaveTimer == null)
+            if (!EditorApplication.isPlaying && !m_initialized)
             {
-                m_autosaveTimer = new Timer(1, autoSaveTimeMinutes * 60);
-                m_autosaveTimer.AddEventListener<TimerEvent>(TimerEvent.Timer, OnAutosaveTimer);
-                m_autosaveTimer.AddEventListener<TimerEvent>(TimerEvent.TimerComplete, OnAutosaveTimerComplete);
-                EditorTimerManager.instance.Add(m_autosaveTimer);
+                m_initialized = false;
+
+                m_isAutoSaveEnabled = isAutoSaveEnabled;
+                m_isAutoSaveScenesEnabled = isAutoSaveScenesEnabled;
+                m_isAutoSaveAssetsEnabled = isAutoSaveAssetsEnabled;
+                m_autoSaveTimeMinutes = autoSaveTimeMinutes;
+                m_askWhenSaving = askWhenSaving;
+
+                m_initialized = true;
+
+                // Initialize autosave timer.
+                if (m_autosaveTimer == null)
+                {
+                    m_autosaveTimer = new Timer(1, autoSaveTimeMinutes * 60);
+                    m_autosaveTimer.AddEventListener<TimerEvent>(TimerEvent.Timer, OnAutosaveTimer);
+                    m_autosaveTimer.AddEventListener<TimerEvent>(TimerEvent.TimerComplete, OnAutosaveTimerComplete);
+                    EditorTimerManager.instance.Add(m_autosaveTimer);
+                }
             }
         }
 

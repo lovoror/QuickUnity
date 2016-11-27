@@ -102,26 +102,26 @@ namespace QuickUnity.Timers
         /// <summary>
         /// Starts all timers.
         /// </summary>
-        void Start();
+        void StartAll();
 
         /// <summary>
         /// Pauses all timers.
         /// </summary>
-        void Pause();
+        void PauseAll();
 
         /// <summary>
         /// Resumes all timers.
         /// </summary>
-        void Resume();
+        void ResumeAll();
 
         /// <summary>
         /// Stops all timers.
         /// </summary>
-        void Stop();
+        void StopAll();
 
         /// <summary>
         /// Resets all timers.
         /// </summary>
-        void Reset();
+        void ResetAll();
     }
 }

@@ -209,55 +209,55 @@ namespace QuickUnityEditor
         /// <summary>
         /// This timer group start timing.
         /// </summary>
-        public void Start()
+        public void StartAll()
         {
             if (m_timerList != null)
             {
-                m_timerList.Start();
+                m_timerList.StartAll();
             }
         }
 
         /// <summary>
         /// This timer group pause timing.
         /// </summary>
-        public void Pause()
+        public void PauseAll()
         {
             if (m_timerList != null)
             {
-                m_timerList.Pause();
+                m_timerList.PauseAll();
             }
         }
 
         /// <summary>
         /// This timer group resume timing.
         /// </summary>
-        public void Resume()
+        public void ResumeAll()
         {
             if (m_timerList != null)
             {
-                m_timerList.Resume();
+                m_timerList.ResumeAll();
             }
         }
 
         /// <summary>
         /// This timer group stop timing.
         /// </summary>
-        public void Stop()
+        public void StopAll()
         {
             if (m_timerList != null)
             {
-                m_timerList.Stop();
+                m_timerList.StopAll();
             }
         }
 
         /// <summary>
         /// This timer group resets timing.
         /// </summary>
-        public void Reset()
+        public void ResetAll()
         {
             if (m_timerList != null)
             {
-                m_timerList.Reset();
+                m_timerList.ResetAll();
             }
         }
 

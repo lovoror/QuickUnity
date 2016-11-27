@@ -92,7 +92,7 @@ namespace QuickUnity.Timers
 
             if (autoStart)
             {
-                Start();
+                StartAll();
             }
         }
 
@@ -220,11 +220,11 @@ namespace QuickUnity.Timers
         /// <summary>
         /// This timer group start timing.
         /// </summary>
-        public void Start()
+        public void StartAll()
         {
             if (m_timerList != null)
             {
-                m_timerList.Start();
+                m_timerList.StartAll();
                 DispatchEvent(new TimerGroupEvent(TimerGroupEvent.TimerGroupStart, this));
             }
         }
@@ -232,11 +232,11 @@ namespace QuickUnity.Timers
         /// <summary>
         /// This timer group pause timing.
         /// </summary>
-        public void Pause()
+        public void PauseAll()
         {
             if (m_timerList != null)
             {
-                m_timerList.Pause();
+                m_timerList.PauseAll();
                 DispatchEvent(new TimerGroupEvent(TimerGroupEvent.TimerGroupPause, this));
             }
         }
@@ -244,11 +244,11 @@ namespace QuickUnity.Timers
         /// <summary>
         /// This timer group resume timing.
         /// </summary>
-        public void Resume()
+        public void ResumeAll()
         {
             if (m_timerList != null)
             {
-                m_timerList.Resume();
+                m_timerList.ResumeAll();
                 DispatchEvent(new TimerGroupEvent(TimerGroupEvent.TimerGroupResume, this));
             }
         }
@@ -256,11 +256,11 @@ namespace QuickUnity.Timers
         /// <summary>
         /// This timer group stop timing.
         /// </summary>
-        public void Stop()
+        public void StopAll()
         {
             if (m_timerList != null)
             {
-                m_timerList.Stop();
+                m_timerList.StopAll();
                 DispatchEvent(new TimerGroupEvent(TimerGroupEvent.TimerGroupStop, this));
             }
         }
@@ -268,11 +268,11 @@ namespace QuickUnity.Timers
         /// <summary>
         /// This timer group resets timing.
         /// </summary>
-        public void Reset()
+        public void ResetAll()
         {
             if (m_timerList != null)
             {
-                m_timerList.Reset();
+                m_timerList.ResetAll();
                 DispatchEvent(new TimerGroupEvent(TimerGroupEvent.TimerGroupReset, this));
             }
         }

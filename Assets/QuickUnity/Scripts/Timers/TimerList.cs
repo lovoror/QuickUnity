@@ -216,7 +216,7 @@ namespace QuickUnity.Timers
         /// <summary>
         /// Pauses all timers.
         /// </summary>
-        public void Pause()
+        public void PauseAll()
         {
             if (m_timers != null)
             {
@@ -233,7 +233,7 @@ namespace QuickUnity.Timers
         /// <summary>
         /// Resets all timers.
         /// </summary>
-        public void Reset()
+        public void ResetAll()
         {
             if (m_timers != null)
             {
@@ -250,7 +250,7 @@ namespace QuickUnity.Timers
         /// <summary>
         /// Resumes all timers.
         /// </summary>
-        public void Resume()
+        public void ResumeAll()
         {
             if (m_timers != null)
             {
@@ -267,7 +267,7 @@ namespace QuickUnity.Timers
         /// <summary>
         /// Starts all timers.
         /// </summary>
-        public void Start()
+        public void StartAll()
         {
             if (m_timers != null)
             {
@@ -284,7 +284,7 @@ namespace QuickUnity.Timers
         /// <summary>
         /// Stops all timers.
         /// </summary>
-        public void Stop()
+        public void StopAll()
         {
             if (m_timers != null)
             {
@@ -303,7 +303,7 @@ namespace QuickUnity.Timers
         /// </summary>
         public void Destroy()
         {
-            Stop();
+            StopAll();
 
             if (m_timers != null)
             {
