@@ -64,16 +64,6 @@ namespace QuickUnityEditor.Preferences
         }
 
         /// <summary>
-        /// The time interval after which to autosave.
-        /// </summary>
-        private static int m_autoSaveTimeMinutes = 10;
-
-        /// <summary>
-        /// The number of seconds warning before an autosave.
-        /// </summary>
-        private static int m_autoSaveWarningInSeconds = 10;
-
-        /// <summary>
         /// Add preferences section named "Auto Save" to the Preferences Window.
         /// </summary>
         [PreferenceItem("Auto Save")]
