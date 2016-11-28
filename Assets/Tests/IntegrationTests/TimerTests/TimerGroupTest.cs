@@ -62,7 +62,7 @@ namespace QuickUnity.Tests.IntegrationTests
         /// </summary>
         private void ResetAllSkills()
         {
-            m_skillCDTimerGroup.Reset();
+            m_skillCDTimerGroup.ResetAll();
         }
 
         private void OnSkillACDTimer(TimerEvent timerEvent)
