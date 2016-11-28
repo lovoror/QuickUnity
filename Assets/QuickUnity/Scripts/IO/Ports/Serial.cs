@@ -96,19 +96,8 @@ namespace QuickUnity.IO.Ports
             {
                 if (!isOpen)
                 {
-                    m_serialPort.WriteTimeout = 500;
-                    m_serialPort.ReadTimeout = 500;
                     m_serialPort.Open();
                     DispatchEvent(new SerialEvent(SerialEvent.Open, this));
-
-                    // if has old thread, then abort it.
-                    if (m_receiveDataThread != null)
-                    {
-                        m_receiveDataThread.Abort();
-                    }
-
-                    m_receiveDataThread = new Thread(ReceiveData);
-                    m_receiveDataThread.Start();
                 }
             }
             catch (Exception exception)
@@ -134,8 +123,28 @@ namespace QuickUnity.IO.Ports
 
                 if (packet != null && isOpen)
                 {
-                    m_serialPort.Write(packet.bytes, 0, packet.bytes.Length);
+                    try
+                    {
+                        m_serialPort.Write(packet.bytes, 0, packet.bytes.Length);
+                    }
+                    catch (Exception exception)
+                    {
+                        DebugLogger.LogException(exception);
+                    }
                 }
+            }
+        }
+
+        /// <summary>
+        /// Update is called every frame.
+        /// </summary>
+        public override void Update()
+        {
+            base.Update();
+
+            if (m_receiveDataThread == null || !m_receiveDataThread.IsAlive)
+            {
+                BeginReceive();
             }
         }
 
@@ -146,7 +155,7 @@ namespace QuickUnity.IO.Ports
         {
             try
             {
-                if (m_receiveDataThread != null && m_receiveDataThread.IsAlive)
+                if (m_receiveDataThread != null)
                 {
                     m_receiveDataThread.Abort();
                 }
@@ -166,11 +175,33 @@ namespace QuickUnity.IO.Ports
         #endregion Public Functions
 
         /// <summary>
+        /// Begins to receive data from serial port.
+        /// </summary>
+        private void BeginReceive()
+        {
+            try
+            {
+                // if has old thread, then abort it.
+                if (m_receiveDataThread != null && m_receiveDataThread.IsAlive)
+                {
+                    m_receiveDataThread.Abort();
+                }
+
+                m_receiveDataThread = new Thread(ReceiveData);
+                m_receiveDataThread.Start();
+            }
+            catch (Exception exception)
+            {
+                DebugLogger.LogException(exception);
+            }
+        }
+
+        /// <summary>
         /// Receives the serial port data.
         /// </summary>
         private void ReceiveData()
         {
-            while (isOpen)
+            if (isOpen)
             {
                 try
                 {
