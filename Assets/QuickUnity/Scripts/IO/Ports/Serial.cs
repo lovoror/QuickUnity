@@ -28,6 +28,7 @@ using System;
 using System.IO.Ports;
 using System.Text;
 using System.Threading;
+using UnityEngine;
 
 namespace QuickUnity.IO.Ports
 {
@@ -37,6 +38,21 @@ namespace QuickUnity.IO.Ports
     /// <seealso cref="QuickUnity.Events.ThreadEventDispatcher"/>
     public class Serial : ThreadEventDispatcher
     {
+        /// <summary>
+        /// Used for locking the instance calls.
+        /// </summary>
+        private static readonly object s_syncRoot = new object();
+
+        /// <summary>
+        /// Whether the data is received.
+        /// </summary>
+        private bool m_isDataReceived;
+
+        /// <summary>
+        /// Whether the port is closing.
+        /// </summary>
+        private bool m_isClosingPort;
+
         /// <summary>
         /// The serial port object.
         /// </summary>
@@ -98,6 +114,7 @@ namespace QuickUnity.IO.Ports
                 {
                     m_serialPort.Open();
                     DispatchEvent(new SerialEvent(SerialEvent.Open, this));
+                    m_isDataReceived = true;
                 }
             }
             catch (Exception exception)
@@ -142,9 +159,21 @@ namespace QuickUnity.IO.Ports
         {
             base.Update();
 
-            if (m_receiveDataThread == null || !m_receiveDataThread.IsAlive)
+            if (Time.frameCount % 5 == 0)
             {
-                BeginReceive();
+                if (m_isDataReceived)
+                {
+                    lock (s_syncRoot)
+                    {
+                        if (m_isDataReceived)
+                        {
+                            if (m_receiveDataThread == null || !m_receiveDataThread.IsAlive)
+                            {
+                                BeginReceive();
+                            }
+                        }
+                    }
+                }
             }
         }
 
@@ -153,9 +182,16 @@ namespace QuickUnity.IO.Ports
         /// </summary>
         public void Close()
         {
+            m_isClosingPort = true;
+
+            while (!m_isDataReceived)
+            {
+                // Wait for the last data is received.
+            }
+
             try
             {
-                if (m_receiveDataThread != null)
+                if (m_receiveDataThread != null && m_receiveDataThread.IsAlive)
                 {
                     m_receiveDataThread.Abort();
                 }
@@ -170,6 +206,8 @@ namespace QuickUnity.IO.Ports
             {
                 DebugLogger.LogException(exception);
             }
+
+            m_isClosingPort = false;
         }
 
         #endregion Public Functions
@@ -201,9 +239,11 @@ namespace QuickUnity.IO.Ports
         /// </summary>
         private void ReceiveData()
         {
-            if (isOpen)
+            m_isDataReceived = false;
+
+            try
             {
-                try
+                if (isOpen && !m_isClosingPort)
                 {
                     string data = Convert.ToChar(m_serialPort.ReadChar()).ToString();
                     byte[] receivedBytes = Encoding.UTF8.GetBytes(data);
@@ -219,11 +259,13 @@ namespace QuickUnity.IO.Ports
                         }
                     }
                 }
-                catch (Exception exception)
-                {
-                    DebugLogger.LogException(exception);
-                }
             }
+            catch (Exception exception)
+            {
+                DebugLogger.LogException(exception);
+            }
+
+            m_isDataReceived = true;
         }
     }
 }
