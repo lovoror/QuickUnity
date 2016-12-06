@@ -25,14 +25,24 @@
 namespace QuickUnityEditor.Data.Parsers
 {
     /// <summary>
-    /// The parser of type System.String.
+    /// The parser of type System.String[].
     /// </summary>
-    /// <seealso cref="QuickUnityEditor.Data.Parsers.TypeParser{System.String}"/>
-    public class StringTypeParser : TypeParser<string>
+    /// <seealso cref="QuickUnityEditor.Data.Parsers.TypeParser{System.String[]}"/>
+    public class StringArrayTypeParser : TypeParser<string[]>
     {
         /// <summary>
         /// The type keyword.
         /// </summary>
-        public const string TypeKeyword = "string";
+        public const string TypeKeyword = "string[]";
+
+        /// <summary>
+        /// Parses the specified value.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>System.Object. The parsed array data.</returns>
+        public override object Parse(string value)
+        {
+            return ParseArrayString<string>(value);
+        }
     }
 }

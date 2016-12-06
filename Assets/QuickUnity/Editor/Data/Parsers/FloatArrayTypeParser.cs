@@ -39,8 +39,8 @@ namespace QuickUnityEditor.Data.Parsers
         /// Parses the specified value.
         /// </summary>
         /// <param name="value">The value.</param>
-        /// <returns>System.Single[]. The parsed array data.</returns>
-        public override float[] Parse(string value)
+        /// <returns>System.Object. The parsed array data.</returns>
+        public override object Parse(string value)
         {
             return ParseArrayString<float>(value);
         }

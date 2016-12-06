@@ -24,6 +24,10 @@
 
 using Excel;
 using QuickUnity.Core.Miscs;
+using QuickUnity.Data;
+using QuickUnity.Utilities;
+using QuickUnityEditor.Attributes;
+using QuickUnityEditor.Data.Parsers;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -38,6 +42,7 @@ namespace QuickUnityEditor.Data
     /// <summary>
     /// Handle the process of data tables import.
     /// </summary>
+    [InitializeOnEditorStartup]
     public static class DataImport
     {
         /// <summary>
@@ -142,6 +147,52 @@ namespace QuickUnityEditor.Data
         private static readonly string s_excelFileSearchPatterns = string.Format("*{0}", ExcelFileExtension);
 
         /// <summary>
+        /// The preference key of scriptsGenerated.
+        /// </summary>
+        private static readonly string s_scriptsGeneratedPrefKey = PlayerSettings.productGUID.ToString() + "_scriptsGenerated";
+
+        /// <summary>
+        /// The map of cached type parsers.
+        /// </summary>
+        private static Dictionary<Type, ITypeParser> s_cachedTypeParsersMap;
+
+        /// <summary>
+        /// The scripts generated.
+        /// </summary>
+        public static bool scriptsGenerated
+        {
+            get
+            {
+                return EditorPrefs.GetBool(s_scriptsGeneratedPrefKey, false);
+            }
+
+            set
+            {
+                EditorPrefs.SetBool(s_scriptsGeneratedPrefKey, value);
+            }
+        }
+
+        /// <summary>
+        /// Initializes static members of the <see cref="DataImport"/> class.
+        /// </summary>
+        static DataImport()
+        {
+            EditorApplication.update += OnEditorUpdate;
+        }
+
+        /// <summary>
+        /// Delegate for generic updates.
+        /// </summary>
+        private static void OnEditorUpdate()
+        {
+            if (scriptsGenerated && !EditorApplication.isCompiling)
+            {
+                Debug.Log("can invoke");
+                scriptsGenerated = false;
+            }
+        }
+
+        /// <summary>
         /// Imports data.
         /// </summary>
         [MenuItem("QuickUnity/DataTable/Import Data...", false, 100)]
@@ -151,63 +202,7 @@ namespace QuickUnityEditor.Data
             if (CheckPreferencesData())
             {
                 string filesFolderPath = EditorUtility.OpenFolderPanel("Import Data...", "", "");
-
-                if (!string.IsNullOrEmpty(filesFolderPath))
-                {
-                    DirectoryInfo dirInfo = new DirectoryInfo(filesFolderPath);
-                    FileInfo[] fileInfos = dirInfo.GetFiles(s_excelFileSearchPatterns, SearchOption.AllDirectories);
-                    string tplText = GetTplText();
-                    string namespaceString = GetNamespace();
-
-                    for (int i = 0, length = fileInfos.Length; i < length; ++i)
-                    {
-                        FileInfo fileInfo = fileInfos[i];
-
-                        if (fileInfo != null)
-                        {
-                            string filePath = fileInfo.FullName;
-                            string fileName = Path.GetFileNameWithoutExtension(fileInfo.Name);
-                            string fileExtension = Path.GetExtension(fileInfo.Name).ToLower();
-
-                            float progress = (float)((i + 1) / length);
-                            string info = string.Format(ImportProgressBarInfo, fileName + fileExtension, i + 1, length);
-                            EditorUtility.DisplayProgressBar(ImportProgressBarTitle, info, progress);
-
-                            try
-                            {
-                                FileStream fileStream = File.Open(filePath, FileMode.Open, FileAccess.Read);
-                                IExcelDataReader excelReader = null;
-
-                                if (fileExtension == ExcelFileExtension)
-                                {
-                                    // '97-2003 format; *.xls
-                                    excelReader = ExcelReaderFactory.CreateBinaryReader(fileStream);
-                                }
-                                else
-                                {
-                                    // 2007 format; *.xlsx
-                                    excelReader = ExcelReaderFactory.CreateOpenXmlReader(fileStream);
-                                }
-
-                                if (excelReader != null)
-                                {
-                                    DataSet result = excelReader.AsDataSet();
-                                    DataTable table = result.Tables[0];
-                                    List<DataTableRowInfo> rowInfos = GenerateDataTableRowInfos(table);
-                                    GenerateDataTableRowScript((string)tplText.Clone(), namespaceString, fileName, rowInfos);
-                                    fileStream.Close();
-                                    fileStream = null;
-                                }
-                            }
-                            catch (Exception exception)
-                            {
-                                DebugLogger.LogException(exception);
-                            }
-                        }
-                    }
-
-                    EditorUtility.ClearProgressBar();
-                }
+                GenerateDataTableRowScripts(filesFolderPath);
             }
         }
 
@@ -371,6 +366,70 @@ namespace QuickUnityEditor.Data
         }
 
         /// <summary>
+        /// Generates the scripts of DataTableRows.
+        /// </summary>
+        /// <param name="excelFilesFolderPath">The folder path of excel files.</param>
+        private static void GenerateDataTableRowScripts(string excelFilesFolderPath)
+        {
+            if (!string.IsNullOrEmpty(excelFilesFolderPath))
+            {
+                scriptsGenerated = false;
+
+                DirectoryInfo dirInfo = new DirectoryInfo(excelFilesFolderPath);
+                FileInfo[] fileInfos = dirInfo.GetFiles(s_excelFileSearchPatterns, SearchOption.AllDirectories);
+                string tplText = GetTplText();
+                string namespaceString = GetNamespace();
+
+                for (int i = 0, length = fileInfos.Length; i < length; ++i)
+                {
+                    FileInfo fileInfo = fileInfos[i];
+
+                    if (fileInfo != null)
+                    {
+                        string filePath = fileInfo.FullName;
+                        string fileName = Path.GetFileNameWithoutExtension(fileInfo.Name);
+                        string fileExtension = Path.GetExtension(fileInfo.Name).ToLower();
+
+                        try
+                        {
+                            FileStream fileStream = File.Open(filePath, FileMode.Open, FileAccess.Read);
+                            IExcelDataReader excelReader = null;
+
+                            if (fileExtension == ExcelFileExtension)
+                            {
+                                // '97-2003 format; *.xls
+                                excelReader = ExcelReaderFactory.CreateBinaryReader(fileStream);
+                            }
+                            else
+                            {
+                                // 2007 format; *.xlsx
+                                excelReader = ExcelReaderFactory.CreateOpenXmlReader(fileStream);
+                            }
+
+                            if (excelReader != null)
+                            {
+                                DataSet result = excelReader.AsDataSet();
+                                DataTable table = result.Tables[0];
+                                List<DataTableRowInfo> rowInfos = GenerateDataTableRowInfos(table);
+                                GenerateDataTableRowScript((string)tplText.Clone(), namespaceString, fileName, rowInfos);
+                                fileStream.Close();
+                                fileStream = null;
+                            }
+                        }
+                        catch (Exception exception)
+                        {
+                            DebugLogger.LogException(exception);
+                        }
+                    }
+                }
+
+                AssetDatabase.SaveAssets();
+                AssetDatabase.Refresh();
+                scriptsGenerated = true;
+            }
+        }
+
+        /// <summary>
         /// Generates the script of DataTableRow.
         /// </summary>
         /// <param name="tplText">The script template text.</param>
@@ -407,11 +466,60 @@ namespace QuickUnityEditor.Data
                 {
                     DebugLogger.LogException(exception);
                 }
-
-                AssetDatabase.SaveAssets();
-                AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
-                Utilities.EditorUtility.ClearConsole();
             }
+        }
+
+        /// <summary>
+        /// Generates the data table row collection.
+        /// </summary>
+        /// <param name="table">The data table.</param>
+        /// <param name="className">Name of the class.</param>
+        /// <param name="rowInfos">The list of DataTableRow.</param>
+        /// <returns>List&lt;DataTableRow&gt; The data collection of data table row.</returns>
+        private static List<DataTableRow> GenerateDataTableRowCollection(DataTable table, string namespaceString, string className, List<DataTableRowInfo> rowInfos)
+        {
+            List<DataTableRow> dataCollection = new List<DataTableRow>();
+            string classFullName = className;
+
+            if (!string.IsNullOrEmpty(namespaceString))
+            {
+                classFullName = string.Format("{0}.{1}", namespaceString, classFullName);
+            }
+
+            DataTablePreferences preferencesData = DataTablePreferencesWindow.LoadPreferencesData();
+
+            if (preferencesData)
+            {
+                int rowCount = table.Rows.Count;
+
+                for (int i = preferencesData.dataRowsStartRow - 1; i < rowCount; ++i)
+                {
+                    DebugLogger.Log("Script Class Full Name: " + classFullName);
+                    DataTableRow rowData = (DataTableRow)ReflectionUtility.CreateClassInstance(classFullName);
+
+                    for (int j = 0, fieldsCount = rowInfos.Count; j < fieldsCount; ++j)
+                    {
+                        string cellValue = table.Rows[i][j].ToString().Trim();
+
+                        if (!string.IsNullOrEmpty(cellValue))
+                        {
+                            DataTableRowInfo rowInfo = rowInfos[j];
+                            ITypeParser typeParser = GetTypeParser(rowInfo.type);
+
+                            if (typeParser != null)
+                            {
+                                object value = typeParser.Parse(cellValue);
+                                ReflectionUtility.SetObjectFieldValue(rowData, rowInfo.fieldName, value);
+                            }
+                        }
+                    }
+
+                    Debug.Log(rowData);
+                    dataCollection.Add(rowData);
+                }
+            }
+
+            return dataCollection;
         }
 
         /// <summary>
@@ -459,6 +567,45 @@ namespace QuickUnityEditor.Data
             }
 
             return comments;
+        }
+
+        /// <summary>
+        /// Gets the type parser.
+        /// </summary>
+        /// <param name="typeKeyword">The type keyword.</param>
+        /// <returns>ITypeParser The type parser.</returns>
+        private static ITypeParser GetTypeParser(string typeKeyword)
+        {
+            if (!string.IsNullOrEmpty(typeKeyword))
+            {
+                if (s_cachedTypeParsersMap == null)
+                {
+                    s_cachedTypeParsersMap = new Dictionary<Type, ITypeParser>();
+                }
+
+                Type type = TypeParserFactory.GetTypeParserType(typeKeyword);
+                ITypeParser typeParser = null;
+
+                if (s_cachedTypeParsersMap.ContainsKey(type))
+                {
+                    typeParser = s_cachedTypeParsersMap[type];
+
+                    if (typeParser == null)
+                    {
+                        typeParser = TypeParserFactory.CreateTypeParser(typeKeyword);
+                        s_cachedTypeParsersMap[type] = typeParser;
+                    }
+                }
+                else
+                {
+                    typeParser = TypeParserFactory.CreateTypeParser(typeKeyword);
+                    s_cachedTypeParsersMap.Add(type, typeParser);
+                }
+
+                return typeParser;
+            }
+
+            return null;
         }
     }
 }

@@ -30,7 +30,7 @@ using System.Reflection;
 namespace QuickUnity.Utilities
 {
     /// <summary>
-    /// The utility class about reflection functions. This class cannot be inherited.
+    /// The utility class is about reflection functions. This class cannot be inherited.
     /// </summary>
     public static class ReflectionUtility
     {

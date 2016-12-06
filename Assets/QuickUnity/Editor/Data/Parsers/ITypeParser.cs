@@ -22,18 +22,20 @@
  *	SOFTWARE.
  */
 
+using System;
+
 namespace QuickUnityEditor.Data.Parsers
 {
     /// <summary>
     /// The interface of data type parser.
     /// </summary>
-    public interface ITypeParser<T>
+    public interface ITypeParser
     {
         /// <summary>
         /// Parses the specified value.
         /// </summary>
         /// <param name="value">The value.</param>
-        /// <returns>T. The parsed data.</returns>
-        T Parse(string value);
+        /// <returns>System.Object The parsed data.</returns>
+        object Parse(string value);
     }
 }

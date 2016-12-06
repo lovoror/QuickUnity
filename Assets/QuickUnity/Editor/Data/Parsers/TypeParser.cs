@@ -175,11 +175,23 @@ namespace QuickUnityEditor.Data.Parsers
     }
 
     /// <summary>
+    /// The parser of type System.String.
+    /// </summary>
+    /// <seealso cref="QuickUnityEditor.Data.Parsers.TypeParser{System.String}"/>
+    public class StringTypeParser : TypeParser<string>
+    {
+        /// <summary>
+        /// The type keyword.
+        /// </summary>
+        public const string TypeKeyword = "string";
+    }
+
+    /// <summary>
     /// The data type parser abstract class.
     /// </summary>
     /// <typeparam name="T">The type definition.</typeparam>
     /// <seealso cref="QuickUnityEditor.Data.Parsers.ITypeParser{T}"/>
-    public abstract class TypeParser<T> : ITypeParser<T>
+    public abstract class TypeParser<T> : ITypeParser
     {
         /// <summary>
         /// The separator for array element.
@@ -191,7 +203,7 @@ namespace QuickUnityEditor.Data.Parsers
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns>T. The parsed data.</returns>
-        public virtual T Parse(string value)
+        public virtual object Parse(string value)
         {
             return Parse<T>(value);
         }

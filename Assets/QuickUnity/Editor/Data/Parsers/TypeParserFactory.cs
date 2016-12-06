@@ -22,6 +22,7 @@
  *	SOFTWARE.
  */
 
+using QuickUnity.Utilities;
 using System;
 using System.Collections.Generic;
 
@@ -61,19 +62,37 @@ namespace QuickUnityEditor.Data.Parsers
             { LongArrayTypeParser.TypeKeyword, typeof(LongArrayTypeParser) },
             { ULongArrayTypeParser.TypeKeyword, typeof(ULongArrayTypeParser) },
             { ShortArrayTypeParser.TypeKeyword, typeof(ShortArrayTypeParser) },
-            { UShortArrayTypeParser.TypeKeyword, typeof(UShortArrayTypeParser) }
+            { UShortArrayTypeParser.TypeKeyword, typeof(UShortArrayTypeParser) },
+            { StringArrayTypeParser.TypeKeyword, typeof(StringArrayTypeParser) }
         };
 
         /// <summary>
-        /// Gets the type parser.
+        /// Gets the type of the type parser.
         /// </summary>
         /// <param name="typeKeyword">The type keyword.</param>
-        /// <returns>Type. The Type of data type parser.</returns>
-        public static Type GetTypeParser(string typeKeyword)
+        /// <returns>Type The type of type parser.</returns>
+        public static Type GetTypeParserType(string typeKeyword)
         {
             if (!string.IsNullOrEmpty(typeKeyword) && s_typeParsersMap.ContainsKey(typeKeyword))
             {
                 return s_typeParsersMap[typeKeyword];
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Creates the type parser.
+        /// </summary>
+        /// <param name="typeKeyword">The type keyword.</param>
+        /// <returns>ITypeParser The type parser.</returns>
+        public static ITypeParser CreateTypeParser(string typeKeyword)
+        {
+            Type type = GetTypeParserType(typeKeyword);
+
+            if (type != null)
+            {
+                return (ITypeParser)ReflectionUtility.CreateClassInstance(type);
             }
 
             return null;
