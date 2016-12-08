@@ -29,5 +29,16 @@ namespace QuickUnity.Tests.UnitTests
                 Assert.Fail();
             }
         }
+
+        /// <summary>
+        /// Test for the method DataTableManager.GetAllDataTableRow.
+        /// </summary>
+        [Test]
+        public void GetAllDataTableRowTest()
+        {
+            TestDataTwo[] array = DataTableManager.instance.GetAllDataTableRow<TestDataTwo>();
+            DataTableManager.instance.Dispose();
+            Assert.IsNotNull(array);
+        }
     }
 }

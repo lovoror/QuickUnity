@@ -24,6 +24,7 @@
 
 using QuickUnity.Patterns;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
@@ -61,6 +62,77 @@ namespace QuickUnity.Data
         /// </summary>
         private DataTableManager()
         {
+            Initialize();
+        }
+
+        #region Public Functions
+
+        /// <summary>
+        /// Gets the object of data table row.
+        /// </summary>
+        /// <typeparam name="T">The type definition of data table row.</typeparam>
+        /// <param name="primaryValue">The primary value.</param>
+        /// <returns>T The object of type definition.</returns>
+        public T GetDataTableRow<T>(object primaryValue) where T : DataTableRow, new()
+        {
+            DataTableAddressMap addressMap = GetDatabaseAddressMap<T>();
+
+            if (addressMap != null && addressMap.localAddress > 1)
+            {
+                BoxDBAdapter dbAdapter = new BoxDBAdapter(m_databasePath, addressMap.localAddress);
+                string tableName = addressMap.type;
+                dbAdapter.EnsureTable<T>(tableName, addressMap.primaryFieldName);
+                dbAdapter.Open();
+                T data = dbAdapter.Select<T>(tableName, primaryValue);
+                dbAdapter.Dispose();
+                return data;
+            }
+
+            return default(T);
+        }
+
+        /// <summary>
+        /// Gets all data table row.
+        /// </summary>
+        /// <typeparam name="T">The type definition of data table row.</typeparam>
+        /// <returns>T[] The object array of type definition.</returns>
+        public T[] GetAllDataTableRow<T>() where T : DataTableRow, new()
+        {
+            DataTableAddressMap addressMap = GetDatabaseAddressMap<T>();
+
+            if (addressMap != null && addressMap.localAddress > 1)
+            {
+                BoxDBAdapter dbAdapter = new BoxDBAdapter(m_databasePath, addressMap.localAddress);
+                string tableName = addressMap.type;
+                dbAdapter.EnsureTable<T>(tableName, addressMap.primaryFieldName);
+                dbAdapter.Open();
+                List<T> list = dbAdapter.SelectAll<T>(tableName);
+                dbAdapter.Dispose();
+                return list.ToArray();
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources.
+        /// </summary>
+        public void Dispose()
+        {
+            if (m_addressMapDBAdapter != null)
+            {
+                m_addressMapDBAdapter.Dispose();
+                m_addressMapDBAdapter = null;
+            }
+        }
+
+        #endregion Public Functions
+
+        /// <summary>
+        /// Initializes.
+        /// </summary>
+        private void Initialize()
+        {
             string path = Path.Combine(QuickUnityApplication.ResourcesFolderName, typeof(DataTablePreferences).Name);
             DataTablePreferences[] objects = Resources.FindObjectsOfTypeAll<DataTablePreferences>();
 
@@ -81,46 +153,6 @@ namespace QuickUnity.Data
             m_addressMapDBAdapter.Open();
         }
 
-        #region Public Functions
-
-        /// <summary>
-        /// Gets the object of data table row.
-        /// </summary>
-        /// <typeparam name="T">The type definition of data table row.</typeparam>
-        /// <param name="primaryValue">The primary value.</param>
-        /// <returns>T The object of type definition.</returns>
-        public T GetDataTableRow<T>(object primaryValue) where T : DataTableRow, new()
-        {
-            DataTableAddressMap addressMap = GetDatabaseAddressMap<T>();
-
-            if (addressMap.localAddress > 1)
-            {
-                BoxDBAdapter dbAdapter = new BoxDBAdapter(m_databasePath, addressMap.localAddress);
-                string tableName = addressMap.type;
-                dbAdapter.EnsureTable<T>(tableName, addressMap.primaryFieldName);
-                dbAdapter.Open();
-                T data = dbAdapter.Select<T>(tableName, primaryValue);
-                dbAdapter.Dispose();
-                return data;
-            }
-
-            return default(T);
-        }
-
-        /// <summary>
-        /// Releases unmanaged and - optionally - managed resources.
-        /// </summary>
-        public void Dispose()
-        {
-            if (m_addressMapDBAdapter != null)
-            {
-                m_addressMapDBAdapter.Dispose();
-                m_addressMapDBAdapter = null;
-            }
-        }
-
-        #endregion Public Functions
-
         /// <summary>
         /// Gets the database address.
         /// </summary>
@@ -130,13 +162,13 @@ namespace QuickUnity.Data
         {
             string name = typeof(T).Name;
 
-            if (m_addressMapDBAdapter != null)
+            if (m_addressMapDBAdapter == null)
             {
-                DataTableAddressMap addressMap = m_addressMapDBAdapter.Select<DataTableAddressMap>(typeof(DataTableAddressMap).Name, name);
-                return addressMap;
+                Initialize();
             }
 
-            return null;
+            DataTableAddressMap addressMap = m_addressMapDBAdapter.Select<DataTableAddressMap>(typeof(DataTableAddressMap).Name, name);
+            return addressMap;
         }
     }
 }
