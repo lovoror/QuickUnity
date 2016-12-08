@@ -8,7 +8,7 @@ namespace QuickUnity.Tests.IntegrationTests
     /// Integration test of coroutine task.
     /// </summary>
     /// <seealso cref="UnityEngine.MonoBehaviour"/>
-    [IntegrationTest.DynamicTestAttribute("TaskTests")]
+    [IntegrationTest.DynamicTest("TaskTests")]
     [IntegrationTest.SucceedWithAssertions]
     [IntegrationTest.Timeout(10)]
     public class CoroutineTaskTest : MonoBehaviour

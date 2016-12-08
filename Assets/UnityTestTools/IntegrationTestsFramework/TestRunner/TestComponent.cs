@@ -396,10 +396,10 @@ namespace UnityTest
 
                 foreach (Type type in types)
                 {
-                    var attributes = type.GetCustomAttributes(typeof(IntegrationTest.DynamicTestAttribute), true);
+                    var attributes = type.GetCustomAttributes(typeof(IntegrationTest.DynamicTest), true);
                     if (attributes.Length == 1)
                     {
-                        var a = attributes.Single() as IntegrationTest.DynamicTestAttribute;
+                        var a = attributes.Single() as IntegrationTest.DynamicTest;
                         if (a.IncludeOnScene(sceneName)) yield return type;
                     }
                 }

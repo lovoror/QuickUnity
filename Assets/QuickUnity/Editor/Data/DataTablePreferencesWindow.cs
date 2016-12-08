@@ -22,6 +22,7 @@
  *	SOFTWARE.
  */
 
+using QuickUnity;
 using QuickUnity.Data;
 using System;
 using System.IO;
@@ -82,7 +83,7 @@ namespace QuickUnityEditor.Data
         /// The resources path.
         /// </summary>
         private static readonly string s_resourcesPath = Path.Combine(QuickUnityEditorApplication.AssetsFolderName,
-            QuickUnityEditorApplication.ResourcesFolderName);
+            QuickUnityApplication.ResourcesFolderName);
 
         /// <summary>
         /// The editor window instance.
@@ -114,7 +115,7 @@ namespace QuickUnityEditor.Data
             if (!AssetDatabase.IsValidFolder(s_resourcesPath))
             {
                 AssetDatabase.CreateFolder(QuickUnityEditorApplication.AssetsFolderName,
-                    QuickUnityEditorApplication.ResourcesFolderName);
+                    QuickUnityApplication.ResourcesFolderName);
             }
 
             return Utilities.EditorUtility.LoadScriptableObjectAsset<DataTablePreferences>(s_resourcesPath);

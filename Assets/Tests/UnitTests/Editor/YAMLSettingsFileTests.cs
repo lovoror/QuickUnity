@@ -10,8 +10,8 @@ namespace QuickUnity.Tests.UnitTests.ConfigTests
     /// Unit test cases for class INIConfigFile.
     /// </summary>
     [TestFixture]
-    [Category("QuickUnity Tests/Unit Tests/YAMLSettingsFile Test")]
-    internal class YAMLSettingsFileTest
+    [Category("QuickUnity Tests/Unit Tests/YAMLSettingsFile Tests")]
+    internal class YAMLSettingsFileTests
     {
         internal class TestSettings
         {

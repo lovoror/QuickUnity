@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-[IntegrationTest.DynamicTestAttribute("ExampleIntegrationTests")]
+[IntegrationTest.DynamicTest("ExampleIntegrationTests")]
 // [IntegrationTest.Ignore]
 [IntegrationTest.ExpectExceptions(false, typeof(ArgumentException))]
 [IntegrationTest.SucceedWithAssertions]

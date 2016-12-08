@@ -8,8 +8,8 @@ namespace QuickUnity.Tests.UnitTests
     /// Unit test cases for class EventDispatchers.
     /// </summary>
     [TestFixture]
-    [Category("QuickUnity Tests/Unit Tests/EventDispatcher Test")]
-    internal class EventDispatcherTest
+    [Category("QuickUnity Tests/Unit Tests/EventDispatcher Tests")]
+    internal class EventDispatcherTests
     {
         /// <summary>
         /// Test event object for unit tests.

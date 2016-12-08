@@ -25,7 +25,7 @@
 using QuickUnity.Data;
 using UnityEngine;
 
-namespace QuickUnityEditor.Data
+namespace QuickUnity.Data
 {
     /// <summary>
     /// ScriptableObject class to save preferences of DataTable.
@@ -41,7 +41,7 @@ namespace QuickUnityEditor.Data
         /// <summary>
         /// The data tables storage location.
         /// </summary>
-        public DataTableStorageLocation dataTablesStorageLocation = DataTableStorageLocation.Resources;
+        public DataTableStorageLocation dataTablesStorageLocation = DataTableStorageLocation.PersistentDataPath;
 
         /// <summary>
         /// The data table row scripts storage location.

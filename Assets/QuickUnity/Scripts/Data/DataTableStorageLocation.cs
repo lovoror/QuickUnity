@@ -29,9 +29,7 @@ namespace QuickUnity.Data
     /// </summary>
     public enum DataTableStorageLocation
     {
-        Resources,
-        StreamingAssets,
-        AssetBundles,
-        Custom
+        PersistentDataPath,
+        StreamingAssetsPath
     }
 }

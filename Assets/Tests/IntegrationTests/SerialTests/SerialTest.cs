@@ -7,7 +7,7 @@ namespace QuickUnity.Tests.IntegrationTests
     /// Integration test of Serial.
     /// </summary>
     /// <seealso cref="UnityEngine.MonoBehaviour"/>
-    [IntegrationTest.DynamicTestAttribute("SerialTests")]
+    [IntegrationTest.DynamicTest("SerialTests")]
     [IntegrationTest.SucceedWithAssertions]
     [IntegrationTest.Timeout(10)]
     public class SerialTest : MonoBehaviour

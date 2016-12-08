@@ -45,10 +45,21 @@ namespace QuickUnity.Utilities
 
             if (type == null)
             {
-                //Reload project DLL.
+                //Reload the project dll.
                 Assembly assembly = Assembly.Load("Assembly-CSharp");
                 type = assembly.GetType(typeName);
             }
+
+#if UNITY_EDITOR
+
+            if (type == null)
+            {
+                //Reload the project editor dll.
+                Assembly assembly = Assembly.Load("Assembly-CSharp-Editor");
+                type = assembly.GetType(typeName);
+            }
+
+#endif
 
             return type;
         }

@@ -24,7 +24,7 @@
 
 using QuickUnity.Data;
 
-namespace Tests.IntegrationTests.DataTableTests
+namespace Tests.UnitTests.Editor.DataTables
 {
     /// <summary>
     /// TestData
@@ -167,7 +167,7 @@ namespace Tests.IntegrationTests.DataTableTests
         /// Initializes a new instance of the <see cref="TestData"/> class.
         /// </summary>
         public TestData()
-            :base()
+            : base()
         {
         }
     }

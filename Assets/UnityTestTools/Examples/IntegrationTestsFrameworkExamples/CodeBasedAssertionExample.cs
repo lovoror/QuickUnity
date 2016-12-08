@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityTest;
 
-[IntegrationTest.DynamicTestAttribute("ExampleIntegrationTests")]
+[IntegrationTest.DynamicTest("ExampleIntegrationTests")]
 [IntegrationTest.SucceedWithAssertions]
 public class CodeBasedAssertionExample : MonoBehaviour
 {

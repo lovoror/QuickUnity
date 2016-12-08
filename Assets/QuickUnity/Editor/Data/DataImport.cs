@@ -114,6 +114,16 @@ namespace QuickUnityEditor.Data
             /// The message of the content of template is null or empty.
             /// </summary>
             public const string CanNotFindTplFileMessage = "Can not find the template for DataTableRow scripts. Please make sure you already import it into the project!";
+
+            /// <summary>
+            /// The message of data import done.
+            /// </summary>
+            public const string DataImportDoneMessage = "Data import done!";
+
+            /// <summary>
+            /// The message of data import abort.
+            /// </summary>
+            public const string DataImportAbortMessage = "Data import abort!";
         }
 
         /// <summary>
@@ -122,9 +132,14 @@ namespace QuickUnityEditor.Data
         private const string ImportProgressBarTitle = "Data Import Progress";
 
         /// <summary>
-        /// The information of import progress bar.
+        /// The generating scripts progress bar information
         /// </summary>
-        private const string ImportProgressBarInfo = "Processing file {0}... {1}/{2}";
+        private const string GeneratingScriptsProgressBarInfo = "Generating Script file: {0}.cs... {1}/{2}";
+
+        /// <summary>
+        /// The saving data progress bar information
+        /// </summary>
+        private const string SavingDataProgressBarInfo = "Saving Data of {0}.. {1}/{2}";
 
         /// <summary>
         /// The file name of DataTableRow script template.
@@ -149,7 +164,12 @@ namespace QuickUnityEditor.Data
         /// <summary>
         /// The preference key of scriptsGenerated.
         /// </summary>
-        private static readonly string s_scriptsGeneratedPrefKey = PlayerSettings.productGUID.ToString() + "_scriptsGenerated";
+        private static readonly string s_scriptsGeneratedPrefKey = string.Format("{0}_scriptsGenerated", PlayerSettings.productGUID.ToString());
+
+        /// <summary>
+        /// The preference key of excelFilesFolderPath.
+        /// </summary>
+        private static readonly string s_excelFilesFolderPathPrefKey = string.Format("{0}_excelFilesFolderPath", PlayerSettings.productGUID.ToString());
 
         /// <summary>
         /// The map of cached type parsers.
@@ -159,6 +179,7 @@ namespace QuickUnityEditor.Data
         /// <summary>
         /// The scripts generated.
         /// </summary>
+        /// <value><c>true</c> if [scripts generated]; otherwise, <c>false</c>.</value>
         public static bool scriptsGenerated
         {
             get
@@ -169,6 +190,23 @@ namespace QuickUnityEditor.Data
             set
             {
                 EditorPrefs.SetBool(s_scriptsGeneratedPrefKey, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the excel files folder path.
+        /// </summary>
+        /// <value>The excel files folder path.</value>
+        public static string excelFilesFolderPath
+        {
+            get
+            {
+                return EditorPrefs.GetString(s_excelFilesFolderPathPrefKey, null);
+            }
+
+            set
+            {
+                EditorPrefs.SetString(s_excelFilesFolderPathPrefKey, value);
             }
         }
 
@@ -187,7 +225,7 @@ namespace QuickUnityEditor.Data
         {
             if (scriptsGenerated && !EditorApplication.isCompiling)
             {
-                Debug.Log("can invoke");
+                InsertOrUpdateData();
                 scriptsGenerated = false;
             }
         }
@@ -202,7 +240,16 @@ namespace QuickUnityEditor.Data
             if (CheckPreferencesData())
             {
                 string filesFolderPath = EditorUtility.OpenFolderPanel("Import Data...", "", "");
-                GenerateDataTableRowScripts(filesFolderPath);
+
+                if (!string.IsNullOrEmpty(filesFolderPath))
+                {
+                    excelFilesFolderPath = filesFolderPath;
+                    GenerateDataTableRowScripts(filesFolderPath);
+                }
+                else
+                {
+                    QuickUnityEditorApplication.DisplaySimpleDialog("", DialogMessages.DataImportAbortMessage);
+                }
             }
         }
 
@@ -371,62 +418,20 @@ namespace QuickUnityEditor.Data
         /// <param name="excelFilesFolderPath">The folder path of excel files.</param>
         private static void GenerateDataTableRowScripts(string excelFilesFolderPath)
         {
-            if (!string.IsNullOrEmpty(excelFilesFolderPath))
+            string tplText = GetTplText();
+            string namespaceString = GetNamespace();
+
+            ForEachExcelFile(excelFilesFolderPath, (DataTable table, string fileName, int index, int length) =>
             {
-                scriptsGenerated = false;
+                EditorUtility.DisplayProgressBar(ImportProgressBarTitle,
+                    string.Format(GeneratingScriptsProgressBarInfo, fileName, index + 1, length), (float)(index + 1) / length);
+                List<DataTableRowInfo> rowInfos = GenerateDataTableRowInfos(table);
+                GenerateDataTableRowScript((string)tplText.Clone(), namespaceString, fileName, rowInfos);
+            });
 
-                DirectoryInfo dirInfo = new DirectoryInfo(excelFilesFolderPath);
-                FileInfo[] fileInfos = dirInfo.GetFiles(s_excelFileSearchPatterns, SearchOption.AllDirectories);
-                string tplText = GetTplText();
-                string namespaceString = GetNamespace();
-
-                for (int i = 0, length = fileInfos.Length; i < length; ++i)
-                {
-                    FileInfo fileInfo = fileInfos[i];
-
-                    if (fileInfo != null)
-                    {
-                        string filePath = fileInfo.FullName;
-                        string fileName = Path.GetFileNameWithoutExtension(fileInfo.Name);
-                        string fileExtension = Path.GetExtension(fileInfo.Name).ToLower();
-
-                        try
-                        {
-                            FileStream fileStream = File.Open(filePath, FileMode.Open, FileAccess.Read);
-                            IExcelDataReader excelReader = null;
-
-                            if (fileExtension == ExcelFileExtension)
-                            {
-                                // '97-2003 format; *.xls
-                                excelReader = ExcelReaderFactory.CreateBinaryReader(fileStream);
-                            }
-                            else
-                            {
-                                // 2007 format; *.xlsx
-                                excelReader = ExcelReaderFactory.CreateOpenXmlReader(fileStream);
-                            }
-
-                            if (excelReader != null)
-                            {
-                                DataSet result = excelReader.AsDataSet();
-                                DataTable table = result.Tables[0];
-                                List<DataTableRowInfo> rowInfos = GenerateDataTableRowInfos(table);
-                                GenerateDataTableRowScript((string)tplText.Clone(), namespaceString, fileName, rowInfos);
-                                fileStream.Close();
-                                fileStream = null;
-                            }
-                        }
-                        catch (Exception exception)
-                        {
-                            DebugLogger.LogException(exception);
-                        }
-                    }
-                }
-
-                AssetDatabase.SaveAssets();
-                AssetDatabase.Refresh();
-                scriptsGenerated = true;
-            }
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+            scriptsGenerated = true;
         }
 
         /// <summary>
@@ -470,6 +475,43 @@ namespace QuickUnityEditor.Data
         }
 
         /// <summary>
+        /// Insert or update data.
+        /// </summary>
+        private static void InsertOrUpdateData()
+        {
+            string path = excelFilesFolderPath;
+            string namespaceString = GetNamespace();
+
+            DeleteDatabaseFiles();
+
+            ForEachExcelFile(path, (DataTable table, string fileName, int index, int length) =>
+            {
+                EditorUtility.DisplayProgressBar(ImportProgressBarTitle,
+                    string.Format(SavingDataProgressBarInfo, fileName, index + 1, length), (float)(index + 1) / length);
+                List<DataTableRowInfo> rowInfos = GenerateDataTableRowInfos(table);
+                List<DataTableRow> collection = GenerateDataTableRowCollection(table, namespaceString, fileName, rowInfos);
+
+                string classFullName = string.Format("{0}.{1}", namespaceString, fileName);
+                Type type = ReflectionUtility.GetType(classFullName);
+
+                if (type != null)
+                {
+                    ReflectionUtility.InvokeStaticGenericMethod(typeof(DataImport),
+                            "SaveData",
+                            type,
+                            new object[] { fileName, rowInfos, collection, index });
+                }
+                else
+                {
+                    DebugLogger.LogErrorFormat(null, "Can not find the type: {0}", classFullName);
+                }
+            });
+
+            EditorUtility.ClearProgressBar();
+            QuickUnityEditorApplication.DisplaySimpleDialog("", DialogMessages.DataImportDoneMessage);
+        }
+
+        /// <summary>
         /// Generates the data table row collection.
         /// </summary>
         /// <param name="table">The data table.</param>
@@ -494,7 +536,6 @@ namespace QuickUnityEditor.Data
 
                 for (int i = preferencesData.dataRowsStartRow - 1; i < rowCount; ++i)
                 {
-                    DebugLogger.Log("Script Class Full Name: " + classFullName);
                     DataTableRow rowData = (DataTableRow)ReflectionUtility.CreateClassInstance(classFullName);
 
                     for (int j = 0, fieldsCount = rowInfos.Count; j < fieldsCount; ++j)
@@ -514,7 +555,6 @@ namespace QuickUnityEditor.Data
                         }
                     }
 
-                    Debug.Log(rowData);
                     dataCollection.Add(rowData);
                 }
             }
@@ -606,6 +646,198 @@ namespace QuickUnityEditor.Data
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Performs the specified action on each excel file under the folder path.
+        /// </summary>
+        /// <param name="folderPath">The folder path.</param>
+        /// <param name="action">
+        /// The Action&lt;DataTable, string, int, int&gt; delegate to perform on each excel file.
+        /// </param>
+        private static void ForEachExcelFile(string folderPath, Action<DataTable, string, int, int> action = null)
+        {
+            if (string.IsNullOrEmpty(folderPath))
+            {
+                return;
+            }
+
+            DirectoryInfo dirInfo = new DirectoryInfo(folderPath);
+            FileInfo[] fileInfos = dirInfo.GetFiles(s_excelFileSearchPatterns, SearchOption.AllDirectories);
+
+            for (int i = 0, length = fileInfos.Length; i < length; ++i)
+            {
+                FileInfo fileInfo = fileInfos[i];
+
+                if (fileInfo != null)
+                {
+                    string filePath = fileInfo.FullName;
+                    string fileName = Path.GetFileNameWithoutExtension(fileInfo.Name);
+                    string fileExtension = Path.GetExtension(fileInfo.Name).ToLower();
+
+                    try
+                    {
+                        FileStream fileStream = File.Open(filePath, FileMode.Open, FileAccess.Read);
+                        IExcelDataReader excelReader = null;
+
+                        if (fileExtension == ExcelFileExtension)
+                        {
+                            // '97-2003 format; *.xls
+                            excelReader = ExcelReaderFactory.CreateBinaryReader(fileStream);
+                        }
+                        else
+                        {
+                            // 2007 format; *.xlsx
+                            excelReader = ExcelReaderFactory.CreateOpenXmlReader(fileStream);
+                        }
+
+                        if (excelReader != null)
+                        {
+                            DataSet result = excelReader.AsDataSet();
+                            DataTable table = result.Tables[0];
+
+                            if (action != null)
+                            {
+                                action.Invoke(table, fileName, i, length);
+                            }
+
+                            fileStream.Close();
+                            fileStream = null;
+                        }
+                    }
+                    catch (Exception exception)
+                    {
+                        DebugLogger.LogException(exception);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Deletes all database files.
+        /// </summary>
+        private static void DeleteDatabaseFiles()
+        {
+            string path = string.Empty;
+            DataTablePreferences preferencesData = DataTablePreferencesWindow.LoadPreferencesData();
+
+            if (preferencesData)
+            {
+                if (preferencesData.dataTablesStorageLocation == DataTableStorageLocation.PersistentDataPath)
+                {
+                    path = Application.persistentDataPath;
+                }
+                else if (preferencesData.dataTablesStorageLocation == DataTableStorageLocation.StreamingAssetsPath)
+                {
+                    path = Application.streamingAssetsPath;
+                }
+
+                // If directory doesn't exist, create it.
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+
+                path = Path.Combine(path, DataTableManager.DataTablesStorageFolderName);
+
+                // If data tables storage directory doesn't exist, create it.
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+
+                DirectoryInfo dirInfo = new DirectoryInfo(path);
+                FileInfo[] fileInfos = dirInfo.GetFiles();
+
+                for (int i = 0, length = fileInfos.Length; i < length; ++i)
+                {
+                    FileInfo fileInfo = fileInfos[i];
+
+                    try
+                    {
+                        fileInfo.Delete();
+                    }
+                    catch (Exception exception)
+                    {
+                        DebugLogger.LogException(exception);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Saves the data.
+        /// </summary>
+        /// <typeparam name="T">The type definition of data.</typeparam>
+        /// <param name="tableName">Name of the table.</param>
+        /// <param name="rowInfos">The row infomation list.</param>
+        /// <param name="collection">The data collection.</param>
+        /// <param name="index">The index for database.</param>
+        private static void SaveData<T>(string tableName, List<DataTableRowInfo> rowInfos, List<DataTableRow> collection, int index) where T : DataTableRow
+        {
+            string primayFieldName = rowInfos[0].fieldName;
+            BoxDBAdapter addressMapDBAdapter = GetAddressMapDBAdapter();
+            DataTableAddressMap addressMap = new DataTableAddressMap();
+            addressMap.type = tableName;
+            addressMap.primaryFieldName = primayFieldName;
+            addressMap.localAddress = index + 2;
+            bool success = addressMapDBAdapter.Insert(typeof(DataTableAddressMap).Name, addressMap);
+
+            if (success)
+            {
+                string dbPath = GetDatabaseFilesPath();
+                BoxDBAdapter adpater = new BoxDBAdapter(dbPath, addressMap.localAddress);
+                adpater.EnsureTable<T>(tableName, primayFieldName);
+                adpater.Open();
+
+                for (int i = 0, length = collection.Count; i < length; ++i)
+                {
+                    T data = (T)collection[i];
+
+                    if (data != null)
+                    {
+                        success = adpater.Insert(tableName, data);
+                    }
+                }
+
+                adpater.Dispose();
+            }
+
+            addressMapDBAdapter.Dispose();
+        }
+
+        /// <summary>
+        /// Gets the database files path.
+        /// </summary>
+        /// <returns>System.String The database files path.</returns>
+        private static string GetDatabaseFilesPath()
+        {
+            string path = Path.Combine(Application.persistentDataPath, DataTableManager.DataTablesStorageFolderName);
+
+            DataTablePreferences preferencesData = DataTablePreferencesWindow.LoadPreferencesData();
+
+            if (preferencesData)
+            {
+                if (preferencesData.dataTablesStorageLocation == DataTableStorageLocation.StreamingAssetsPath)
+                {
+                    path = Path.Combine(Application.streamingAssetsPath, DataTableManager.DataTablesStorageFolderName);
+                }
+            }
+
+            return path;
+        }
+
+        /// <summary>
+        /// Gets the database adapter of address map database.
+        /// </summary>
+        /// <returns>BoxDBAdapter The adapter of address map database.</returns>
+        private static BoxDBAdapter GetAddressMapDBAdapter()
+        {
+            string path = GetDatabaseFilesPath();
+            BoxDBAdapter adapter = new BoxDBAdapter(path);
+            adapter.EnsureTable<DataTableAddressMap>(typeof(DataTableAddressMap).Name, DataTableAddressMap.PrimaryKey);
+            adapter.Open();
+            return adapter;
         }
     }
 }

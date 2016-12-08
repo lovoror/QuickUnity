@@ -6,7 +6,7 @@ namespace QuickUnity.Tests.IntegrationTests
     /// Integration test of class ThreadEventDispatcher.
     /// </summary>
     /// <seealso cref="UnityEngine.MonoBehaviour"/>
-    [IntegrationTest.DynamicTestAttribute("EventTests")]
+    [IntegrationTest.DynamicTest("EventTests")]
     [IntegrationTest.SucceedWithAssertions]
     public class ThreadEventDispatcherTest : MonoBehaviour
     {

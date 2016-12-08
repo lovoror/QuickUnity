@@ -56,4 +56,39 @@ namespace QuickUnity.Data
             return base.ToString() + string.Format("({0})", output.Substring(0, output.Length - 2));
         }
     }
+
+    /// <summary>
+    /// The address map of data table.
+    /// </summary>
+    /// <seealso cref="QuickUnity.Data.DataTableRow"/>
+    public class DataTableAddressMap : DataTableRow
+    {
+        /// <summary>
+        /// The primary key.
+        /// </summary>
+        public const string PrimaryKey = "type";
+
+        /// <summary>
+        /// The type.
+        /// </summary>
+        public string type;
+
+        /// <summary>
+        /// The local address.
+        /// </summary>
+        public long localAddress;
+
+        /// <summary>
+        /// The field name of primary key.
+        /// </summary>
+        public string primaryFieldName;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DataTableAddressMap"/> class.
+        /// </summary>
+        public DataTableAddressMap()
+            : base()
+        {
+        }
+    }
 }

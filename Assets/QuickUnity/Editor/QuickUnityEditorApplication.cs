@@ -46,11 +46,6 @@ namespace QuickUnityEditor
         public const string AssetsFolderName = "Assets";
 
         /// <summary>
-        /// The folder name of Resources.
-        /// </summary>
-        public const string ResourcesFolderName = "Resources";
-
-        /// <summary>
         /// The folder name of Scripts.
         /// </summary>
         public const string ScriptsFolderName = "Scripts";

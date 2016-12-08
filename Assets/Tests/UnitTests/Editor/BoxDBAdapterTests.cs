@@ -7,7 +7,7 @@ using UnityEngine;
 namespace QuickUnity.Tests.UnitTests
 {
     /// <summary>
-    /// The value object for testing BoxDBAdapter
+    /// Unit test cases for class BoxDBAdapter.
     /// </summary>
     internal class BoxDBAdapterTestVO
     {
@@ -51,8 +51,8 @@ namespace QuickUnity.Tests.UnitTests
     /// Unit test cases for class BoxDBAdapter.
     /// </summary>
     [TestFixture]
-    [Category("QuickUnity Tests/Unit Tests/BoxDBAdapter Test")]
-    internal class BoxDBAdapterTest
+    [Category("QuickUnity Tests/Unit Tests/BoxDBAdapter Tests")]
+    internal class BoxDBAdapterTests
     {
         /// <summary>
         /// Gets the name of the table.

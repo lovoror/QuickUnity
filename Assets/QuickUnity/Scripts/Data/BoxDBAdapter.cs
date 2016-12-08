@@ -518,7 +518,10 @@ namespace QuickUnity.Data
             {
                 try
                 {
-                    m_dbServer.Close();
+                    if (!m_dbServer.IsClosed())
+                    {
+                        m_dbServer.Close();
+                    }
                 }
                 catch (Exception exception)
                 {

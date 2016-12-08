@@ -7,7 +7,7 @@ namespace QuickUnity.Tests.IntegrationTests
     /// Integration test of Timer with stopOnDisable is true.
     /// </summary>
     /// <seealso cref="UnityEngine.MonoBehaviour"/>
-    [IntegrationTest.DynamicTestAttribute("TimerTests")]
+    [IntegrationTest.DynamicTest("TimerTests")]
     [IntegrationTest.SucceedWithAssertions]
     public class StopOnDisableTimerTest : MonoBehaviour
     {
