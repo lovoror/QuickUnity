@@ -92,11 +92,14 @@ namespace QuickUnity.Data
         }
 
         /// <summary>
-        /// Gets all data table row.
+        /// Gets the data table rows.
         /// </summary>
         /// <typeparam name="T">The type definition of data table row.</typeparam>
-        /// <returns>T[] The object array of type definition.</returns>
-        public T[] GetAllDataTableRow<T>() where T : DataTableRow, new()
+        /// <param name="conditions">The conditions.</param>
+        /// <param name="multiConditionOperators">The multi condition operators.</param>
+        /// <returns>T[] The result list of data table rows.</returns>
+        public T[] GetDataTableRows<T>(List<BoxDBQueryCondition> conditions,
+            List<BoxDBMultiConditionOperator> multiConditionOperators = null) where T : DataTableRow, new()
         {
             DataTableAddressMap addressMap = GetDatabaseAddressMap<T>();
 
@@ -106,12 +109,92 @@ namespace QuickUnity.Data
                 string tableName = addressMap.type;
                 dbAdapter.EnsureTable<T>(tableName, addressMap.primaryFieldName);
                 dbAdapter.Open();
-                List<T> list = dbAdapter.SelectAll<T>(tableName);
+                List<T> results = dbAdapter.Select<T>(tableName, conditions, multiConditionOperators);
                 dbAdapter.Dispose();
-                return list.ToArray();
+
+                if (results != null)
+                {
+                    return results.ToArray();
+                }
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Gets all data table rows.
+        /// </summary>
+        /// <typeparam name="T">The type definition of data table row.</typeparam>
+        /// <returns>T[] The object array of type definition.</returns>
+        public T[] GetAllDataTableRows<T>() where T : DataTableRow, new()
+        {
+            DataTableAddressMap addressMap = GetDatabaseAddressMap<T>();
+
+            if (addressMap != null && addressMap.localAddress > 1)
+            {
+                BoxDBAdapter dbAdapter = new BoxDBAdapter(m_databasePath, addressMap.localAddress);
+                string tableName = addressMap.type;
+                dbAdapter.EnsureTable<T>(tableName, addressMap.primaryFieldName);
+                dbAdapter.Open();
+                List<T> results = dbAdapter.SelectAll<T>(tableName);
+                dbAdapter.Dispose();
+
+                if (results != null)
+                {
+                    return results.ToArray();
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Gets all data table rows count.
+        /// </summary>
+        /// <typeparam name="T">The type definition of data table row.</typeparam>
+        /// <returns>System.Int64 All data table row count.</returns>
+        public long GetAllDataTableRowsCount<T>() where T : DataTableRow, new()
+        {
+            DataTableAddressMap addressMap = GetDatabaseAddressMap<T>();
+
+            if (addressMap != null && addressMap.localAddress > 1)
+            {
+                BoxDBAdapter dbAdapter = new BoxDBAdapter(m_databasePath, addressMap.localAddress);
+                string tableName = addressMap.type;
+                dbAdapter.EnsureTable<T>(tableName, addressMap.primaryFieldName);
+                dbAdapter.Open();
+                long count = dbAdapter.SelectCount(tableName);
+                dbAdapter.Dispose();
+                return count;
+            }
+
+            return 0;
+        }
+
+        /// <summary>
+        /// Gets the data table row count.
+        /// </summary>
+        /// <typeparam name="T">The type definition of data table row.</typeparam>
+        /// <param name="conditions">The conditions.</param>
+        /// <param name="multiConditionOperators">The multi condition operators.</param>
+        /// <returns>System.Int64 The data table row count.</returns>
+        public long GetDataTableRowsCount<T>(List<BoxDBQueryCondition> conditions,
+            List<BoxDBMultiConditionOperator> multiConditionOperators = null) where T : DataTableRow, new()
+        {
+            DataTableAddressMap addressMap = GetDatabaseAddressMap<T>();
+
+            if (addressMap != null && addressMap.localAddress > 1)
+            {
+                BoxDBAdapter dbAdapter = new BoxDBAdapter(m_databasePath, addressMap.localAddress);
+                string tableName = addressMap.type;
+                dbAdapter.EnsureTable<T>(tableName, addressMap.primaryFieldName);
+                dbAdapter.Open();
+                long count = dbAdapter.SelectCount(tableName, conditions, multiConditionOperators);
+                dbAdapter.Dispose();
+                return count;
+            }
+
+            return 0;
         }
 
         /// <summary>

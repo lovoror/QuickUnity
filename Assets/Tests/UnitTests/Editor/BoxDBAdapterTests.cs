@@ -106,21 +106,10 @@ namespace QuickUnity.Tests.UnitTests
                 new BoxDBQueryCondition("id", 2)
             };
 
-            long count = db.SelectCount(tableName, list, BoxDBMultiConditionOperator.Or);
+            long count = db.SelectCount(tableName, list,
+                new List<BoxDBMultiConditionOperator>(new BoxDBMultiConditionOperator[1] { BoxDBMultiConditionOperator.Or }));
             db.Dispose();
             Assert.AreEqual(2, count);
-        }
-
-        /// <summary>
-        /// Test for the method BoxDBAdapterTest.SelectAllCount.
-        /// </summary>
-        [Test]
-        public void SelectAllCountTest()
-        {
-            BoxDBAdapter db = GetBoxDBAdapter();
-            long count = db.SelectAllCount(tableName);
-            db.Dispose();
-            Assert.AreEqual(3, count);
         }
 
         /// <summary>
@@ -149,7 +138,8 @@ namespace QuickUnity.Tests.UnitTests
                 new BoxDBQueryCondition("id", 2)
             };
 
-            List<BoxDBAdapterTestVO> result = db.Select<BoxDBAdapterTestVO>(tableName, list, BoxDBMultiConditionOperator.Or);
+            List<BoxDBAdapterTestVO> result = db.Select<BoxDBAdapterTestVO>(tableName, list,
+                new List<BoxDBMultiConditionOperator>(new BoxDBMultiConditionOperator[1] { BoxDBMultiConditionOperator.Or }));
             db.Dispose();
             Assert.AreEqual(2f, result[0].value);
         }
@@ -201,7 +191,7 @@ namespace QuickUnity.Tests.UnitTests
         {
             BoxDBAdapter db = GetBoxDBAdapter();
             db.Delete(tableName, 3);
-            long count = db.SelectAllCount(tableName);
+            long count = db.SelectCount(tableName);
             Assert.AreEqual(2, count);
         }
 

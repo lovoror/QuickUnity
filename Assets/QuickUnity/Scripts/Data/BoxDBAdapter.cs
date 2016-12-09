@@ -92,6 +92,11 @@ namespace QuickUnity.Data
     public class BoxDBAdapter : IDisposable
     {
         /// <summary>
+        /// The default multi condition operator.
+        /// </summary>
+        private const BoxDBMultiConditionOperator DefaultMultiConditionOperator = BoxDBMultiConditionOperator.And;
+
+        /// <summary>
         /// The query operator map.
         /// </summary>
         private static readonly Dictionary<BoxDBQueryOperator, string> s_queryOpMap =
@@ -243,45 +248,17 @@ namespace QuickUnity.Data
         /// </summary>
         /// <param name="tableName">Name of the table.</param>
         /// <param name="conditions">The conditions.</param>
-        /// <param name="multiConditionOperator">The multi condition operator.</param>
+        /// <param name="multiConditionOperators">The multi condition operators.</param>
         /// <returns>The item count.</returns>
         public long SelectCount(string tableName, List<BoxDBQueryCondition> conditions,
-            BoxDBMultiConditionOperator multiConditionOperator = BoxDBMultiConditionOperator.And)
+            List<BoxDBMultiConditionOperator> multiConditionOperators = null)
         {
             try
             {
                 if (m_database != null)
                 {
                     object[] values;
-                    string sql = GenerateMultiConditionQuerySQL(out values, tableName, conditions, multiConditionOperator);
-
-                    if (!string.IsNullOrEmpty(sql))
-                    {
-                        return m_database.SelectCount(sql, values);
-                    }
-                }
-            }
-            catch (Exception exception)
-            {
-                DebugLogger.LogException(exception);
-            }
-
-            return 0;
-        }
-
-        /// <summary>
-        /// Get all items count.
-        /// </summary>
-        /// <param name="tableName">Name of the table.</param>
-        /// <returns>All items count.</returns>
-        public long SelectAllCount(string tableName)
-        {
-            try
-            {
-                if (m_database != null)
-                {
-                    object[] values;
-                    string sql = GenerateMultiConditionQuerySQL(out values, tableName);
+                    string sql = GenerateMultiConditionQuerySQL(out values, tableName, conditions, multiConditionOperators);
 
                     if (!string.IsNullOrEmpty(sql))
                     {
@@ -327,17 +304,17 @@ namespace QuickUnity.Data
         /// <typeparam name="T">The tyoe of data return.</typeparam>
         /// <param name="tableName">Name of the table.</param>
         /// <param name="conditions">The query conditions.</param>
-        /// <param name="multiConditionOperator">The multi-condition operator.</param>
+        /// <param name="multiConditionOperators">The multi-condition operators.</param>
         /// <returns>The data items.</returns>
         public List<T> Select<T>(string tableName, List<BoxDBQueryCondition> conditions,
-            BoxDBMultiConditionOperator multiConditionOperator = BoxDBMultiConditionOperator.And) where T : class, new()
+            List<BoxDBMultiConditionOperator> multiConditionOperators = null) where T : class, new()
         {
             try
             {
                 if (m_database != null)
                 {
                     object[] values;
-                    string sql = GenerateMultiConditionQuerySQL(out values, tableName, conditions, multiConditionOperator);
+                    string sql = GenerateMultiConditionQuerySQL(out values, tableName, conditions, multiConditionOperators);
 
                     if (!string.IsNullOrEmpty(sql))
                     {
@@ -555,11 +532,10 @@ namespace QuickUnity.Data
         /// <param name="values">The values need to query.</param>
         /// <param name="tableName">Name of the table.</param>
         /// <param name="conditions">The conditions.</param>
-        /// <param name="multiConditionOperator">The multi condition operator.</param>
+        /// <param name="multiConditionOperators">The multi condition operators.</param>
         /// <returns>The SQL statement.</returns>
         protected string GenerateMultiConditionQuerySQL(out object[] values, string tableName,
-            List<BoxDBQueryCondition> conditions = null,
-            BoxDBMultiConditionOperator multiConditionOperator = BoxDBMultiConditionOperator.And)
+            List<BoxDBQueryCondition> conditions = null, List<BoxDBMultiConditionOperator> multiConditionOperators = null)
         {
             string sql = string.Format("from {0}", tableName);
             values = null;
@@ -577,8 +553,14 @@ namespace QuickUnity.Data
 
                     if (i < length - 1)
                     {
-                        string multiConditionOpString = s_multiConditionOpMap[multiConditionOperator];
-                        sql += multiConditionOpString;
+                        BoxDBMultiConditionOperator multiConditionOpString = DefaultMultiConditionOperator;
+
+                        if (multiConditionOperators != null && i < multiConditionOperators.Count)
+                        {
+                            multiConditionOpString = multiConditionOperators[i];
+                        }
+
+                        sql += s_multiConditionOpMap[multiConditionOpString];
                     }
 
                     if (values != null)
