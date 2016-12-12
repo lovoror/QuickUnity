@@ -216,7 +216,6 @@ namespace QuickUnity.Data
         /// </summary>
         private void Initialize()
         {
-            string path = Path.Combine(QuickUnityApplication.ResourcesFolderName, typeof(DataTablePreferences).Name);
             DataTablePreferences[] objects = Resources.FindObjectsOfTypeAll<DataTablePreferences>();
 
             if (objects != null && objects.Length > 0)
