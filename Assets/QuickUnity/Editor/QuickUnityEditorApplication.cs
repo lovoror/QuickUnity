@@ -51,6 +51,11 @@ namespace QuickUnityEditor
         public const string ScriptsFolderName = "Scripts";
 
         /// <summary>
+        /// The extension of meta file.
+        /// </summary>
+        public const string MetaFileExtension = ".meta";
+
+        /// <summary>
         /// The enum of config file domain.
         /// </summary>
         public enum ConfigFileDomain

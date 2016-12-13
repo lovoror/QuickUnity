@@ -37,9 +37,10 @@ namespace QuickUnity.Utilities
         /// <summary>
         /// Deeps clone.
         /// </summary>
+        /// <typeparam name="T">The type definition of clone object.</typeparam>
         /// <param name="source">The object of source.</param>
-        /// <returns>The cloned object.</returns>
-        public static object DeepClone(object source)
+        /// <returns>T The cloned object.</returns>
+        public static T DeepClone<T>(T source)
         {
             BinaryFormatter fomatter = new BinaryFormatter(null, new StreamingContext(StreamingContextStates.Clone));
             MemoryStream stream = new MemoryStream();
@@ -47,7 +48,7 @@ namespace QuickUnity.Utilities
             stream.Position = 0;
             object clone = fomatter.Deserialize(stream);
             stream.Close();
-            return clone;
+            return (T)clone;
         }
 
         /// <summary>

@@ -23,8 +23,11 @@
  */
 
 using QuickUnity;
+using QuickUnity.Core.Miscs;
 using QuickUnity.Data;
+using QuickUnity.Utilities;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
@@ -78,6 +81,15 @@ namespace QuickUnityEditor.Data
             /// </summary>
             public static readonly GUIContent dataRowsStartRowStyle = Utilities.EditorGUIUtility.TextContent("Data rows Start Row", "The start row of data rows. (Should be > 3)");
         }
+
+        /// <summary>
+        /// The map of data tables location.
+        /// </summary>
+        private static readonly Dictionary<DataTableStorageLocation, string> s_dataTablesLocationMap = new Dictionary<DataTableStorageLocation, string>()
+        {
+            { DataTableStorageLocation.PersistentDataPath, Path.Combine(Application.persistentDataPath, DataTableManager.DataTablesStorageFolderName) },
+            { DataTableStorageLocation.StreamingAssetsPath, Path.Combine(Application.streamingAssetsPath, DataTableManager.DataTablesStorageFolderName) }
+        };
 
         /// <summary>
         /// The resources path.
@@ -144,6 +156,11 @@ namespace QuickUnityEditor.Data
         /// </summary>
         private DataTablePreferences m_preferencesData;
 
+        /// <summary>
+        /// The last data tables storage location.
+        /// </summary>
+        private DataTableStorageLocation m_lastDataTablesStorageLocation;
+
         #region Messages
 
         /// <summary>
@@ -161,6 +178,8 @@ namespace QuickUnityEditor.Data
             {
                 m_preferencesData = CreateDefaultPreferencesData();
             }
+
+            m_lastDataTablesStorageLocation = ObjectUtility.DeepClone(m_preferencesData.dataTablesStorageLocation);
         }
 
         /// <summary>
@@ -211,6 +230,11 @@ namespace QuickUnityEditor.Data
         /// </summary>
         private void OnDestroy()
         {
+            if (m_lastDataTablesStorageLocation != m_preferencesData.dataTablesStorageLocation)
+            {
+                MoveDatabaseFiles(m_lastDataTablesStorageLocation, m_preferencesData.dataTablesStorageLocation);
+            }
+
             SavePreferenceData(m_preferencesData);
         }
 
@@ -239,6 +263,71 @@ namespace QuickUnityEditor.Data
             if (labelWidth > EditorGUIUtility.labelWidth)
             {
                 EditorGUIUtility.labelWidth = labelWidth;
+            }
+        }
+
+        /// <summary>
+        /// Moves the database files.
+        /// </summary>
+        /// <param name="oldLocation">The old location.</param>
+        /// <param name="newLocation">The new location.</param>
+        private void MoveDatabaseFiles(DataTableStorageLocation oldLocation, DataTableStorageLocation newLocation)
+        {
+            string oldPath = s_dataTablesLocationMap[oldLocation];
+
+            if (!Directory.Exists(oldPath))
+            {
+                Directory.CreateDirectory(oldPath);
+            }
+
+            string newPath = s_dataTablesLocationMap[newLocation];
+
+            if (!Directory.Exists(newPath))
+            {
+                Directory.CreateDirectory(newPath);
+            }
+
+            string[] filePaths = Directory.GetFiles(oldPath);
+
+            if (filePaths != null && filePaths.Length > 0)
+            {
+                // Move files.
+                for (int i = 0, length = filePaths.Length; i < length; ++i)
+                {
+                    try
+                    {
+                        string filePath = filePaths[i];
+                        FileInfo fileInfo = new FileInfo(filePath);
+
+                        if (fileInfo.Extension != QuickUnityEditorApplication.MetaFileExtension)
+                        {
+                            string destPath = Path.Combine(newPath, fileInfo.Name);
+                            File.Move(filePath, destPath);
+                        }
+                    }
+                    catch (Exception exception)
+                    {
+                        DebugLogger.LogException(exception);
+                    }
+                }
+            }
+
+            // Delete the DataTables folder.
+            try
+            {
+                Directory.Delete(oldPath, true);
+
+                // Delete meta file.
+                string metaFilePath = oldPath + QuickUnityEditorApplication.MetaFileExtension;
+
+                if (File.Exists(metaFilePath))
+                {
+                    File.Delete(metaFilePath);
+                }
+            }
+            catch (Exception exception)
+            {
+                DebugLogger.LogException(exception);
             }
         }
     }
