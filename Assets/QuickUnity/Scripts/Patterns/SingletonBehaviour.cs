@@ -77,6 +77,7 @@ namespace QuickUnity.Patterns
                     {
                         // Make new one.
                         GameObject go = new GameObject();
+                        go.name = typeof(T).Name;
                         instance = go.AddComponent<T>();
                     }
                 }
