@@ -46,9 +46,19 @@ namespace QuickUnityEditor
         public const string AssetsFolderName = "Assets";
 
         /// <summary>
+        /// The folder name of Resources.
+        /// </summary>
+        public const string ResourcesFolderName = "Resources";
+
+        /// <summary>
         /// The folder name of Scripts.
         /// </summary>
         public const string ScriptsFolderName = "Scripts";
+
+        /// <summary>
+        /// The extension of bytes asset file.
+        /// </summary>
+        public const string BytesAssetFileExtension = ".bytes";
 
         /// <summary>
         /// The extension of meta file.

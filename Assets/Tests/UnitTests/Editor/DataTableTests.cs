@@ -80,7 +80,7 @@ namespace QuickUnity.Tests.UnitTests
         {
             long count = DataTableManager.instance.GetAllDataTableRowsCount<TestData>();
             DataTableManager.instance.Dispose();
-            Assert.AreEqual(count, 3L);
+            Assert.AreEqual(3L, count);
         }
 
         /// <summary>

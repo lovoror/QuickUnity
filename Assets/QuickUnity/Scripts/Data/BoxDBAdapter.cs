@@ -152,6 +152,19 @@ namespace QuickUnity.Data
         /// Initializes a new instance of the <see cref="BoxDBAdapter"/> class.
         /// </summary>
         /// <param name="dbPath">The database path.</param>
+        /// <param name="bin">The binary data of database file.</param>
+        public BoxDBAdapter(string dbPath, byte[] bin)
+        {
+            DB.Root(dbPath);
+            m_dbServer = new DB(bin);
+            m_dbServer.MinConfig();
+            m_dbServer.GetConfig().DBConfig.FileIncSize = 1;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BoxDBAdapter"/> class.
+        /// </summary>
+        /// <param name="dbPath">The database path.</param>
         /// <param name="dbDestAddr">The database destnation address.</param>
         public BoxDBAdapter(string dbPath, long dbDestAddr = 1)
         {

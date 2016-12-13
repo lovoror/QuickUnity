@@ -22,6 +22,7 @@
  *	SOFTWARE.
  */
 
+using QuickUnity.Core.Miscs;
 using QuickUnity.Utilities;
 using System;
 using System.IO;
@@ -172,6 +173,27 @@ namespace QuickUnityEditor.Utilities
             }
 
             return assetPaths;
+        }
+
+        /// <summary>
+        /// Deletes the meta file by asset file path.
+        /// </summary>
+        /// <param name="assetFilePath">The asset file path.</param>
+        public static void DeleteMetaFile(string assetFilePath)
+        {
+            string metaFilePath = assetFilePath + QuickUnityEditorApplication.MetaFileExtension;
+
+            if (File.Exists(metaFilePath))
+            {
+                try
+                {
+                    File.Delete(metaFilePath);
+                }
+                catch (Exception exception)
+                {
+                    DebugLogger.LogException(exception);
+                }
+            }
         }
 
         /// <summary>

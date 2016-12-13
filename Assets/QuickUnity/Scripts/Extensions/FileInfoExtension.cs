@@ -22,15 +22,36 @@
  *	SOFTWARE.
  */
 
-namespace QuickUnity.Data
+using System.IO;
+
+namespace QuickUnity.Extensions
 {
     /// <summary>
-    /// The enumeration of data table storage location.
+    /// Extension methods collection for FileInfo.
     /// </summary>
-    public enum DataTableStorageLocation
+    public static class FileInfoExtension
     {
-        ResourcesPath,
-        StreamingAssetsPath,
-        PersistentDataPath
+        /// <summary>
+        /// Renames the file.
+        /// </summary>
+        /// <param name="source">The source object of FileInfo.</param>
+        /// <param name="newFileName">The new file name.</param>
+        public static void Rename(this FileInfo source, string newFileName)
+        {
+            string dirPath = source.DirectoryName;
+            string destPath = Path.Combine(dirPath, newFileName);
+            source.MoveTo(destPath);
+            source = new FileInfo(destPath);
+        }
+
+        /// <summary>
+        /// Gets the file name without extension.
+        /// </summary>
+        /// <param name="source">The source object of FileInfo.</param>
+        /// <returns>System.String The file name without extension.</returns>
+        public static string GetFileNameWithoutExtension(this FileInfo source)
+        {
+            return Path.GetFileNameWithoutExtension(source.FullName);
+        }
     }
 }

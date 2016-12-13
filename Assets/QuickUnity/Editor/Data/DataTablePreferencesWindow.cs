@@ -25,9 +25,9 @@
 using QuickUnity;
 using QuickUnity.Core.Miscs;
 using QuickUnity.Data;
+using QuickUnity.Extensions;
 using QuickUnity.Utilities;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
@@ -81,15 +81,6 @@ namespace QuickUnityEditor.Data
             /// </summary>
             public static readonly GUIContent dataRowsStartRowStyle = Utilities.EditorGUIUtility.TextContent("Data rows Start Row", "The start row of data rows. (Should be > 3)");
         }
-
-        /// <summary>
-        /// The map of data tables location.
-        /// </summary>
-        private static readonly Dictionary<DataTableStorageLocation, string> s_dataTablesLocationMap = new Dictionary<DataTableStorageLocation, string>()
-        {
-            { DataTableStorageLocation.PersistentDataPath, Path.Combine(Application.persistentDataPath, DataTableManager.DataTablesStorageFolderName) },
-            { DataTableStorageLocation.StreamingAssetsPath, Path.Combine(Application.streamingAssetsPath, DataTableManager.DataTablesStorageFolderName) }
-        };
 
         /// <summary>
         /// The resources path.
@@ -273,24 +264,25 @@ namespace QuickUnityEditor.Data
         /// <param name="newLocation">The new location.</param>
         private void MoveDatabaseFiles(DataTableStorageLocation oldLocation, DataTableStorageLocation newLocation)
         {
-            string oldPath = s_dataTablesLocationMap[oldLocation];
+            string oldPath = DataImport.dataTablesLocationMap[oldLocation];
 
             if (!Directory.Exists(oldPath))
             {
                 Directory.CreateDirectory(oldPath);
             }
 
-            string newPath = s_dataTablesLocationMap[newLocation];
-
-            if (!Directory.Exists(newPath))
-            {
-                Directory.CreateDirectory(newPath);
-            }
-
             string[] filePaths = Directory.GetFiles(oldPath);
 
             if (filePaths != null && filePaths.Length > 0)
             {
+                // Check new path.
+                string newPath = DataImport.dataTablesLocationMap[newLocation];
+
+                if (!Directory.Exists(newPath))
+                {
+                    Directory.CreateDirectory(newPath);
+                }
+
                 // Move files.
                 for (int i = 0, length = filePaths.Length; i < length; ++i)
                 {
@@ -299,10 +291,31 @@ namespace QuickUnityEditor.Data
                         string filePath = filePaths[i];
                         FileInfo fileInfo = new FileInfo(filePath);
 
-                        if (fileInfo.Extension != QuickUnityEditorApplication.MetaFileExtension)
+                        if (newLocation == DataTableStorageLocation.ResourcesPath)
                         {
-                            string destPath = Path.Combine(newPath, fileInfo.Name);
-                            File.Move(filePath, destPath);
+                            // Files move to Resources folder need to be renamed.
+                            if (fileInfo.Extension == DataImport.BoxDBFileExtension)
+                            {
+                                string destPath = Path.Combine(newPath, fileInfo.GetFileNameWithoutExtension() + QuickUnityEditorApplication.BytesAssetFileExtension);
+                                File.Move(filePath, destPath);
+                            }
+                        }
+                        else if (oldLocation == DataTableStorageLocation.ResourcesPath)
+                        {
+                            // Files move from Resources folder also need to be renamed.
+                            if (fileInfo.Extension == QuickUnityEditorApplication.BytesAssetFileExtension)
+                            {
+                                string destPath = Path.Combine(newPath, fileInfo.GetFileNameWithoutExtension() + DataImport.BoxDBFileExtension);
+                                File.Move(filePath, destPath);
+                            }
+                        }
+                        else
+                        {
+                            if (fileInfo.Extension != QuickUnityEditorApplication.MetaFileExtension)
+                            {
+                                string destPath = Path.Combine(newPath, fileInfo.Name);
+                                File.Move(filePath, destPath);
+                            }
                         }
                     }
                     catch (Exception exception)
@@ -316,14 +329,7 @@ namespace QuickUnityEditor.Data
             try
             {
                 Directory.Delete(oldPath, true);
-
-                // Delete meta file.
-                string metaFilePath = oldPath + QuickUnityEditorApplication.MetaFileExtension;
-
-                if (File.Exists(metaFilePath))
-                {
-                    File.Delete(metaFilePath);
-                }
+                Utilities.EditorUtility.DeleteMetaFile(oldPath);
             }
             catch (Exception exception)
             {

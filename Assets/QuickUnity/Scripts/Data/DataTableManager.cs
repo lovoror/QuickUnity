@@ -76,10 +76,10 @@ namespace QuickUnity.Data
         public T GetDataTableRow<T>(object primaryValue) where T : DataTableRow, new()
         {
             DataTableAddressMap addressMap = GetDatabaseAddressMap<T>();
+            BoxDBAdapter dbAdapter = GetDatabaseBoxAdapter(addressMap);
 
-            if (addressMap != null && addressMap.localAddress > 1)
+            if (dbAdapter != null)
             {
-                BoxDBAdapter dbAdapter = new BoxDBAdapter(m_databasePath, addressMap.localAddress);
                 string tableName = addressMap.type;
                 dbAdapter.EnsureTable<T>(tableName, addressMap.primaryFieldName);
                 dbAdapter.Open();
@@ -102,10 +102,10 @@ namespace QuickUnity.Data
             List<BoxDBMultiConditionOperator> multiConditionOperators = null) where T : DataTableRow, new()
         {
             DataTableAddressMap addressMap = GetDatabaseAddressMap<T>();
+            BoxDBAdapter dbAdapter = GetDatabaseBoxAdapter(addressMap);
 
-            if (addressMap != null && addressMap.localAddress > 1)
+            if (dbAdapter != null)
             {
-                BoxDBAdapter dbAdapter = new BoxDBAdapter(m_databasePath, addressMap.localAddress);
                 string tableName = addressMap.type;
                 dbAdapter.EnsureTable<T>(tableName, addressMap.primaryFieldName);
                 dbAdapter.Open();
@@ -129,10 +129,10 @@ namespace QuickUnity.Data
         public T[] GetAllDataTableRows<T>() where T : DataTableRow, new()
         {
             DataTableAddressMap addressMap = GetDatabaseAddressMap<T>();
+            BoxDBAdapter dbAdapter = GetDatabaseBoxAdapter(addressMap);
 
-            if (addressMap != null && addressMap.localAddress > 1)
+            if (dbAdapter != null)
             {
-                BoxDBAdapter dbAdapter = new BoxDBAdapter(m_databasePath, addressMap.localAddress);
                 string tableName = addressMap.type;
                 dbAdapter.EnsureTable<T>(tableName, addressMap.primaryFieldName);
                 dbAdapter.Open();
@@ -156,10 +156,10 @@ namespace QuickUnity.Data
         public long GetAllDataTableRowsCount<T>() where T : DataTableRow, new()
         {
             DataTableAddressMap addressMap = GetDatabaseAddressMap<T>();
+            BoxDBAdapter dbAdapter = GetDatabaseBoxAdapter(addressMap);
 
-            if (addressMap != null && addressMap.localAddress > 1)
+            if (dbAdapter != null)
             {
-                BoxDBAdapter dbAdapter = new BoxDBAdapter(m_databasePath, addressMap.localAddress);
                 string tableName = addressMap.type;
                 dbAdapter.EnsureTable<T>(tableName, addressMap.primaryFieldName);
                 dbAdapter.Open();
@@ -182,10 +182,10 @@ namespace QuickUnity.Data
             List<BoxDBMultiConditionOperator> multiConditionOperators = null) where T : DataTableRow, new()
         {
             DataTableAddressMap addressMap = GetDatabaseAddressMap<T>();
+            BoxDBAdapter dbAdapter = GetDatabaseBoxAdapter(addressMap);
 
-            if (addressMap != null && addressMap.localAddress > 1)
+            if (dbAdapter != null)
             {
-                BoxDBAdapter dbAdapter = new BoxDBAdapter(m_databasePath, addressMap.localAddress);
                 string tableName = addressMap.type;
                 dbAdapter.EnsureTable<T>(tableName, addressMap.primaryFieldName);
                 dbAdapter.Open();
@@ -216,12 +216,16 @@ namespace QuickUnity.Data
         /// </summary>
         private void Initialize()
         {
+#if UNITY_EDITOR
+            m_preferencesData = UnityEditor.AssetDatabase.LoadAssetAtPath<DataTablePreferences>("Assets/Resources/DataTablePreferences.asset");
+#else
             DataTablePreferences[] objects = Resources.FindObjectsOfTypeAll<DataTablePreferences>();
 
             if (objects != null && objects.Length > 0)
             {
                 m_preferencesData = objects[0];
             }
+#endif
 
             m_databasePath = Path.Combine(Application.persistentDataPath, DataTablesStorageFolderName);
 
@@ -230,7 +234,20 @@ namespace QuickUnity.Data
                 m_databasePath = Path.Combine(Application.streamingAssetsPath, DataTablesStorageFolderName);
             }
 
-            m_addressMapDBAdapter = new BoxDBAdapter(m_databasePath);
+            if (m_preferencesData && m_preferencesData.dataTablesStorageLocation == DataTableStorageLocation.ResourcesPath)
+            {
+                TextAsset binAsset = Resources.Load<TextAsset>(DataTablesStorageFolderName + "/db1");
+
+                if (binAsset)
+                {
+                    m_addressMapDBAdapter = new BoxDBAdapter(m_databasePath, binAsset.bytes);
+                }
+            }
+            else
+            {
+                m_addressMapDBAdapter = new BoxDBAdapter(m_databasePath);
+            }
+
             m_addressMapDBAdapter.EnsureTable<DataTableAddressMap>(typeof(DataTableAddressMap).Name, DataTableAddressMap.PrimaryKey);
             m_addressMapDBAdapter.Open();
         }
@@ -251,6 +268,35 @@ namespace QuickUnity.Data
 
             DataTableAddressMap addressMap = m_addressMapDBAdapter.Select<DataTableAddressMap>(typeof(DataTableAddressMap).Name, name);
             return addressMap;
+        }
+
+        /// <summary>
+        /// Gets the adapter of database.
+        /// </summary>
+        /// <param name="addressMap">The object of DataTableAddressMap.</param>
+        /// <returns>BoxDBAdapter The adapter of database.</returns>
+        private BoxDBAdapter GetDatabaseBoxAdapter(DataTableAddressMap addressMap)
+        {
+            BoxDBAdapter dbAdapter = null;
+
+            if (addressMap != null && addressMap.localAddress > 1)
+            {
+                if (m_preferencesData.dataTablesStorageLocation == DataTableStorageLocation.ResourcesPath)
+                {
+                    TextAsset binAsset = Resources.Load<TextAsset>(DataTablesStorageFolderName + "/db" + addressMap.localAddress);
+
+                    if (binAsset)
+                    {
+                        dbAdapter = new BoxDBAdapter(m_databasePath, binAsset.bytes);
+                    }
+                }
+                else
+                {
+                    dbAdapter = new BoxDBAdapter(m_databasePath, addressMap.localAddress);
+                }
+            }
+
+            return dbAdapter;
         }
     }
 }
