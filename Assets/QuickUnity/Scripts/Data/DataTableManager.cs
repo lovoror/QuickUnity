@@ -66,6 +66,14 @@ namespace QuickUnity.Data
             Initialize();
         }
 
+        /// <summary>
+        /// Finalizes an instance of the <see cref="DataTableManager"/> class.
+        /// </summary>
+        ~DataTableManager()
+        {
+            Dispose(false);
+        }
+
         #region Public Functions
 
         /// <summary>
@@ -248,11 +256,8 @@ namespace QuickUnity.Data
         /// </summary>
         public void Dispose()
         {
-            if (m_addressMapDBAdapter != null)
-            {
-                m_addressMapDBAdapter.Dispose();
-                m_addressMapDBAdapter = null;
-            }
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         #endregion Public Functions
@@ -343,6 +348,25 @@ namespace QuickUnity.Data
             }
 
             return dbAdapter;
+        }
+
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources.
+        /// </summary>
+        /// <param name="disposing">
+        /// <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only
+        /// unmanaged resources.
+        /// </param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (m_addressMapDBAdapter != null)
+                {
+                    m_addressMapDBAdapter.Dispose();
+                    m_addressMapDBAdapter = null;
+                }
+            }
         }
     }
 }

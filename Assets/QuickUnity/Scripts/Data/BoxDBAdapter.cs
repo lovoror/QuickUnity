@@ -174,6 +174,14 @@ namespace QuickUnity.Data
             m_dbServer.GetConfig().DBConfig.FileIncSize = 1;
         }
 
+        /// <summary>
+        /// Finalizes an instance of the <see cref="BoxDBAdapter"/> class.
+        /// </summary>
+        ~BoxDBAdapter()
+        {
+            Dispose(false);
+        }
+
         #region Public Functions
 
         /// <summary>
@@ -525,14 +533,8 @@ namespace QuickUnity.Data
         /// </summary>
         public void Dispose()
         {
-            Close();
-
-            if (m_dbServer != null)
-            {
-                m_dbServer.Dispose();
-            }
-
-            m_dbServer = null;
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         #endregion Public Functions
@@ -584,6 +586,28 @@ namespace QuickUnity.Data
             }
 
             return sql;
+        }
+
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources.
+        /// </summary>
+        /// <param name="disposing">
+        /// <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only
+        /// unmanaged resources.
+        /// </param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                Close();
+
+                if (m_dbServer != null)
+                {
+                    m_dbServer.Dispose();
+                }
+
+                m_dbServer = null;
+            }
         }
 
         #endregion Protected Functions
