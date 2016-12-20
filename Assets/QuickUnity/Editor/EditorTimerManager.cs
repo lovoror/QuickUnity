@@ -38,7 +38,7 @@ namespace QuickUnityEditor
     /// </summary>
     /// <seealso cref="QuickUnity.Patterns.Singleton{QuickUnityEditor.EditorTimerManager}"/>
     [InitializeOnEditorStartup(int.MaxValue)]
-    public class EditorTimerManager : Singleton<EditorTimerManager>, ITimerManager
+    internal sealed class EditorTimerManager : Singleton<EditorTimerManager>, ITimerManager
     {
         /// <summary>
         /// The last time.

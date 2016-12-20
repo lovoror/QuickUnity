@@ -38,7 +38,7 @@ namespace QuickUnityEditor
     /// Class for managing editor scripts initialization order.
     /// </summary>
     [InitializeOnLoad]
-    internal class EditorInitializationOrderManager
+    internal sealed class EditorInitializationOrderManager
     {
         /// <summary>
         /// The comparer of initialization order.
