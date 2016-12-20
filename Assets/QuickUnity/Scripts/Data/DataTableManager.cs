@@ -22,6 +22,7 @@
  *	SOFTWARE.
  */
 
+using QuickUnity.Core.Miscs;
 using QuickUnity.Patterns;
 using System;
 using System.Collections.Generic;
@@ -77,18 +78,31 @@ namespace QuickUnity.Data
         {
             DataTableAddressMap addressMap = GetDatabaseAddressMap<T>();
             BoxDBAdapter dbAdapter = GetDatabaseBoxAdapter(addressMap);
+            T data = default(T);
 
             if (dbAdapter != null)
             {
-                string tableName = addressMap.type;
-                dbAdapter.EnsureTable<T>(tableName, addressMap.primaryFieldName);
-                dbAdapter.Open();
-                T data = dbAdapter.Select<T>(tableName, primaryValue);
-                dbAdapter.Dispose();
-                return data;
+                try
+                {
+                    string tableName = addressMap.type;
+                    dbAdapter.EnsureTable<T>(tableName, addressMap.primaryFieldName);
+                    dbAdapter.Open();
+                    data = dbAdapter.Select<T>(tableName, primaryValue);
+                }
+                catch (Exception exception)
+                {
+                    DebugLogger.LogException(exception);
+                }
+                finally
+                {
+                    if (dbAdapter != null)
+                    {
+                        dbAdapter.Dispose();
+                    }
+                }
             }
 
-            return default(T);
+            return data;
         }
 
         /// <summary>
@@ -103,22 +117,28 @@ namespace QuickUnity.Data
         {
             DataTableAddressMap addressMap = GetDatabaseAddressMap<T>();
             BoxDBAdapter dbAdapter = GetDatabaseBoxAdapter(addressMap);
+            List<T> results = new List<T>();
 
             if (dbAdapter != null)
             {
-                string tableName = addressMap.type;
-                dbAdapter.EnsureTable<T>(tableName, addressMap.primaryFieldName);
-                dbAdapter.Open();
-                List<T> results = dbAdapter.Select<T>(tableName, conditions, multiConditionOperators);
-                dbAdapter.Dispose();
-
-                if (results != null)
+                try
                 {
-                    return results.ToArray();
+                    string tableName = addressMap.type;
+                    dbAdapter.EnsureTable<T>(tableName, addressMap.primaryFieldName);
+                    dbAdapter.Open();
+                    results = dbAdapter.Select<T>(tableName, conditions, multiConditionOperators);
+                }
+                catch (Exception exception)
+                {
+                    DebugLogger.LogException(exception);
+                }
+                finally
+                {
+                    dbAdapter.Dispose();
                 }
             }
 
-            return null;
+            return results.ToArray();
         }
 
         /// <summary>
@@ -130,22 +150,28 @@ namespace QuickUnity.Data
         {
             DataTableAddressMap addressMap = GetDatabaseAddressMap<T>();
             BoxDBAdapter dbAdapter = GetDatabaseBoxAdapter(addressMap);
+            List<T> results = new List<T>();
 
             if (dbAdapter != null)
             {
-                string tableName = addressMap.type;
-                dbAdapter.EnsureTable<T>(tableName, addressMap.primaryFieldName);
-                dbAdapter.Open();
-                List<T> results = dbAdapter.SelectAll<T>(tableName);
-                dbAdapter.Dispose();
-
-                if (results != null)
+                try
                 {
-                    return results.ToArray();
+                    string tableName = addressMap.type;
+                    dbAdapter.EnsureTable<T>(tableName, addressMap.primaryFieldName);
+                    dbAdapter.Open();
+                    results = dbAdapter.SelectAll<T>(tableName);
+                }
+                catch (Exception exception)
+                {
+                    DebugLogger.LogException(exception);
+                }
+                finally
+                {
+                    dbAdapter.Dispose();
                 }
             }
 
-            return null;
+            return results.ToArray();
         }
 
         /// <summary>
@@ -157,18 +183,28 @@ namespace QuickUnity.Data
         {
             DataTableAddressMap addressMap = GetDatabaseAddressMap<T>();
             BoxDBAdapter dbAdapter = GetDatabaseBoxAdapter(addressMap);
+            long count = 0;
 
             if (dbAdapter != null)
             {
-                string tableName = addressMap.type;
-                dbAdapter.EnsureTable<T>(tableName, addressMap.primaryFieldName);
-                dbAdapter.Open();
-                long count = dbAdapter.SelectCount(tableName);
-                dbAdapter.Dispose();
-                return count;
+                try
+                {
+                    string tableName = addressMap.type;
+                    dbAdapter.EnsureTable<T>(tableName, addressMap.primaryFieldName);
+                    dbAdapter.Open();
+                    count = dbAdapter.SelectCount(tableName);
+                }
+                catch (Exception exception)
+                {
+                    DebugLogger.LogException(exception);
+                }
+                finally
+                {
+                    dbAdapter.Dispose();
+                }
             }
 
-            return 0;
+            return count;
         }
 
         /// <summary>
@@ -183,18 +219,28 @@ namespace QuickUnity.Data
         {
             DataTableAddressMap addressMap = GetDatabaseAddressMap<T>();
             BoxDBAdapter dbAdapter = GetDatabaseBoxAdapter(addressMap);
+            long count = 0;
 
             if (dbAdapter != null)
             {
-                string tableName = addressMap.type;
-                dbAdapter.EnsureTable<T>(tableName, addressMap.primaryFieldName);
-                dbAdapter.Open();
-                long count = dbAdapter.SelectCount(tableName, conditions, multiConditionOperators);
-                dbAdapter.Dispose();
-                return count;
+                try
+                {
+                    string tableName = addressMap.type;
+                    dbAdapter.EnsureTable<T>(tableName, addressMap.primaryFieldName);
+                    dbAdapter.Open();
+                    count = dbAdapter.SelectCount(tableName, conditions, multiConditionOperators);
+                }
+                catch (Exception exception)
+                {
+                    DebugLogger.LogException(exception);
+                }
+                finally
+                {
+                    dbAdapter.Dispose();
+                }
             }
 
-            return 0;
+            return count;
         }
 
         /// <summary>

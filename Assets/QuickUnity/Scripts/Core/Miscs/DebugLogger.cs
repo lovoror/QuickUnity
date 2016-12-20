@@ -275,8 +275,9 @@ namespace QuickUnity.Core.Miscs
                 string filePath = Path.Combine(dirPath, timestamp + LogFileExtension);
                 File.AppendAllText(filePath, message);
             }
-            catch (Exception)
+            catch (Exception exception)
             {
+                Debug.LogException(exception);
             }
         }
 

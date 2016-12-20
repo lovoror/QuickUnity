@@ -52,6 +52,8 @@ namespace QuickUnity.Config
                 return;
             }
 
+            StreamWriter writer = null;
+
             try
             {
                 if (autoGenerateFileName)
@@ -60,14 +62,20 @@ namespace QuickUnity.Config
                     filePath = Path.Combine(filePath, fileName);
                 }
 
-                StreamWriter writer = File.CreateText(filePath);
+                writer = File.CreateText(filePath);
                 Serializer serializer = new Serializer();
                 serializer.Serialize(writer, source);
-                writer.Close();
             }
             catch (Exception exception)
             {
                 DebugLogger.LogException(exception);
+            }
+            finally
+            {
+                if (writer != null)
+                {
+                    writer.Close();
+                }
             }
         }
 
@@ -80,8 +88,12 @@ namespace QuickUnity.Config
         /// <returns>T The object deserialized.</returns>
         public static T Deserialize<T>(string filePath, bool autoParseFileName = true)
         {
+            T result = default(T);
+
             if (!string.IsNullOrEmpty(filePath))
             {
+                StreamReader reader = null;
+
                 try
                 {
                     if (autoParseFileName)
@@ -90,19 +102,24 @@ namespace QuickUnity.Config
                         filePath = Path.Combine(filePath, fileName);
                     }
 
-                    StreamReader reader = File.OpenText(filePath);
+                    reader = File.OpenText(filePath);
                     Deserializer deserializer = new Deserializer();
-                    T obj = deserializer.Deserialize<T>(reader);
-                    reader.Close();
-                    return obj;
+                    result = deserializer.Deserialize<T>(reader);
                 }
                 catch (Exception exception)
                 {
                     DebugLogger.LogException(exception);
                 }
+                finally
+                {
+                    if (reader != null)
+                    {
+                        reader.Close();
+                    }
+                }
             }
 
-            return default(T);
+            return result;
         }
     }
 }

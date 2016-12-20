@@ -485,17 +485,25 @@ namespace QuickUnityEditor.Data
                     EditorUtility.SetDirty(scriptAsset);
                 }
 
+                FileStream fileStream = null;
+                StreamWriter writer = null;
+
                 try
                 {
-                    FileStream fileStream = File.Open(scriptFilePath, FileMode.Create, FileAccess.Write);
-                    StreamWriter writer = new StreamWriter(fileStream, new UTF8Encoding(true));
+                    fileStream = File.Open(scriptFilePath, FileMode.Create, FileAccess.Write);
+                    writer = new StreamWriter(fileStream, new UTF8Encoding(true));
                     writer.Write(tplText);
-                    writer.Close();
-                    writer.Dispose();
                 }
                 catch (Exception exception)
                 {
                     DebugLogger.LogException(exception);
+                }
+                finally
+                {
+                    if (writer != null)
+                    {
+                        writer.Close();
+                    }
                 }
             }
         }
@@ -704,11 +712,12 @@ namespace QuickUnityEditor.Data
                     string filePath = fileInfo.FullName;
                     string fileName = Path.GetFileNameWithoutExtension(fileInfo.Name);
                     string fileExtension = Path.GetExtension(fileInfo.Name).ToLower();
+                    IExcelDataReader excelReader = null;
+                    FileStream fileStream = null;
 
                     try
                     {
-                        FileStream fileStream = File.Open(filePath, FileMode.Open, FileAccess.Read);
-                        IExcelDataReader excelReader = null;
+                        fileStream = File.Open(filePath, FileMode.Open, FileAccess.Read);
 
                         if (fileExtension == ExcelFileExtension)
                         {
@@ -730,14 +739,23 @@ namespace QuickUnityEditor.Data
                             {
                                 action.Invoke(table, fileName, i, length);
                             }
-
-                            fileStream.Close();
-                            fileStream = null;
                         }
                     }
                     catch (Exception exception)
                     {
                         DebugLogger.LogException(exception);
+                    }
+                    finally
+                    {
+                        if (excelReader != null)
+                        {
+                            excelReader.Close();
+                        }
+
+                        if (fileStream != null)
+                        {
+                            fileStream.Close();
+                        }
                     }
                 }
             }
