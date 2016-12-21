@@ -32,7 +32,7 @@ namespace QuickUnity.Utilities
     /// <summary>
     /// The utility class is about reflection functions. This class cannot be inherited.
     /// </summary>
-    public static class ReflectionUtility
+    public sealed class ReflectionUtility
     {
         /// <summary>
         /// Gets the type of type name.

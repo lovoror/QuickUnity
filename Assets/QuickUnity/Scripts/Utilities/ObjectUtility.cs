@@ -32,7 +32,7 @@ namespace QuickUnity.Utilities
     /// <summary>
     /// A class to process object things. This class cannot be inherited.
     /// </summary>
-    public static class ObjectUtility
+    public sealed class ObjectUtility
     {
         /// <summary>
         /// Deeps clone.
