@@ -34,5 +34,10 @@ namespace QuickUnity
         /// The folder name of Resources.
         /// </summary>
         public const string ResourcesFolderName = "Resources";
+
+        /// <summary>
+        /// The asset resource file extension.
+        /// </summary>
+        public const string AssetResourceFileExtension = ".asset";
     }
 }
