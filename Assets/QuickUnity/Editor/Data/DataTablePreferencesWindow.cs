@@ -223,7 +223,7 @@ namespace QuickUnityEditor.Data
         {
             if (m_lastDataTablesStorageLocation != m_preferencesData.dataTablesStorageLocation)
             {
-                MoveDatabaseFiles(m_lastDataTablesStorageLocation, m_preferencesData.dataTablesStorageLocation);
+                MoveDbFiles(m_lastDataTablesStorageLocation, m_preferencesData.dataTablesStorageLocation);
             }
 
             SavePreferenceData(m_preferencesData);
@@ -262,7 +262,7 @@ namespace QuickUnityEditor.Data
         /// </summary>
         /// <param name="oldLocation">The old location.</param>
         /// <param name="newLocation">The new location.</param>
-        private void MoveDatabaseFiles(DataTableStorageLocation oldLocation, DataTableStorageLocation newLocation)
+        private void MoveDbFiles(DataTableStorageLocation oldLocation, DataTableStorageLocation newLocation)
         {
             string oldPath = DataImport.dataTablesLocationMap[oldLocation];
 
@@ -294,7 +294,7 @@ namespace QuickUnityEditor.Data
                         if (newLocation == DataTableStorageLocation.ResourcesPath)
                         {
                             // Files move to Resources folder need to be renamed.
-                            if (fileInfo.Extension == DataImport.BoxDBFileExtension)
+                            if (fileInfo.Extension == DataImport.BoxDbFileExtension)
                             {
                                 string destPath = Path.Combine(newPath, fileInfo.GetFileNameWithoutExtension() + QuickUnityEditorApplication.BytesAssetFileExtension);
                                 File.Move(filePath, destPath);
@@ -305,7 +305,7 @@ namespace QuickUnityEditor.Data
                             // Files move from Resources folder also need to be renamed.
                             if (fileInfo.Extension == QuickUnityEditorApplication.BytesAssetFileExtension)
                             {
-                                string destPath = Path.Combine(newPath, fileInfo.GetFileNameWithoutExtension() + DataImport.BoxDBFileExtension);
+                                string destPath = Path.Combine(newPath, fileInfo.GetFileNameWithoutExtension() + DataImport.BoxDbFileExtension);
                                 File.Move(filePath, destPath);
                             }
                         }

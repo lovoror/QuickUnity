@@ -37,15 +37,15 @@ namespace QuickUnity.Tests.UnitTests
         [Test]
         public void GetDataTableRowsTest()
         {
-            List<BoxDBQueryCondition> conditions = new List<BoxDBQueryCondition>()
+            List<BoxDbQueryCondition> conditions = new List<BoxDbQueryCondition>()
             {
-                new BoxDBQueryCondition("testUShort", (ushort)0),
-                new BoxDBQueryCondition("testBoolean", false)
+                new BoxDbQueryCondition("testUShort", (ushort)0),
+                new BoxDbQueryCondition("testBoolean", false)
             };
 
-            List<BoxDBMultiConditionOperator> multiConditionOps = new List<BoxDBMultiConditionOperator>()
+            List<BoxDbMultiConditionOperator> multiConditionOps = new List<BoxDbMultiConditionOperator>()
             {
-                BoxDBMultiConditionOperator.Or
+                BoxDbMultiConditionOperator.Or
             };
 
             TestData[] results = DataTableManager.instance.GetDataTableRows<TestData>(conditions, multiConditionOps);
@@ -89,17 +89,17 @@ namespace QuickUnity.Tests.UnitTests
         [Test]
         public void GetDataTableRowsCountTest()
         {
-            List<BoxDBQueryCondition> conditions = new List<BoxDBQueryCondition>()
+            List<BoxDbQueryCondition> conditions = new List<BoxDbQueryCondition>()
             {
-                new BoxDBQueryCondition("testInt", 2147483647),
-                new BoxDBQueryCondition("testBoolean", true),
-                new BoxDBQueryCondition("testUInt", (uint)0)
+                new BoxDbQueryCondition("testInt", 2147483647),
+                new BoxDbQueryCondition("testBoolean", true),
+                new BoxDbQueryCondition("testUInt", (uint)0)
             };
 
-            List<BoxDBMultiConditionOperator> multiConditionOps = new List<BoxDBMultiConditionOperator>()
+            List<BoxDbMultiConditionOperator> multiConditionOps = new List<BoxDbMultiConditionOperator>()
             {
-                BoxDBMultiConditionOperator.Or,
-                BoxDBMultiConditionOperator.And
+                BoxDbMultiConditionOperator.Or,
+                BoxDbMultiConditionOperator.And
             };
 
             long count = DataTableManager.instance.GetDataTableRowsCount<TestData>(conditions, multiConditionOps);

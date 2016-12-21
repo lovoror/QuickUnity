@@ -160,12 +160,12 @@ namespace QuickUnityEditor.Data
         /// <summary>
         /// The extension of box database file.
         /// </summary>
-        public const string BoxDBFileExtension = ".box";
+        public const string BoxDbFileExtension = ".box";
 
         /// <summary>
         /// The extension of database configuration file.
         /// </summary>
-        private const string DBConfigFileExtension = ".swp";
+        private const string DbConfigFileExtension = ".swp";
 
         /// <summary>
         /// The map of data tables location.
@@ -246,7 +246,7 @@ namespace QuickUnityEditor.Data
         {
             if (scriptsGenerated && !EditorApplication.isCompiling)
             {
-                GenerateDatabaseFiles();
+                GenerateDbFiles();
                 scriptsGenerated = false;
             }
         }
@@ -511,12 +511,12 @@ namespace QuickUnityEditor.Data
         /// <summary>
         /// Generates the database files.
         /// </summary>
-        private static void GenerateDatabaseFiles()
+        private static void GenerateDbFiles()
         {
             string path = excelFilesFolderPath;
             string namespaceString = GetNamespace();
 
-            DeleteOldDatabaseFiles();
+            DeleteOldDbFiles();
 
             ForEachExcelFile(path, (DataTable table, string fileName, int index, int length) =>
             {
@@ -541,8 +541,8 @@ namespace QuickUnityEditor.Data
                 }
             });
 
-            DeleteDatabaseConfigFiles();
-            RenameDatabaseFiles();
+            DeleteDbConfigFiles();
+            RenameDbFiles();
             AssetDatabase.Refresh();
             AssetDatabase.SaveAssets();
             EditorUtility.ClearProgressBar();
@@ -764,7 +764,7 @@ namespace QuickUnityEditor.Data
         /// <summary>
         /// Deletes old database files.
         /// </summary>
-        private static void DeleteOldDatabaseFiles()
+        private static void DeleteOldDbFiles()
         {
             DataTablePreferences preferencesData = DataTablePreferencesWindow.LoadPreferencesData();
 
@@ -808,17 +808,17 @@ namespace QuickUnityEditor.Data
         private static void SaveData<T>(string tableName, List<DataTableRowInfo> rowInfos, List<DataTableRow> collection, int index) where T : DataTableRow
         {
             string primayFieldName = rowInfos[0].fieldName;
-            BoxDBAdapter addressMapDBAdapter = GetAddressMapDBAdapter();
+            BoxDbAdapter addressMapDbAdapter = GetAddressMapDbAdapter();
             DataTableAddressMap addressMap = new DataTableAddressMap();
             addressMap.type = tableName;
             addressMap.primaryFieldName = primayFieldName;
             addressMap.localAddress = index + 2;
-            bool success = addressMapDBAdapter.Insert(typeof(DataTableAddressMap).Name, addressMap);
+            bool success = addressMapDbAdapter.Insert(typeof(DataTableAddressMap).Name, addressMap);
 
             if (success)
             {
-                string dbPath = GetDatabaseFilesPath();
-                BoxDBAdapter adpater = new BoxDBAdapter(dbPath, addressMap.localAddress);
+                string dbPath = GetDbFilesPath();
+                BoxDbAdapter adpater = new BoxDbAdapter(dbPath, addressMap.localAddress);
                 adpater.EnsureTable<T>(tableName, primayFieldName);
                 adpater.Open();
 
@@ -835,14 +835,14 @@ namespace QuickUnityEditor.Data
                 adpater.Dispose();
             }
 
-            addressMapDBAdapter.Dispose();
+            addressMapDbAdapter.Dispose();
         }
 
         /// <summary>
         /// Gets the database files path.
         /// </summary>
         /// <returns>System.String The database files path.</returns>
-        private static string GetDatabaseFilesPath()
+        private static string GetDbFilesPath()
         {
             string path = dataTablesLocationMap[DataTableStorageLocation.PersistentDataPath];
 
@@ -859,11 +859,11 @@ namespace QuickUnityEditor.Data
         /// <summary>
         /// Gets the database adapter of address map database.
         /// </summary>
-        /// <returns>BoxDBAdapter The adapter of address map database.</returns>
-        private static BoxDBAdapter GetAddressMapDBAdapter()
+        /// <returns>BoxDbAdapter The adapter of address map database.</returns>
+        private static BoxDbAdapter GetAddressMapDbAdapter()
         {
-            string path = GetDatabaseFilesPath();
-            BoxDBAdapter adapter = new BoxDBAdapter(path);
+            string path = GetDbFilesPath();
+            BoxDbAdapter adapter = new BoxDbAdapter(path);
             adapter.EnsureTable<DataTableAddressMap>(typeof(DataTableAddressMap).Name, DataTableAddressMap.PrimaryKey);
             adapter.Open();
             return adapter;
@@ -872,9 +872,9 @@ namespace QuickUnityEditor.Data
         /// <summary>
         /// Deletes the database configuration files.
         /// </summary>
-        private static void DeleteDatabaseConfigFiles()
+        private static void DeleteDbConfigFiles()
         {
-            string path = GetDatabaseFilesPath();
+            string path = GetDbFilesPath();
             string[] filePaths = Directory.GetFiles(path);
 
             if (filePaths != null && filePaths.Length > 0)
@@ -884,7 +884,7 @@ namespace QuickUnityEditor.Data
                     string filePath = filePaths[i];
                     FileInfo fileInfo = new FileInfo(filePath);
 
-                    if (fileInfo.Extension == DBConfigFileExtension)
+                    if (fileInfo.Extension == DbConfigFileExtension)
                     {
                         try
                         {
@@ -903,7 +903,7 @@ namespace QuickUnityEditor.Data
         /// <summary>
         /// If necessary, Renames the database files.
         /// </summary>
-        private static void RenameDatabaseFiles()
+        private static void RenameDbFiles()
         {
             DataTablePreferences preferencesData = DataTablePreferencesWindow.LoadPreferencesData();
 
@@ -917,7 +917,7 @@ namespace QuickUnityEditor.Data
                     string filePath = filePaths[i];
                     FileInfo fileInfo = new FileInfo(filePath);
 
-                    if (fileInfo.Extension == BoxDBFileExtension)
+                    if (fileInfo.Extension == BoxDbFileExtension)
                     {
                         string newFileName = fileInfo.GetFileNameWithoutExtension() + QuickUnityEditorApplication.BytesAssetFileExtension;
                         fileInfo.Rename(newFileName);

@@ -56,7 +56,7 @@ namespace QuickUnity.Data
         /// <summary>
         /// The database adapter of address map.
         /// </summary>
-        private BoxDBAdapter m_addressMapDBAdapter;
+        private BoxDbAdapter m_addressMapDBAdapter;
 
         /// <summary>
         /// Prevents a default instance of the <see cref="DataTableManager"/> class from being created.
@@ -85,7 +85,7 @@ namespace QuickUnity.Data
         public T GetDataTableRow<T>(object primaryValue) where T : DataTableRow, new()
         {
             DataTableAddressMap addressMap = GetDatabaseAddressMap<T>();
-            BoxDBAdapter dbAdapter = GetDatabaseBoxAdapter(addressMap);
+            BoxDbAdapter dbAdapter = GetDatabaseBoxAdapter(addressMap);
             T data = default(T);
 
             if (dbAdapter != null)
@@ -120,11 +120,11 @@ namespace QuickUnity.Data
         /// <param name="conditions">The conditions.</param>
         /// <param name="multiConditionOperators">The multi condition operators.</param>
         /// <returns>T[] The result list of data table rows.</returns>
-        public T[] GetDataTableRows<T>(List<BoxDBQueryCondition> conditions,
-            List<BoxDBMultiConditionOperator> multiConditionOperators = null) where T : DataTableRow, new()
+        public T[] GetDataTableRows<T>(List<BoxDbQueryCondition> conditions,
+            List<BoxDbMultiConditionOperator> multiConditionOperators = null) where T : DataTableRow, new()
         {
             DataTableAddressMap addressMap = GetDatabaseAddressMap<T>();
-            BoxDBAdapter dbAdapter = GetDatabaseBoxAdapter(addressMap);
+            BoxDbAdapter dbAdapter = GetDatabaseBoxAdapter(addressMap);
             List<T> results = new List<T>();
 
             if (dbAdapter != null)
@@ -157,7 +157,7 @@ namespace QuickUnity.Data
         public T[] GetAllDataTableRows<T>() where T : DataTableRow, new()
         {
             DataTableAddressMap addressMap = GetDatabaseAddressMap<T>();
-            BoxDBAdapter dbAdapter = GetDatabaseBoxAdapter(addressMap);
+            BoxDbAdapter dbAdapter = GetDatabaseBoxAdapter(addressMap);
             List<T> results = new List<T>();
 
             if (dbAdapter != null)
@@ -190,7 +190,7 @@ namespace QuickUnity.Data
         public long GetAllDataTableRowsCount<T>() where T : DataTableRow, new()
         {
             DataTableAddressMap addressMap = GetDatabaseAddressMap<T>();
-            BoxDBAdapter dbAdapter = GetDatabaseBoxAdapter(addressMap);
+            BoxDbAdapter dbAdapter = GetDatabaseBoxAdapter(addressMap);
             long count = 0;
 
             if (dbAdapter != null)
@@ -222,11 +222,11 @@ namespace QuickUnity.Data
         /// <param name="conditions">The conditions.</param>
         /// <param name="multiConditionOperators">The multi condition operators.</param>
         /// <returns>System.Int64 The data table row count.</returns>
-        public long GetDataTableRowsCount<T>(List<BoxDBQueryCondition> conditions,
-            List<BoxDBMultiConditionOperator> multiConditionOperators = null) where T : DataTableRow, new()
+        public long GetDataTableRowsCount<T>(List<BoxDbQueryCondition> conditions,
+            List<BoxDbMultiConditionOperator> multiConditionOperators = null) where T : DataTableRow, new()
         {
             DataTableAddressMap addressMap = GetDatabaseAddressMap<T>();
-            BoxDBAdapter dbAdapter = GetDatabaseBoxAdapter(addressMap);
+            BoxDbAdapter dbAdapter = GetDatabaseBoxAdapter(addressMap);
             long count = 0;
 
             if (dbAdapter != null)
@@ -291,12 +291,12 @@ namespace QuickUnity.Data
 
                 if (binAsset)
                 {
-                    m_addressMapDBAdapter = new BoxDBAdapter(m_databasePath, binAsset.bytes);
+                    m_addressMapDBAdapter = new BoxDbAdapter(m_databasePath, binAsset.bytes);
                 }
             }
             else
             {
-                m_addressMapDBAdapter = new BoxDBAdapter(m_databasePath);
+                m_addressMapDBAdapter = new BoxDbAdapter(m_databasePath);
             }
 
             m_addressMapDBAdapter.EnsureTable<DataTableAddressMap>(typeof(DataTableAddressMap).Name, DataTableAddressMap.PrimaryKey);
@@ -325,10 +325,10 @@ namespace QuickUnity.Data
         /// Gets the adapter of database.
         /// </summary>
         /// <param name="addressMap">The object of DataTableAddressMap.</param>
-        /// <returns>BoxDBAdapter The adapter of database.</returns>
-        private BoxDBAdapter GetDatabaseBoxAdapter(DataTableAddressMap addressMap)
+        /// <returns>BoxDbAdapter The adapter of database.</returns>
+        private BoxDbAdapter GetDatabaseBoxAdapter(DataTableAddressMap addressMap)
         {
-            BoxDBAdapter dbAdapter = null;
+            BoxDbAdapter dbAdapter = null;
 
             if (addressMap != null && addressMap.localAddress > 1)
             {
@@ -338,12 +338,12 @@ namespace QuickUnity.Data
 
                     if (binAsset)
                     {
-                        dbAdapter = new BoxDBAdapter(m_databasePath, binAsset.bytes);
+                        dbAdapter = new BoxDbAdapter(m_databasePath, binAsset.bytes);
                     }
                 }
                 else
                 {
-                    dbAdapter = new BoxDBAdapter(m_databasePath, addressMap.localAddress);
+                    dbAdapter = new BoxDbAdapter(m_databasePath, addressMap.localAddress);
                 }
             }
 
