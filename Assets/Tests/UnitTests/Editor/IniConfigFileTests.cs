@@ -4,13 +4,13 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-namespace QuickUnity.Tests.UnitTests.ConfigTests
+namespace QuickUnity.UnitTests
 {
     /// <summary>
     /// Unit test cases for class IniConfigFile.
     /// </summary>
     [TestFixture]
-    [Category("QuickUnity Tests/Unit Tests/IniConfigFile Tests")]
+    [Category("IniConfigFileTests")]
     internal class IniConfigFileTests
     {
         /// <summary>

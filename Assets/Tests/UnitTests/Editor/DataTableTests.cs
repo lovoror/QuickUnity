@@ -3,13 +3,13 @@ using QuickUnity.Data;
 using System.Collections.Generic;
 using Tests.UnitTests.Editor.DataTables;
 
-namespace QuickUnity.Tests.UnitTests
+namespace QuickUnity.UnitTests
 {
     /// <summary>
     /// Unit test cases for class DataTableManager.
     /// </summary>
     [TestFixture]
-    [Category("QuickUnity Tests/Unit Tests/DataTable Test")]
+    [Category("DataTableTest")]
     internal class DataTableTests
     {
         /// <summary>

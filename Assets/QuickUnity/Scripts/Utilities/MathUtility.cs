@@ -22,6 +22,8 @@
  *	SOFTWARE.
  */
 
+using System;
+using System.Security.Cryptography;
 using UnityEngine;
 
 namespace QuickUnity.Utilities
@@ -43,6 +45,18 @@ namespace QuickUnity.Utilities
         }
 
         /// <summary>
+        /// Gets the random seed.
+        /// </summary>
+        /// <returns>System.Int32 The random seed.</returns>
+        public static int GetRandomSeed()
+        {
+            byte[] bytes = new byte[4];
+            RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
+            rng.GetBytes(bytes);
+            return BitConverter.ToInt32(bytes, 0);
+        }
+
+        /// <summary>
         /// Gets the reciprocal of a number.
         /// </summary>
         /// <param name="number">The number.</param>
@@ -58,13 +72,13 @@ namespace QuickUnity.Utilities
         /// <returns>System.Single The Gaussian Random Number.</returns>
         public static float GenGaussianRandomNumber()
         {
-            float x1 = Random.value;
-            float x2 = Random.value;
+            float x1 = UnityEngine.Random.value;
+            float x2 = UnityEngine.Random.value;
 
             if (x1 == 0.0f)
                 x1 = 0.01f;
 
-            return (float)(System.Math.Sqrt(-2.0 * System.Math.Log(x1)) * System.Math.Cos(2.0 * Mathf.PI * x2));
+            return (float)(Math.Sqrt(-2.0 * Math.Log(x1)) * Math.Cos(2.0 * Mathf.PI * x2));
         }
 
         /// <summary>

@@ -22,6 +22,7 @@
  *	SOFTWARE.
  */
 
+using QuickUnity.Utilities;
 using System;
 
 namespace QuickUnity.Core.Security
@@ -56,8 +57,49 @@ namespace QuickUnity.Core.Security
         /// </summary>
         static MemDataSecurity()
         {
-            Random rnd = new Random();
-            s_key = rnd.Next();
+            int seed = MathUtility.GetRandomSeed();
+            Random rnd = new Random(seed);
+            int minValue = int.MinValue;
+            int maxValue = int.MaxValue;
+            s_key = rnd.Next(int.MinValue, int.MaxValue);
+            s_longKey = ((long)s_key << 32) + s_key;
+            s_checkKey = rnd.Next(minValue, maxValue);
+            s_checkLongKey = ((long)s_checkKey << 32) + s_checkKey;
+        }
+
+        /// <summary>
+        /// Encrypts the int value.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <param name="check">The check.</param>
+        /// <returns>System.Int32 The encrypted int value.</returns>
+        public static int EncryptIntValue(int value, out int check)
+        {
+            int result = (value ^ s_key);
+            check = (value ^ s_checkKey);
+            return result;
+        }
+
+        /// <summary>
+        /// Decrypts the int value.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <param name="check">The check.</param>
+        /// <returns>System.Int32 The decrypted int value.</returns>
+        /// <exception cref="QuickUnity.Core.Security.MemDataModificationException">
+        /// If the data has been modified.
+        /// </exception>
+        public static int DecryptIntValue(int value, int check)
+        {
+            int result = value ^ s_key;
+            check ^= s_checkKey;
+
+            if (result == check)
+            {
+                return result;
+            }
+
+            throw new MemDataModificationException();
         }
     }
 }

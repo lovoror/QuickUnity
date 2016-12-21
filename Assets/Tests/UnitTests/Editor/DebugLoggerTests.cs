@@ -2,13 +2,13 @@
 using QuickUnity.Core.Miscs;
 using System;
 
-namespace QuickUnity.Tests.UnitTests
+namespace QuickUnity.UnitTests
 {
     /// <summary>
     /// Unit test cases for class DebugLogger.
     /// </summary>
     [TestFixture]
-    [Category("QuickUnity Tests/Unit Tests/DebugLogger Tests")]
+    [Category("DebugLoggerTests")]
     internal class DebugLoggerTests
     {
         /// <summary>
