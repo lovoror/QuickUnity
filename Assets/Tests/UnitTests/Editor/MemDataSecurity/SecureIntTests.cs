@@ -118,6 +118,90 @@ namespace QuickUnity.UnitTests
         }
 
         /// <summary>
+        /// Test case for operator less than.
+        /// </summary>
+        [Test]
+        public void OperatorLessThanTest()
+        {
+            int a = GetRandomValue();
+            int b = GetRandomValue();
+            SecureInt sintA = new SecureInt(a);
+            SecureInt sintB = new SecureInt(b);
+            bool result = sintA < sintB;
+            Assert.AreEqual(a < b, result);
+        }
+
+        /// <summary>
+        /// Test case for operator greater than.
+        /// </summary>
+        [Test]
+        public void OperatorGreaterThanTest()
+        {
+            int a = GetRandomValue();
+            int b = GetRandomValue();
+            SecureInt sintA = new SecureInt(a);
+            SecureInt sintB = new SecureInt(b);
+            bool result = sintA > sintB;
+            Assert.AreEqual(a > b, result);
+        }
+
+        /// <summary>
+        /// Test case for operator less than or equal to.
+        /// </summary>
+        [Test]
+        public void OperatorLessThanOrEqualToTest()
+        {
+            int a = GetRandomValue();
+            int b = GetRandomValue();
+            SecureInt sintA = new SecureInt(a);
+            SecureInt sintB = new SecureInt(b);
+            bool result = sintA <= sintB;
+            Assert.AreEqual(a <= b, result);
+        }
+
+        /// <summary>
+        /// Test case for operator greater than or equal to.
+        /// </summary>
+        [Test]
+        public void OperatorGreatorThanOrEqualToTest()
+        {
+            int a = GetRandomValue();
+            int b = GetRandomValue();
+            SecureInt sintA = new SecureInt(a);
+            SecureInt sintB = new SecureInt(b);
+            bool result = sintA >= sintB;
+            Assert.AreEqual(a >= b, result);
+        }
+
+        /// <summary>
+        /// Test case for operator equality.
+        /// </summary>
+        [Test]
+        public void OperatorEqualityTest()
+        {
+            int a = GetRandomValue();
+            int b = GetRandomValue();
+            SecureInt sintA = new SecureInt(a);
+            SecureInt sintB = new SecureInt(b);
+            bool result = sintA == sintB;
+            Assert.AreEqual(a == b, result);
+        }
+
+        /// <summary>
+        /// Test case for operator not equal.
+        /// </summary>
+        [Test]
+        public void OperatorNotEqualTest()
+        {
+            int a = GetRandomValue();
+            int b = GetRandomValue();
+            SecureInt sintA = new SecureInt(a);
+            SecureInt sintB = new SecureInt(b);
+            bool result = sintA != sintB;
+            Assert.AreEqual(a != b, result);
+        }
+
+        /// <summary>
         /// Gets the random value.
         /// </summary>
         /// <returns>System.Int32 The random value.</returns>

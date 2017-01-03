@@ -58,6 +58,48 @@ namespace QuickUnity.Core.Security
         }
 
         /// <summary>
+        /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
+        /// </summary>
+        /// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
+        /// <returns>
+        /// <c>true</c> if the specified <see cref="System.Object"/> is equal to this instance;
+        /// otherwise, <c>false</c>.
+        /// </returns>
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+            {
+                return false;
+            }
+
+            if (obj.GetType() != GetType())
+            {
+                return false;
+            }
+
+            SecureInt intObj = (SecureInt)obj;
+
+            if (intObj == this)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Returns a hash code for this instance.
+        /// </summary>
+        /// <returns>
+        /// A hash code for this instance, suitable for use in hashing algorithms and data structures
+        /// like a hash table.
+        /// </returns>
+        public override int GetHashCode()
+        {
+            return m_value.GetHashCode();
+        }
+
+        /// <summary>
         /// Returns a <see cref="System.String"/> that represents this instance.
         /// </summary>
         /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
@@ -115,8 +157,8 @@ namespace QuickUnity.Core.Security
         /// <summary>
         /// Implements the operator +.
         /// </summary>
-        /// <param name="a">The SecureInt a.</param>
-        /// <param name="b">The SecureInt b.</param>
+        /// <param name="a">The SecureInt object a.</param>
+        /// <param name="b">The SecureInt object b.</param>
         /// <returns>The result of the operator.</returns>
         public static SecureInt operator +(SecureInt a, SecureInt b)
         {
@@ -127,8 +169,8 @@ namespace QuickUnity.Core.Security
         /// <summary>
         /// Implements the operator -.
         /// </summary>
-        /// <param name="a">The SecureInt a.</param>
-        /// <param name="b">The SecureInt b.</param>
+        /// <param name="a">The SecureInt object a.</param>
+        /// <param name="b">The SecureInt object b.</param>
         /// <returns>The result of the operator.</returns>
         public static SecureInt operator -(SecureInt a, SecureInt b)
         {
@@ -139,8 +181,8 @@ namespace QuickUnity.Core.Security
         /// <summary>
         /// Implements the operator *.
         /// </summary>
-        /// <param name="a">The SecureInt a.</param>
-        /// <param name="b">The SecureInt b.</param>
+        /// <param name="a">The SecureInt object a.</param>
+        /// <param name="b">The SecureInt object b.</param>
         /// <returns>The result of the operator.</returns>
         public static SecureInt operator *(SecureInt a, SecureInt b)
         {
@@ -151,8 +193,8 @@ namespace QuickUnity.Core.Security
         /// <summary>
         /// Implements the operator /.
         /// </summary>
-        /// <param name="a">The SecureInt a.</param>
-        /// <param name="b">The SecureInt b.</param>
+        /// <param name="a">The SecureInt object a.</param>
+        /// <param name="b">The SecureInt object b.</param>
         /// <returns>The result of the operator.</returns>
         public static SecureInt operator /(SecureInt a, SecureInt b)
         {
@@ -163,13 +205,79 @@ namespace QuickUnity.Core.Security
         /// <summary>
         /// Implements the operator %.
         /// </summary>
-        /// <param name="a">The SecureInt a.</param>
-        /// <param name="b">The SecureInt b.</param>
+        /// <param name="a">The SecureInt object a.</param>
+        /// <param name="b">The SecureInt object b.</param>
         /// <returns>The result of the operator.</returns>
         public static SecureInt operator %(SecureInt a, SecureInt b)
         {
             int result = a.GetValue() % b.GetValue();
             return new SecureInt(result);
+        }
+
+        /// <summary>
+        /// Implements the operator &lt;.
+        /// </summary>
+        /// <param name="a">The SecureInt object a.</param>
+        /// <param name="b">The SecureInt object b.</param>
+        /// <returns>The result of the operator.</returns>
+        public static bool operator <(SecureInt a, SecureInt b)
+        {
+            return a.GetValue() < b.GetValue();
+        }
+
+        /// <summary>
+        /// Implements the operator &gt;.
+        /// </summary>
+        /// <param name="a">The SecureInt object a.</param>
+        /// <param name="b">The SecureInt object b.</param>
+        /// <returns>The result of the operator.</returns>
+        public static bool operator >(SecureInt a, SecureInt b)
+        {
+            return a.GetValue() > b.GetValue();
+        }
+
+        /// <summary>
+        /// Implements the operator &lt;=.
+        /// </summary>
+        /// <param name="a">The SecureInt object a.</param>
+        /// <param name="b">The SecureInt object b.</param>
+        /// <returns>The result of the operator.</returns>
+        public static bool operator <=(SecureInt a, SecureInt b)
+        {
+            return a.GetValue() <= b.GetValue();
+        }
+
+        /// <summary>
+        /// Implements the operator &gt;=.
+        /// </summary>
+        /// <param name="a">The SecureInt object a.</param>
+        /// <param name="b">The SecureInt object b.</param>
+        /// <returns>The result of the operator.</returns>
+        public static bool operator >=(SecureInt a, SecureInt b)
+        {
+            return a.GetValue() >= b.GetValue();
+        }
+
+        /// <summary>
+        /// Implements the operator ==.
+        /// </summary>
+        /// <param name="a">The SecureInt object a.</param>
+        /// <param name="b">The SecureInt object b.</param>
+        /// <returns>The result of the operator.</returns>
+        public static bool operator ==(SecureInt a, SecureInt b)
+        {
+            return a.GetValue() == b.GetValue();
+        }
+
+        /// <summary>
+        /// Implements the operator !=.
+        /// </summary>
+        /// <param name="a">The SecureInt object a.</param>
+        /// <param name="b">The SecureInt object b.</param>
+        /// <returns>The result of the operator.</returns>
+        public static bool operator !=(SecureInt a, SecureInt b)
+        {
+            return a.GetValue() != b.GetValue();
         }
     }
 }
