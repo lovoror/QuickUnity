@@ -254,7 +254,7 @@ namespace QuickUnityEditor.Data
         /// <summary>
         /// Imports data.
         /// </summary>
-        [MenuItem("QuickUnity/DataTable/Import Data...", false, 100)]
+        [MenuItem("Tools/QuickUnity/DataTable/Import Data...", false, 100)]
         [MenuItem("Assets/Import Data...", false, 20)]
         public static void Import()
         {

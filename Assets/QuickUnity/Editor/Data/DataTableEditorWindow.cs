@@ -35,7 +35,7 @@ namespace QuickUnityEditor.Data
         /// <summary>
         /// Shows the editor window.
         /// </summary>
-        [MenuItem("QuickUnity/DataTable/DataTable Editor", false, 101)]
+        [MenuItem("Tools/QuickUnity/DataTable/DataTable Editor", false, 101)]
         public static void ShowEditorWindow()
         {
         }

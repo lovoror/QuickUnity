@@ -39,7 +39,7 @@ namespace QuickUnityEditor
         /// <summary>
         /// Show the about dialog.
         /// </summary>
-        [MenuItem("QuickUnity/Help/About QuickUnity...", false, MenuItemPriority)]
+        [MenuItem("Tools/QuickUnity/Help/About QuickUnity...", false, MenuItemPriority)]
         public static void ShowAboutDialog()
         {
             EditorUtility.DisplayDialog("About QuickUnity",

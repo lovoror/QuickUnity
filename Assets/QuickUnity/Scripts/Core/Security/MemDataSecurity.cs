@@ -135,7 +135,7 @@ namespace QuickUnity.Core.Security
         public static long EncryptLongValue(long value, out long check)
         {
             long result = (value ^ s_longKey);
-            check = (value ^ s_checkKey);
+            check = (value ^ s_checkLongKey);
             return result;
         }
 
@@ -151,7 +151,7 @@ namespace QuickUnity.Core.Security
         public static long DecryptLongValue(long value, long check)
         {
             long result = value ^ s_longKey;
-            check ^= s_checkKey;
+            check ^= s_checkLongKey;
 
             if (result == check)
             {

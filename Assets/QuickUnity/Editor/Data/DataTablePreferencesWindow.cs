@@ -96,7 +96,7 @@ namespace QuickUnityEditor.Data
         /// <summary>
         /// Shows the editor window.
         /// </summary>
-        [MenuItem("QuickUnity/DataTable/Preferences...", false, 102)]
+        [MenuItem("Tools/QuickUnity/DataTable/Preferences...", false, 102)]
         public static void ShowEditorWindow()
         {
             if (s_editorWindow == null)
