@@ -125,5 +125,40 @@ namespace QuickUnity.Core.Security
             int intVal = DecryptIntValue(value, check);
             return BitConverter.ToSingle(BitConverter.GetBytes(intVal), 0);
         }
+
+        /// <summary>
+        /// Encrypts the long value.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <param name="check">The check.</param>
+        /// <returns>System.Int64 The encrypted long value.</returns>
+        public static long EncryptLongValue(long value, out long check)
+        {
+            long result = (value ^ s_longKey);
+            check = (value ^ s_checkKey);
+            return result;
+        }
+
+        /// <summary>
+        /// Decrypts the long value.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <param name="check">The check.</param>
+        /// <returns>System.Int64 The decrypted long value.</returns>
+        /// <exception cref="QuickUnity.Core.Security.MemDataModificationException">
+        /// If the data has been modified.
+        /// </exception>
+        public static long DecryptLongValue(long value, long check)
+        {
+            long result = value ^ s_longKey;
+            check ^= s_checkKey;
+
+            if (result == check)
+            {
+                return result;
+            }
+
+            throw new MemDataModificationException();
+        }
     }
 }
