@@ -1,16 +1,16 @@
 ﻿using NUnit.Framework;
 using QuickUnity.Core.Security;
 using QuickUnity.Utilities;
-using System;
+using UnityEngine;
 
 namespace QuickUnity.UnitTests
 {
     /// <summary>
-    /// Unit test cases for struct SecureInt.
+    /// Unit test cases for struct SecureFloat.
     /// </summary>
     [TestFixture]
-    [Category("SercureIntTests")]
-    internal class SecureIntTests
+    [Category("SercureFloatTests")]
+    internal class SecureFloatTests
     {
         /// <summary>
         /// Simple test.
@@ -18,32 +18,32 @@ namespace QuickUnity.UnitTests
         [Test]
         public void SimpleTest()
         {
-            int source = GetRandomValue();
-            SecureInt result = new SecureInt(source);
-            int value = result.GetValue();
+            float source = GetRandomValue();
+            SecureFloat sfloat = new SecureFloat(source);
+            float value = sfloat.GetValue();
             Assert.AreEqual(source, value);
         }
 
         /// <summary>
-        /// Test case for implicit conversion to int.
+        /// Test case for implicit conversion to float.
         /// </summary>
         [Test]
-        public void ImplicitConversionToIntTest()
+        public void ImplicitConversionToFloatTest()
         {
-            int source = GetRandomValue();
-            SecureInt result = new SecureInt(source);
-            int value = result;
+            float source = GetRandomValue();
+            SecureFloat result = new SecureFloat(source);
+            float value = result;
             Assert.AreEqual(source, value);
         }
 
         /// <summary>
-        /// Test case for implicit conversion to SecureInt.
+        /// Test case for implicit conversion to SecureFloat.
         /// </summary>
         [Test]
-        public void ImplicitConversionToSecureIntTest()
+        public void ImplicitConversionToSecureFloatTest()
         {
-            int source = GetRandomValue();
-            SecureInt result = source;
+            float source = GetRandomValue();
+            SecureFloat result = source;
             Assert.AreEqual(source, result.GetValue());
         }
 
@@ -53,11 +53,11 @@ namespace QuickUnity.UnitTests
         [Test]
         public void OperatorAdditionTest()
         {
-            int a = GetRandomValue();
-            int b = GetRandomValue();
-            SecureInt resultA = new SecureInt(a);
-            SecureInt resultB = new SecureInt(b);
-            SecureInt result = resultA + resultB;
+            float a = GetRandomValue();
+            float b = GetRandomValue();
+            SecureFloat resultA = new SecureFloat(a);
+            SecureFloat resultB = new SecureFloat(b);
+            SecureFloat result = resultA + resultB;
             Assert.AreEqual(a + b, result.GetValue());
         }
 
@@ -67,11 +67,11 @@ namespace QuickUnity.UnitTests
         [Test]
         public void OperatorSubtractionTest()
         {
-            int a = GetRandomValue();
-            int b = GetRandomValue();
-            SecureInt resultA = new SecureInt(a);
-            SecureInt resultB = new SecureInt(b);
-            SecureInt result = resultA - resultB;
+            float a = GetRandomValue();
+            float b = GetRandomValue();
+            SecureFloat resultA = new SecureFloat(a);
+            SecureFloat resultB = new SecureFloat(b);
+            SecureFloat result = resultA - resultB;
             Assert.AreEqual(a - b, result.GetValue());
         }
 
@@ -81,11 +81,11 @@ namespace QuickUnity.UnitTests
         [Test]
         public void OperatorMultiplicationTest()
         {
-            int a = GetRandomValue();
-            int b = GetRandomValue();
-            SecureInt resultA = new SecureInt(a);
-            SecureInt resultB = new SecureInt(b);
-            SecureInt result = resultA * resultB;
+            float a = GetRandomValue();
+            float b = GetRandomValue();
+            SecureFloat resultA = new SecureFloat(a);
+            SecureFloat resultB = new SecureFloat(b);
+            SecureFloat result = resultA * resultB;
             Assert.AreEqual(a * b, result.GetValue());
         }
 
@@ -95,11 +95,11 @@ namespace QuickUnity.UnitTests
         [Test]
         public void OperatorDivisionTest()
         {
-            int a = GetRandomValue();
-            int b = GetRandomValue();
-            SecureInt resultA = new SecureInt(a);
-            SecureInt resultB = new SecureInt(b);
-            SecureInt result = resultA / resultB;
+            float a = GetRandomValue();
+            float b = GetRandomValue();
+            SecureFloat resultA = new SecureFloat(a);
+            SecureFloat resultB = new SecureFloat(b);
+            SecureFloat result = resultA / resultB;
             Assert.AreEqual(a / b, result.GetValue());
         }
 
@@ -109,11 +109,11 @@ namespace QuickUnity.UnitTests
         [Test]
         public void OperatorModulusTest()
         {
-            int a = GetRandomValue();
-            int b = GetRandomValue();
-            SecureInt resultA = new SecureInt(a);
-            SecureInt resultB = new SecureInt(b);
-            SecureInt result = resultA % resultB;
+            float a = GetRandomValue();
+            float b = GetRandomValue();
+            SecureFloat resultA = new SecureFloat(a);
+            SecureFloat resultB = new SecureFloat(b);
+            SecureFloat result = resultA % resultB;
             Assert.AreEqual(a % b, result.GetValue());
         }
 
@@ -123,10 +123,10 @@ namespace QuickUnity.UnitTests
         [Test]
         public void OperatorLessThanTest()
         {
-            int a = GetRandomValue();
-            int b = GetRandomValue();
-            SecureInt resultA = new SecureInt(a);
-            SecureInt resultB = new SecureInt(b);
+            float a = GetRandomValue();
+            float b = GetRandomValue();
+            SecureFloat resultA = new SecureFloat(a);
+            SecureFloat resultB = new SecureFloat(b);
             bool result = resultA < resultB;
             Assert.AreEqual(a < b, result);
         }
@@ -137,10 +137,10 @@ namespace QuickUnity.UnitTests
         [Test]
         public void OperatorGreaterThanTest()
         {
-            int a = GetRandomValue();
-            int b = GetRandomValue();
-            SecureInt resultA = new SecureInt(a);
-            SecureInt resultB = new SecureInt(b);
+            float a = GetRandomValue();
+            float b = GetRandomValue();
+            SecureFloat resultA = new SecureFloat(a);
+            SecureFloat resultB = new SecureFloat(b);
             bool result = resultA > resultB;
             Assert.AreEqual(a > b, result);
         }
@@ -151,10 +151,10 @@ namespace QuickUnity.UnitTests
         [Test]
         public void OperatorLessThanOrEqualToTest()
         {
-            int a = GetRandomValue();
-            int b = GetRandomValue();
-            SecureInt resultA = new SecureInt(a);
-            SecureInt resultB = new SecureInt(b);
+            float a = GetRandomValue();
+            float b = GetRandomValue();
+            SecureFloat resultA = new SecureFloat(a);
+            SecureFloat resultB = new SecureFloat(b);
             bool result = resultA <= resultB;
             Assert.AreEqual(a <= b, result);
         }
@@ -165,10 +165,10 @@ namespace QuickUnity.UnitTests
         [Test]
         public void OperatorGreatorThanOrEqualToTest()
         {
-            int a = GetRandomValue();
-            int b = GetRandomValue();
-            SecureInt resultA = new SecureInt(a);
-            SecureInt resultB = new SecureInt(b);
+            float a = GetRandomValue();
+            float b = GetRandomValue();
+            SecureFloat resultA = new SecureFloat(a);
+            SecureFloat resultB = new SecureFloat(b);
             bool result = resultA >= resultB;
             Assert.AreEqual(a >= b, result);
         }
@@ -179,10 +179,10 @@ namespace QuickUnity.UnitTests
         [Test]
         public void OperatorEqualityTest()
         {
-            int a = GetRandomValue();
-            int b = GetRandomValue();
-            SecureInt resultA = new SecureInt(a);
-            SecureInt resultB = new SecureInt(b);
+            float a = GetRandomValue();
+            float b = GetRandomValue();
+            SecureFloat resultA = new SecureFloat(a);
+            SecureFloat resultB = new SecureFloat(b);
             bool result = resultA == resultB;
             Assert.AreEqual(a == b, result);
         }
@@ -193,10 +193,10 @@ namespace QuickUnity.UnitTests
         [Test]
         public void OperatorNotEqualTest()
         {
-            int a = GetRandomValue();
-            int b = GetRandomValue();
-            SecureInt resultA = new SecureInt(a);
-            SecureInt resultB = new SecureInt(b);
+            float a = GetRandomValue();
+            float b = GetRandomValue();
+            SecureFloat resultA = new SecureFloat(a);
+            SecureFloat resultB = new SecureFloat(b);
             bool result = resultA != resultB;
             Assert.AreEqual(a != b, result);
         }
@@ -204,12 +204,11 @@ namespace QuickUnity.UnitTests
         /// <summary>
         /// Gets the random value.
         /// </summary>
-        /// <returns>System.Int32 The random value.</returns>
-        private int GetRandomValue()
+        /// <returns>System.Single The random float value.</returns>
+        private float GetRandomValue()
         {
-            int seed = MathUtility.GetRandomSeed();
-            Random rnd = new Random(seed);
-            return rnd.Next(int.MinValue, int.MaxValue);
+            Random.InitState(MathUtility.GetRandomSeed());
+            return Random.Range(float.MinValue, float.MaxValue);
         }
     }
 }

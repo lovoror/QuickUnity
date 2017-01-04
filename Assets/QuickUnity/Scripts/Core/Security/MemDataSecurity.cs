@@ -101,5 +101,29 @@ namespace QuickUnity.Core.Security
 
             throw new MemDataModificationException();
         }
+
+        /// <summary>
+        /// Encrypts the float value.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <param name="check">The check.</param>
+        /// <returns>System.Int32 The encrypted float value.</returns>
+        public static int EncryptFloatValue(float value, out int check)
+        {
+            int intVal = BitConverter.ToInt32(BitConverter.GetBytes(value), 0);
+            return EncryptIntValue(intVal, out check);
+        }
+
+        /// <summary>
+        /// Decrypts the float value.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <param name="check">The check.</param>
+        /// <returns>System.Single The encrypted float value.</returns>
+        public static float DecryptFloatValue(int value, int check)
+        {
+            int intVal = DecryptIntValue(value, check);
+            return BitConverter.ToSingle(BitConverter.GetBytes(intVal), 0);
+        }
     }
 }

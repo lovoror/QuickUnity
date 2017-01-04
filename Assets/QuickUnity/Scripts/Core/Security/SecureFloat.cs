@@ -25,9 +25,9 @@
 namespace QuickUnity.Core.Security
 {
     /// <summary>
-    /// Represents int value that should be protected.
+    /// Represents float value that should be protected.
     /// </summary>
-    public struct SecureInt
+    public struct SecureFloat
     {
         /// <summary>
         /// The encrypted int value.
@@ -43,18 +43,18 @@ namespace QuickUnity.Core.Security
         /// Initializes a new instance of the <see cref="SecureInt"/> struct.
         /// </summary>
         /// <param name="value">The value.</param>
-        public SecureInt(int value)
+        public SecureFloat(float value)
         {
-            m_value = MemDataSecurity.EncryptIntValue(value, out m_check);
+            m_value = MemDataSecurity.EncryptFloatValue(value, out m_check);
         }
 
         /// <summary>
-        /// Gets the original int value.
+        /// Gets the original float value.
         /// </summary>
-        /// <returns>System.Int32 The original int value.</returns>
-        public int GetValue()
+        /// <returns>System.Single The original float value.</returns>
+        public float GetValue()
         {
-            return MemDataSecurity.DecryptIntValue(m_value, m_check);
+            return MemDataSecurity.DecryptFloatValue(m_value, m_check);
         }
 
         /// <summary>
@@ -77,9 +77,9 @@ namespace QuickUnity.Core.Security
                 return false;
             }
 
-            SecureInt result = (SecureInt)obj;
+            SecureFloat floatObj = (SecureFloat)obj;
 
-            if (result == this)
+            if (floatObj == this)
             {
                 return true;
             }
@@ -109,33 +109,33 @@ namespace QuickUnity.Core.Security
         }
 
         /// <summary>
-        /// Performs an implicit conversion from <see cref="SecureInt"/> to <see cref="System.Int32"/>.
+        /// Performs an implicit conversion from <see cref="SecureFloat"/> to <see cref="System.Single"/>.
         /// </summary>
-        /// <param name="value">The value of SercureInt.</param>
+        /// <param name="value">The value of SecureFloat.</param>
         /// <returns>The result of the conversion.</returns>
-        public static implicit operator int(SecureInt value)
+        public static implicit operator float(SecureFloat value)
         {
             return value.GetValue();
         }
 
         /// <summary>
-        /// Performs an implicit conversion from <see cref="System.Int32"/> to <see cref="SecureInt"/>.
+        /// Performs an implicit conversion from <see cref="System.Single"/> to <see cref="SecureFloat"/>.
         /// </summary>
-        /// <param name="value">The int value.</param>
+        /// <param name="value">The float value.</param>
         /// <returns>The result of the conversion.</returns>
-        public static implicit operator SecureInt(int value)
+        public static implicit operator SecureFloat(float value)
         {
-            return new SecureInt(value);
+            return new SecureFloat(value);
         }
 
         /// <summary>
         /// Implements the operator ++.
         /// </summary>
-        /// <param name="value">The SecureInt value.</param>
+        /// <param name="value">The SecureFloat value.</param>
         /// <returns>The result of the operator.</returns>
-        public static SecureInt operator ++(SecureInt value)
+        public static SecureFloat operator ++(SecureFloat value)
         {
-            SecureInt result = new SecureInt(value + 1);
+            SecureFloat result = new SecureFloat(value + 1);
             value.m_check = result.m_check;
             value.m_value = result.m_value;
             return result;
@@ -144,11 +144,11 @@ namespace QuickUnity.Core.Security
         /// <summary>
         /// Implements the operator --.
         /// </summary>
-        /// <param name="value">The SecureInt value.</param>
+        /// <param name="value">The SecureFloat value.</param>
         /// <returns>The result of the operator.</returns>
-        public static SecureInt operator --(SecureInt value)
+        public static SecureFloat operator --(SecureFloat value)
         {
-            SecureInt result = new SecureInt(value - 1);
+            SecureFloat result = new SecureFloat(value - 1);
             value.m_check = result.m_check;
             value.m_value = result.m_value;
             return result;
@@ -157,70 +157,70 @@ namespace QuickUnity.Core.Security
         /// <summary>
         /// Implements the operator +.
         /// </summary>
-        /// <param name="a">The SecureInt object a.</param>
-        /// <param name="b">The SecureInt object b.</param>
+        /// <param name="a">The SecureFloat object a.</param>
+        /// <param name="b">The SecureFloat object b.</param>
         /// <returns>The result of the operator.</returns>
-        public static SecureInt operator +(SecureInt a, SecureInt b)
+        public static SecureFloat operator +(SecureFloat a, SecureFloat b)
         {
-            int result = a.GetValue() + b.GetValue();
-            return new SecureInt(result);
+            float result = a.GetValue() + b.GetValue();
+            return new SecureFloat(result);
         }
 
         /// <summary>
         /// Implements the operator -.
         /// </summary>
-        /// <param name="a">The SecureInt object a.</param>
-        /// <param name="b">The SecureInt object b.</param>
+        /// <param name="a">The SecureFloat object a.</param>
+        /// <param name="b">The SecureFloat object b.</param>
         /// <returns>The result of the operator.</returns>
-        public static SecureInt operator -(SecureInt a, SecureInt b)
+        public static SecureFloat operator -(SecureFloat a, SecureFloat b)
         {
-            int result = a.GetValue() - b.GetValue();
-            return new SecureInt(result);
+            float result = a.GetValue() - b.GetValue();
+            return new SecureFloat(result);
         }
 
         /// <summary>
         /// Implements the operator *.
         /// </summary>
-        /// <param name="a">The SecureInt object a.</param>
-        /// <param name="b">The SecureInt object b.</param>
+        /// <param name="a">The SecureFloat object a.</param>
+        /// <param name="b">The SecureFloat object b.</param>
         /// <returns>The result of the operator.</returns>
-        public static SecureInt operator *(SecureInt a, SecureInt b)
+        public static SecureFloat operator *(SecureFloat a, SecureFloat b)
         {
-            int result = a.GetValue() * b.GetValue();
-            return new SecureInt(result);
+            float result = a.GetValue() * b.GetValue();
+            return new SecureFloat(result);
         }
 
         /// <summary>
         /// Implements the operator /.
         /// </summary>
-        /// <param name="a">The SecureInt object a.</param>
-        /// <param name="b">The SecureInt object b.</param>
+        /// <param name="a">The SecureFloat object a.</param>
+        /// <param name="b">The SecureFloat object b.</param>
         /// <returns>The result of the operator.</returns>
-        public static SecureInt operator /(SecureInt a, SecureInt b)
+        public static SecureFloat operator /(SecureFloat a, SecureFloat b)
         {
-            int result = a.GetValue() / b.GetValue();
-            return new SecureInt(result);
+            float result = a.GetValue() / b.GetValue();
+            return new SecureFloat(result);
         }
 
         /// <summary>
         /// Implements the operator %.
         /// </summary>
-        /// <param name="a">The SecureInt object a.</param>
-        /// <param name="b">The SecureInt object b.</param>
+        /// <param name="a">The SecureFloat object a.</param>
+        /// <param name="b">The SecureFloat object b.</param>
         /// <returns>The result of the operator.</returns>
-        public static SecureInt operator %(SecureInt a, SecureInt b)
+        public static SecureFloat operator %(SecureFloat a, SecureFloat b)
         {
-            int result = a.GetValue() % b.GetValue();
-            return new SecureInt(result);
+            float result = a.GetValue() % b.GetValue();
+            return new SecureFloat(result);
         }
 
         /// <summary>
         /// Implements the operator &lt;.
         /// </summary>
-        /// <param name="a">The SecureInt object a.</param>
-        /// <param name="b">The SecureInt object b.</param>
+        /// <param name="a">The SecureFloat object a.</param>
+        /// <param name="b">The SecureFloat object b.</param>
         /// <returns>The result of the operator.</returns>
-        public static bool operator <(SecureInt a, SecureInt b)
+        public static bool operator <(SecureFloat a, SecureFloat b)
         {
             return a.GetValue() < b.GetValue();
         }
@@ -228,10 +228,10 @@ namespace QuickUnity.Core.Security
         /// <summary>
         /// Implements the operator &gt;.
         /// </summary>
-        /// <param name="a">The SecureInt object a.</param>
-        /// <param name="b">The SecureInt object b.</param>
+        /// <param name="a">The SecureFloat object a.</param>
+        /// <param name="b">The SecureFloat object b.</param>
         /// <returns>The result of the operator.</returns>
-        public static bool operator >(SecureInt a, SecureInt b)
+        public static bool operator >(SecureFloat a, SecureFloat b)
         {
             return a.GetValue() > b.GetValue();
         }
@@ -239,10 +239,10 @@ namespace QuickUnity.Core.Security
         /// <summary>
         /// Implements the operator &lt;=.
         /// </summary>
-        /// <param name="a">The SecureInt object a.</param>
-        /// <param name="b">The SecureInt object b.</param>
+        /// <param name="a">The SecureFloat object a.</param>
+        /// <param name="b">The SecureFloat object b.</param>
         /// <returns>The result of the operator.</returns>
-        public static bool operator <=(SecureInt a, SecureInt b)
+        public static bool operator <=(SecureFloat a, SecureFloat b)
         {
             return a.GetValue() <= b.GetValue();
         }
@@ -250,10 +250,10 @@ namespace QuickUnity.Core.Security
         /// <summary>
         /// Implements the operator &gt;=.
         /// </summary>
-        /// <param name="a">The SecureInt object a.</param>
-        /// <param name="b">The SecureInt object b.</param>
+        /// <param name="a">The SecureFloat object a.</param>
+        /// <param name="b">The SecureFloat object b.</param>
         /// <returns>The result of the operator.</returns>
-        public static bool operator >=(SecureInt a, SecureInt b)
+        public static bool operator >=(SecureFloat a, SecureFloat b)
         {
             return a.GetValue() >= b.GetValue();
         }
@@ -261,10 +261,10 @@ namespace QuickUnity.Core.Security
         /// <summary>
         /// Implements the operator ==.
         /// </summary>
-        /// <param name="a">The SecureInt object a.</param>
-        /// <param name="b">The SecureInt object b.</param>
+        /// <param name="a">The SecureFloat object a.</param>
+        /// <param name="b">The SecureFloat object b.</param>
         /// <returns>The result of the operator.</returns>
-        public static bool operator ==(SecureInt a, SecureInt b)
+        public static bool operator ==(SecureFloat a, SecureFloat b)
         {
             return a.GetValue() == b.GetValue();
         }
@@ -272,10 +272,10 @@ namespace QuickUnity.Core.Security
         /// <summary>
         /// Implements the operator !=.
         /// </summary>
-        /// <param name="a">The SecureInt object a.</param>
-        /// <param name="b">The SecureInt object b.</param>
+        /// <param name="a">The SecureFloat object a.</param>
+        /// <param name="b">The SecureFloat object b.</param>
         /// <returns>The result of the operator.</returns>
-        public static bool operator !=(SecureInt a, SecureInt b)
+        public static bool operator !=(SecureFloat a, SecureFloat b)
         {
             return a.GetValue() != b.GetValue();
         }
