@@ -110,8 +110,8 @@ namespace QuickUnity.Core.Security
         /// <returns>System.Int32 The encrypted float value.</returns>
         public static int EncryptFloatValue(float value, out int check)
         {
-            int intVal = BitConverter.ToInt32(BitConverter.GetBytes(value), 0);
-            return EncryptIntValue(intVal, out check);
+            int result = BitConverter.ToInt32(BitConverter.GetBytes(value), 0);
+            return EncryptIntValue(result, out check);
         }
 
         /// <summary>
@@ -122,8 +122,8 @@ namespace QuickUnity.Core.Security
         /// <returns>System.Single The encrypted float value.</returns>
         public static float DecryptFloatValue(int value, int check)
         {
-            int intVal = DecryptIntValue(value, check);
-            return BitConverter.ToSingle(BitConverter.GetBytes(intVal), 0);
+            int result = DecryptIntValue(value, check);
+            return BitConverter.ToSingle(BitConverter.GetBytes(result), 0);
         }
 
         /// <summary>
@@ -159,6 +159,30 @@ namespace QuickUnity.Core.Security
             }
 
             throw new MemDataModificationException();
+        }
+
+        /// <summary>
+        /// Encrypts the double value.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <param name="check">The check.</param>
+        /// <returns>System.Int64 The encrypted double value.</returns>
+        public static long EncryptDoubleValue(double value, out long check)
+        {
+            long result = BitConverter.DoubleToInt64Bits(value);
+            return EncryptLongValue(result, out check);
+        }
+
+        /// <summary>
+        /// Decrypts the double value.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <param name="check">The check.</param>
+        /// <returns>System.Double The decrypted double value.</returns>
+        public static double DecryptDoubleValue(long value, long check)
+        {
+            long result = DecryptLongValue(value, check);
+            return BitConverter.Int64BitsToDouble(result);
         }
     }
 }
