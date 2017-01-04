@@ -22,6 +22,8 @@
  *	SOFTWARE.
  */
 
+using System;
+
 namespace QuickUnity.Core.Security
 {
     /// <summary>
@@ -126,6 +128,36 @@ namespace QuickUnity.Core.Security
         public static implicit operator SecureDouble(double value)
         {
             return new SecureDouble(value);
+        }
+
+        /// <summary>
+        /// Performs an implicit conversion from <see cref="SecureInt"/> to <see cref="SecureDouble"/>.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>The result of the conversion.</returns>
+        public static implicit operator SecureDouble(SecureInt value)
+        {
+            return new SecureDouble(value.GetValue());
+        }
+
+        /// <summary>
+        /// Performs an implicit conversion from <see cref="SecureLong"/> to <see cref="SecureDouble"/>.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>The result of the conversion.</returns>
+        public static implicit operator SecureDouble(SecureLong value)
+        {
+            return new SecureDouble(value.GetValue());
+        }
+
+        /// <summary>
+        /// Performs an implicit conversion from <see cref="SecureFloat"/> to <see cref="SecureDouble"/>.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>The result of the conversion.</returns>
+        public static implicit operator SecureDouble(SecureFloat value)
+        {
+            return new SecureDouble(value.GetValue());
         }
 
         /// <summary>

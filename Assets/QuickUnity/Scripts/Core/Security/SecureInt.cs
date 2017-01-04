@@ -22,6 +22,8 @@
  *	SOFTWARE.
  */
 
+using System;
+
 namespace QuickUnity.Core.Security
 {
     /// <summary>
@@ -111,11 +113,44 @@ namespace QuickUnity.Core.Security
         /// <summary>
         /// Performs an implicit conversion from <see cref="SecureInt"/> to <see cref="System.Int32"/>.
         /// </summary>
-        /// <param name="value">The value of SercureInt.</param>
+        /// <param name="value">The value.</param>
         /// <returns>The result of the conversion.</returns>
         public static implicit operator int(SecureInt value)
         {
             return value.GetValue();
+        }
+
+        /// <summary>
+        /// Performs an implicit conversion from <see cref="SecureInt"/> to <see cref="System.Int64"/>.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>The result of the conversion.</returns>
+        public static implicit operator long(SecureInt value)
+        {
+            long result = value.GetValue();
+            return result;
+        }
+
+        /// <summary>
+        /// Performs an implicit conversion from <see cref="SecureInt"/> to <see cref="System.Single"/>.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>The result of the conversion.</returns>
+        public static implicit operator float(SecureInt value)
+        {
+            float result = value.GetValue();
+            return result;
+        }
+
+        /// <summary>
+        /// Performs an implicit conversion from <see cref="SecureInt"/> to <see cref="System.Double"/>.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>The result of the conversion.</returns>
+        public static implicit operator double(SecureInt value)
+        {
+            double result = value.GetValue();
+            return result;
         }
 
         /// <summary>

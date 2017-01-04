@@ -119,6 +119,17 @@ namespace QuickUnity.Core.Security
         }
 
         /// <summary>
+        /// Performs an implicit conversion from <see cref="SecureFloat"/> to <see cref="System.Double"/>.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>The result of the conversion.</returns>
+        public static implicit operator double(SecureFloat value)
+        {
+            double result = value.GetValue();
+            return result;
+        }
+
+        /// <summary>
         /// Performs an implicit conversion from <see cref="System.Single"/> to <see cref="SecureFloat"/>.
         /// </summary>
         /// <param name="value">The float value.</param>
@@ -126,6 +137,26 @@ namespace QuickUnity.Core.Security
         public static implicit operator SecureFloat(float value)
         {
             return new SecureFloat(value);
+        }
+
+        /// <summary>
+        /// Performs an implicit conversion from <see cref="SecureInt"/> to <see cref="SecureFloat"/>.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>The result of the conversion.</returns>
+        public static implicit operator SecureFloat(SecureInt value)
+        {
+            return new SecureFloat(value.GetValue());
+        }
+
+        /// <summary>
+        /// Performs an implicit conversion from <see cref="SecureLong"/> to <see cref="SecureFloat"/>.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>The result of the conversion.</returns>
+        public static implicit operator SecureFloat(SecureLong value)
+        {
+            return new SecureFloat(value.GetValue());
         }
 
         /// <summary>
