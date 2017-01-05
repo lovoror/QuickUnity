@@ -75,7 +75,15 @@ public class AudioSourceEffects : MonoBehaviourBase
             m_audioSource.volume = 0.0f;
             m_audioSource.time = startPosition;
             m_audioSource.Play();
-            StartCoroutine(ApplyFadeIn(fadeInDuration, fadeVolume, completeCallback));
+
+            if (fadeInDuration <= 0.0f)
+            {
+                m_audioSource.volume = fadeVolume;
+            }
+            else
+            {
+                StartCoroutine(ApplyFadeIn(fadeInDuration, fadeVolume, completeCallback));
+            }
         }
     }
 
@@ -89,7 +97,14 @@ public class AudioSourceEffects : MonoBehaviourBase
     {
         if (m_audioSource)
         {
-            StartCoroutine(ApplyFadeOut(fadeOutDuration, fadeVolume, completeCallback));
+            if (fadeOutDuration <= 0.0f)
+            {
+                m_audioSource.volume = fadeVolume;
+            }
+            else
+            {
+                StartCoroutine(ApplyFadeOut(fadeOutDuration, fadeVolume, completeCallback));
+            }
         }
     }
 
