@@ -34,6 +34,11 @@ namespace QuickUnity.Data
     public class DataTablePreferences : ScriptableObject
     {
         /// <summary>
+        /// The default namespace string.
+        /// </summary>
+        public const string DefaultNamespace = "DefaultNamespace";
+
+        /// <summary>
         /// The minimum row number of data rows start.
         /// </summary>
         public const int MinDataRowsStartRow = 4;

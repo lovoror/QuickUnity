@@ -206,6 +206,17 @@ namespace QuickUnityEditor.Data
             GUILayout.Space(2.5f);
             EditorGUI.BeginDisabledGroup(m_preferencesData.autoGenerateScriptsNamespace);
             m_preferencesData.dataTableRowScriptsNamespace = EditorGUILayout.TextField(Styles.dataTableRowScriptsNamespaceStyle, m_preferencesData.dataTableRowScriptsNamespace);
+
+            // Handle empty namespace.
+            if (m_preferencesData.autoGenerateScriptsNamespace)
+            {
+                m_preferencesData.dataTableRowScriptsNamespace = null;
+            }
+            else if (string.IsNullOrEmpty(m_preferencesData.dataTableRowScriptsNamespace))
+            {
+                m_preferencesData.dataTableRowScriptsNamespace = DataTablePreferences.DefaultNamespace;
+            }
+
             EditorGUI.EndDisabledGroup();
             GUILayout.Space(2.5f);
             m_preferencesData.dataRowsStartRow = EditorGUILayout.IntField(Styles.dataRowsStartRowStyle, m_preferencesData.dataRowsStartRow);

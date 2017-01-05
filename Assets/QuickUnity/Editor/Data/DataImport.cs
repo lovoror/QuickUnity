@@ -359,6 +359,12 @@ namespace QuickUnityEditor.Data
                 }
             }
 
+            // Handle empty namespace.
+            if (string.IsNullOrEmpty(namespaceString))
+            {
+                namespaceString = DataTablePreferences.DefaultNamespace;
+            }
+
             return namespaceString;
         }
 
