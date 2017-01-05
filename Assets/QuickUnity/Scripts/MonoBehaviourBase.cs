@@ -51,6 +51,14 @@ namespace QuickUnity
             OnStart();
         }
 
+        /// <summary>
+        /// Update is called every frame, if the MonoBehaviour is enabled.
+        /// </summary>
+        private void Update()
+        {
+            OnUpdate();
+        }
+
         #endregion Messages
 
         #region Protected Functions
@@ -66,6 +74,13 @@ namespace QuickUnity
         /// Called when script receive message Start.
         /// </summary>
         protected virtual void OnStart()
+        {
+        }
+
+        /// <summary>
+        /// Called when script receive message Update.
+        /// </summary>
+        protected virtual void OnUpdate()
         {
         }
 
