@@ -51,6 +51,11 @@ namespace QuickUnity.Config
 
             try
             {
+                if (!Directory.Exists(filePath))
+                {
+                    Directory.CreateDirectory(filePath);
+                }
+
                 if (autoGenerateFileName)
                 {
                     string fileName = source.GetType().Name + QuickUnityApplication.AssetResourceFileExtension;
