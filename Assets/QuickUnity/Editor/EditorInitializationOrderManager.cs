@@ -30,7 +30,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using UnityEditor;
-using UnityEngine;
 
 namespace QuickUnityEditor
 {
@@ -57,8 +56,8 @@ namespace QuickUnityEditor
             /// </returns>
             public int Compare(Type x, Type y)
             {
-                InitializeOnEditorStartup[] xAttrs = x.GetCustomAttributes(typeof(InitializeOnEditorStartup), false) as InitializeOnEditorStartup[];
-                InitializeOnEditorStartup[] yAttrs = y.GetCustomAttributes(typeof(InitializeOnEditorStartup), false) as InitializeOnEditorStartup[];
+                InitializeOnEditorStartupAttribute[] xAttrs = x.GetCustomAttributes(typeof(InitializeOnEditorStartupAttribute), false) as InitializeOnEditorStartupAttribute[];
+                InitializeOnEditorStartupAttribute[] yAttrs = y.GetCustomAttributes(typeof(InitializeOnEditorStartupAttribute), false) as InitializeOnEditorStartupAttribute[];
 
                 if (xAttrs[0].executionOrder > yAttrs[0].executionOrder)
                 {
@@ -109,7 +108,7 @@ namespace QuickUnityEditor
             {
                 Type type = loadedTypes[i];
 
-                if (type.IsDefined(typeof(InitializeOnEditorStartup), false))
+                if (type.IsDefined(typeof(InitializeOnEditorStartupAttribute), false))
                 {
                     typeList.Add(type);
                 }
