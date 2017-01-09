@@ -27,7 +27,7 @@ using System.Collections.Generic;
 namespace QuickUnity.Extensions
 {
     /// <summary>
-    /// Extension methods collection for List.
+    /// Extension methods collection for System.Collections.Generic.List.
     /// </summary>
     public static class ListExtension
     {

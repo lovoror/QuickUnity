@@ -27,7 +27,7 @@ using System.Collections;
 namespace QuickUnity.Extensions
 {
     /// <summary>
-    /// Extension methods collection for ArrayList.
+    /// Extension methods collection for System.Collections.ArrayList.
     /// </summary>
     public static class ArrayListExtension
     {

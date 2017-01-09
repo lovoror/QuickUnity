@@ -22,28 +22,41 @@
  *	SOFTWARE.
  */
 
-using System.Collections.Generic;
+using System;
+using System.Reflection;
+using UnityEngine;
 
 namespace QuickUnity.Extensions
 {
     /// <summary>
-    /// Extension methods collection for System.Collections.Generic.Dictionary.
+    /// Extension methods collection for UnityEngine.Component.
     /// </summary>
-    public static class DictionaryExtension
+    public static class ComponentExtension
     {
         /// <summary>
-        /// Adds the value with unique key.
+        /// Copies the component values.
         /// </summary>
-        /// <typeparam name="TKey">The type of the key.</typeparam>
-        /// <typeparam name="TValue">The type of the value.</typeparam>
-        /// <param name="source">The source Dictionary object.</param>
-        /// <param name="key">The key.</param>
-        /// <param name="value">The value.</param>
-        public static void AddUnique<TKey, TValue>(this Dictionary<TKey, TValue> source, TKey key, TValue value)
+        /// <param name="component">The component.</param>
+        /// <param name="targetGameObject">The target game object.</param>
+        public static void CopyComponentValues(this Component component, GameObject targetGameObject)
         {
-            if (!source.ContainsKey(key))
+            if (targetGameObject)
             {
-                source.Add(key, value);
+                Type type = component.GetType();
+                Component copyComponent = targetGameObject.AddComponent(type);
+                FieldInfo[] fields = type.GetFields();
+                PropertyInfo[] properties = type.GetProperties();
+
+                foreach (FieldInfo fieldInfo in fields)
+                {
+                    if (!fieldInfo.IsLiteral)
+                        fieldInfo.SetValue(copyComponent, fieldInfo.GetValue(component));
+                }
+
+                foreach (PropertyInfo propertyInfo in properties)
+                {
+                    propertyInfo.SetValue(copyComponent, propertyInfo.GetValue(component, null), null);
+                }
             }
         }
     }

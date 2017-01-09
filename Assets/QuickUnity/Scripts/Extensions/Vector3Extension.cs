@@ -22,29 +22,41 @@
  *	SOFTWARE.
  */
 
-using System.Collections.Generic;
+using UnityEngine;
 
 namespace QuickUnity.Extensions
 {
     /// <summary>
-    /// Extension methods collection for System.Collections.Generic.Dictionary.
+    /// Extension methods collection for UnityEngine.Vector3.
     /// </summary>
-    public static class DictionaryExtension
+    public static class Vector3Extension
     {
         /// <summary>
-        /// Adds the value with unique key.
+        /// If this Vector3 object strictly equals other Vector3 object.
         /// </summary>
-        /// <typeparam name="TKey">The type of the key.</typeparam>
-        /// <typeparam name="TValue">The type of the value.</typeparam>
-        /// <param name="source">The source Dictionary object.</param>
-        /// <param name="key">The key.</param>
-        /// <param name="value">The value.</param>
-        public static void AddUnique<TKey, TValue>(this Dictionary<TKey, TValue> source, TKey key, TValue value)
+        /// <param name="vector">The self Vector3 object.</param>
+        /// <param name="other">The other Vector3 object.</param>
+        /// <returns><c>true</c> if self equals other strictly, <c>false</c> otherwise.</returns>
+        public static bool StrictlyEquals(this Vector3 vector, Vector3 other)
         {
-            if (!source.ContainsKey(key))
+            if (vector.StrictlyToString() == other.StrictlyToString())
             {
-                source.Add(key, value);
+                return true;
             }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Return the strict string of this Vector3 object.
+        /// </summary>
+        /// <param name="vector">The self Vector3 object.</param>
+        /// <param name="decimalDigits">The decimal digits.</param>
+        /// <returns>System.String The strict string of the Vector3 object.</returns>
+        public static string StrictlyToString(this Vector3 vector, int decimalDigits = 4)
+        {
+            string format = string.Format("f{0}", decimalDigits.ToString());
+            return string.Format("({0}, {1}, {2})", vector.x.ToString(format), vector.y.ToString(format), vector.z.ToString(format));
         }
     }
 }
