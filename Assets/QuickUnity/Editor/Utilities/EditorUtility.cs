@@ -25,9 +25,11 @@
 using QuickUnity.Core.Miscs;
 using QuickUnity.Utilities;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
+using QuickUnity.Extensions;
 
 namespace QuickUnityEditor.Utilities
 {
@@ -173,6 +175,89 @@ namespace QuickUnityEditor.Utilities
             }
 
             return assetPaths;
+        }
+
+        /// <summary>
+        /// Gets the object assets.
+        /// </summary>
+        /// <param name="path">The path.</param>
+        /// <returns>System.String[] The paths of object assets.</returns>
+        public static string[] GetObjectAssets(string path)
+        {
+            if (string.IsNullOrEmpty(path))
+            {
+                return null;
+            }
+
+            List<string> targetAssetPaths = new List<string>();
+
+            if (Directory.Exists(path))
+            {
+                string[] guids = AssetDatabase.FindAssets("", new string[1] { path });
+
+                for (int i = 0, length = guids.Length; i < length; ++i)
+                {
+                    string guid = guids[i];
+                    string assetPath = AssetDatabase.GUIDToAssetPath(guid);
+
+                    if (!Directory.Exists(assetPath))
+                    {
+                        targetAssetPaths.AddUnique(assetPath);
+                    }
+                }
+            }
+            else
+            {
+                targetAssetPaths.AddUnique(path);
+            }
+
+            return targetAssetPaths.ToArray();
+        }
+
+        /// <summary>
+        /// Gets the dependencies map.
+        /// </summary>
+        /// <param name="targetAssets">The target assets.</param>
+        /// <param name="recursive">
+        /// If <c>false</c>, return only assets which are direct dependencies of the input; if
+        /// <c>true</c>, include all indirect dependencies of the input. Defaults to true.
+        /// </param>
+        /// <returns>Dictionary&lt;System.String, System.String[]&gt; The dependencies map.</returns>
+        public static Dictionary<string, string[]> GetDependenciesMap(List<string> targetAssets, bool recursive = true)
+        {
+            if (targetAssets == null)
+            {
+                return null;
+            }
+
+            Dictionary<string, string[]> referencesMap = new Dictionary<string, string[]>();
+
+            for (int i = 0, length = targetAssets.Count; i < length; ++i)
+            {
+                string targetAsset = targetAssets[i];
+
+                if (!string.IsNullOrEmpty(targetAsset))
+                {
+                    List<string> dependenciesList = new List<string>(AssetDatabase.GetDependencies(targetAsset, recursive));
+
+                    if (dependenciesList.Contains(targetAsset))
+                    {
+                        dependenciesList.Remove(targetAsset);
+                    }
+
+                    if (dependenciesList != null)
+                    {
+                        string[] dependencies = dependenciesList.ToArray();
+
+                        if (dependencies != null && dependencies.Length > 0)
+                        {
+                            referencesMap.AddUnique(targetAsset, dependenciesList.ToArray());
+                        }
+                    }
+                }
+            }
+
+            return referencesMap;
         }
 
         /// <summary>

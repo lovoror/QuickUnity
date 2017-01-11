@@ -175,7 +175,7 @@ namespace QuickUnityEditor.Data
         }
 
         /// <summary>
-        /// Editor GUI.
+        /// Draw editor GUI.
         /// </summary>
         private void OnGUI()
         {
