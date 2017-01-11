@@ -107,6 +107,7 @@ namespace QuickUnityEditor.Data
             }
 
             s_editorWindow.ShowUtility();
+            s_editorWindow.Focus();
         }
 
         /// <summary>

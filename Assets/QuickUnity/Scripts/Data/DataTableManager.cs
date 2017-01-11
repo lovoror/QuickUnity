@@ -267,17 +267,7 @@ namespace QuickUnity.Data
         /// </summary>
         private void Initialize()
         {
-#if UNITY_EDITOR
-            m_preferencesData = UnityEditor.AssetDatabase.LoadAssetAtPath<DataTablePreferences>("Assets/Resources/DataTablePreferences.asset");
-#else
-            DataTablePreferences[] objects = Resources.FindObjectsOfTypeAll<DataTablePreferences>();
-
-            if (objects != null && objects.Length > 0)
-            {
-                m_preferencesData = objects[0];
-            }
-#endif
-
+            m_preferencesData = Resources.Load<DataTablePreferences>("DataTablePreferences");
             m_databasePath = Path.Combine(Application.persistentDataPath, DataTablesStorageFolderName);
 
             if (m_preferencesData && m_preferencesData.dataTablesStorageLocation == DataTableStorageLocation.StreamingAssetsPath)
