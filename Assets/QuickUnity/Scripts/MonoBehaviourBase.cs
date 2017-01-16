@@ -52,11 +52,35 @@ namespace QuickUnity
         }
 
         /// <summary>
+        /// Reset to default values.
+        /// </summary>
+        private void Reset()
+        {
+            OnReset();
+        }
+
+        /// <summary>
         /// Update is called every frame, if the MonoBehaviour is enabled.
         /// </summary>
         private void Update()
         {
             OnUpdate();
+        }
+
+        /// <summary>
+        /// FixedUpdate is called every fixed framerate frame, if the MonoBehaviour is enabled.
+        /// </summary>
+        private void FixedUpdate()
+        {
+            OnFixedUpdate();
+        }
+
+        /// <summary>
+        /// LateUpdate is called after all Update functions have been called, if the MonoBehaviour is enabled.
+        /// </summary>
+        private void LateUpdate()
+        {
+            OnLateUpdate();
         }
 
         #endregion Messages
@@ -78,9 +102,30 @@ namespace QuickUnity
         }
 
         /// <summary>
+        /// Called when script receive message Reset.
+        /// </summary>
+        protected virtual void OnReset()
+        {
+        }
+
+        /// <summary>
         /// Called when script receive message Update.
         /// </summary>
         protected virtual void OnUpdate()
+        {
+        }
+
+        /// <summary>
+        /// Called when script receive message FixedUpdate.
+        /// </summary>
+        protected virtual void OnFixedUpdate()
+        {
+        }
+
+        /// <summary>
+        /// Called when script receive message LateUpdate.
+        /// </summary>
+        protected virtual void OnLateUpdate()
         {
         }
 
