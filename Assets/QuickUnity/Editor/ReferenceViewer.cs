@@ -175,12 +175,20 @@ namespace QuickUnityEditor
                     if (kvp.Value.Length > 0)
                     {
                         ReorderableList list = new ReorderableList(kvp.Value, typeof(string[]), false, false, false, false);
+                        //list.headerHeight = 2;
+                        list.elementHeight = 16;
+
+                        // Draw header.
+                        list.drawHeaderCallback = (Rect rect) =>
+                        {
+                            EditorGUI.LabelField(rect, "References List");
+                        };
 
                         // Draw list element.
                         list.drawElementCallback = (Rect rect, int index, bool isActive, bool isFocused) =>
                         {
                             string assetPath = (string)list.list[index];
-                            EditorGUI.ObjectField(rect, "Reference: ", AssetDatabase.LoadAssetAtPath<Object>(assetPath), typeof(Object), false);
+                            EditorGUI.ObjectField(rect, "", AssetDatabase.LoadAssetAtPath<Object>(assetPath), typeof(Object), true);
                         };
 
                         listMap.Add(kvp.Key, list);
