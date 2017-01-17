@@ -30,7 +30,7 @@ using UnityEngine;
 namespace QuickUnityEditor
 {
     /// <summary>
-    /// The viewer for finding assets references.
+    /// The window for finding assets references.
     /// </summary>
     /// <seealso cref="UnityEditor.EditorWindow"/>
     public class ReferenceViewer : EditorWindow
@@ -55,7 +55,7 @@ namespace QuickUnityEditor
         /// Shows the reference viewer.
         /// </summary>
         [MenuItem("Assets/Reference Viewer...", false, 21)]
-        public static void ShowViewer()
+        public static void ShowWindow()
         {
             if (s_referenceViewer == null)
             {
@@ -68,11 +68,6 @@ namespace QuickUnityEditor
             s_referenceViewer.Focus();
             s_referenceViewer.FindAllReferences();
         }
-
-        /// <summary>
-        /// The references map.
-        /// </summary>
-        private Dictionary<string, string[]> m_referencesMap;
 
         /// <summary>
         /// The references list map.
@@ -105,17 +100,18 @@ namespace QuickUnityEditor
                 }
             }
 
-            m_referencesMap = Utilities.EditorUtility.GetDependenciesMap(targetAssets);
+            Dictionary<string, string[]> referencesMap = Utilities.EditorUtility.GetDependenciesMap(targetAssets);
 
-            if (m_referencesMap.Count > 0)
+            if (referencesMap.Count > 0)
             {
-                m_referencesListMap = GenerateReferencesListMap();
+                m_referencesListMap = GenerateReferencesListMap(referencesMap);
                 Repaint();
             }
             else
             {
+                m_referencesListMap = null;
+                Repaint();
                 QuickUnityEditorApplication.DisplaySimpleDialog("", DialogMessages.NoReferenceDialog);
-                Close();
             }
         }
 
@@ -163,19 +159,19 @@ namespace QuickUnityEditor
         /// <summary>
         /// Generates the references list map.
         /// </summary>
-        /// <returns>Dictionary&lt;System.String, ReorderableList&gt; The references list map.</returns>
-        private Dictionary<string, ReorderableList> GenerateReferencesListMap()
+        /// <param name="referencesMap">The references map.</param>
+        /// <returns>The references list map.</returns>
+        private Dictionary<string, ReorderableList> GenerateReferencesListMap(Dictionary<string, string[]> referencesMap)
         {
             Dictionary<string, ReorderableList> listMap = new Dictionary<string, ReorderableList>();
 
-            if (m_referencesMap != null)
+            if (referencesMap != null)
             {
-                foreach (KeyValuePair<string, string[]> kvp in m_referencesMap)
+                foreach (KeyValuePair<string, string[]> kvp in referencesMap)
                 {
                     if (kvp.Value.Length > 0)
                     {
                         ReorderableList list = new ReorderableList(kvp.Value, typeof(string[]), false, false, false, false);
-                        //list.headerHeight = 2;
                         list.elementHeight = 16;
 
                         // Draw header.

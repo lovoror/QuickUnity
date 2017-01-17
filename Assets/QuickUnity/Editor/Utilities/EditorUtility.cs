@@ -284,11 +284,33 @@ namespace QuickUnityEditor.Utilities
         /// <summary>
         /// Gets the size of the asset runtime memory.
         /// </summary>
+        /// <param name="assetPath">The asset path.</param>
+        /// <returns>The runtime memory size of this asset object.</returns>
+        public static int GetAssetRuntimeMemorySize(string assetPath)
+        {
+            UnityEngine.Object asset = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(assetPath);
+            return GetAssetRuntimeMemorySize(asset);
+        }
+
+        /// <summary>
+        /// Gets the size of the asset runtime memory.
+        /// </summary>
         /// <param name="asset">The asset object.</param>
         /// <returns>The runtime memory size of this asset object.</returns>
         public static int GetAssetRuntimeMemorySize(UnityEngine.Object asset)
         {
             return Profiler.GetRuntimeMemorySize(asset);
+        }
+
+        /// <summary>
+        /// Gets the size of the asset storage memory.
+        /// </summary>
+        /// <param name="assetPath">The asset path.</param>
+        /// <returns>The storage memory size of this asset object.</returns>
+        public static long GetAssetStorageMemorySize(string assetPath)
+        {
+            UnityEngine.Object asset = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(assetPath);
+            return GetAssetStorageMemorySize(asset);
         }
 
         /// <summary>
