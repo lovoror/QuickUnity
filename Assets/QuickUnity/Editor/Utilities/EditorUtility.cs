@@ -286,8 +286,7 @@ namespace QuickUnityEditor.Utilities
         /// </summary>
         public static void ClearConsole()
         {
-            Type type = Type.GetType("UnityEditorInternal.LogEntries,UnityEditor.dll");
-            ReflectionUtility.InvokeStaticMethod(type, "Clear");
+            ReflectionUtility.InvokeStaticMethod("UnityEditorInternal.LogEntries", "Clear");
         }
     }
 }

@@ -38,7 +38,7 @@ namespace QuickUnity.Utilities
         /// Gets the type of the property.
         /// </summary>
         /// <param name="propertyType">Type of the property.</param>
-        /// <returns>The type of property</returns>
+        /// <returns>Type The type of property.</returns>
         public static Type GetPropertyType(Type propertyType)
         {
             Type type = propertyType;
@@ -228,11 +228,31 @@ namespace QuickUnity.Utilities
         }
 
         /// <summary>
-        /// Invokes the method.
+        /// Invokes the static method.
+        /// </summary>
+        /// <param name="typeName">Name of the type.</param>
+        /// <param name="methodName">Name of the method.</param>
+        /// <param name="parameters">The parameters.</param>
+        /// <returns>The object of method return.</returns>
+        public static object InvokeStaticMethod(string typeName,
+            string methodName,
+            object[] parameters = null)
+        {
+            Type type = ProjectAssemblies.GetType(typeName);
+
+            if (type != null)
+            {
+                return InvokeStaticMethod(type, methodName, parameters);
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Invokes the static method.
         /// </summary>
         /// <param name="type">The type.</param>
         /// <param name="methodName">Name of the method.</param>
-        /// <param name="bindingAttr">The binding attribute.</param>
         /// <param name="parameters">The parameters.</param>
         /// <returns>The object of method return.</returns>
         public static object InvokeStaticMethod(Type type,
@@ -243,6 +263,29 @@ namespace QuickUnity.Utilities
 
             if (info != null)
                 return info.Invoke(null, parameters);
+
+            return null;
+        }
+
+        /// <summary>
+        /// Invokes the static method.
+        /// </summary>
+        /// <param name="typeName">Name of the type.</param>
+        /// <param name="methodName">Name of the method.</param>
+        /// <param name="types">The types.</param>
+        /// <param name="parameters">The parameters.</param>
+        /// <returns>The object of static method return.</returns>
+        public static object InvokeStaticMethod(string typeName,
+            string methodName,
+            Type[] types,
+            ref object[] parameters)
+        {
+            Type type = ProjectAssemblies.GetType(typeName);
+
+            if (type != null)
+            {
+                return InvokeStaticMethod(type, methodName, types, ref parameters);
+            }
 
             return null;
         }
@@ -269,6 +312,29 @@ namespace QuickUnity.Utilities
 
             object result = info.Invoke(null, parameters);
             return result;
+        }
+
+        /// <summary>
+        /// Invokes the static generic method.
+        /// </summary>
+        /// <param name="typeName">Name of the type.</param>
+        /// <param name="methodName">Name of the method.</param>
+        /// <param name="genericType">Type of the generic.</param>
+        /// <param name="parameters">The parameters.</param>
+        /// <returns>The object of method return.</returns>
+        public static object InvokeStaticGenericMethod(string typeName,
+            string methodName,
+            Type genericType,
+            object[] parameters = null)
+        {
+            Type type = ProjectAssemblies.GetType(typeName);
+
+            if (type != null)
+            {
+                return InvokeStaticGenericMethod(type, methodName, genericType, parameters);
+            }
+
+            return null;
         }
 
         /// <summary>
