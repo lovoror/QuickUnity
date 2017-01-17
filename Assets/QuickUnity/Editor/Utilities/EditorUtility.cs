@@ -282,6 +282,47 @@ namespace QuickUnityEditor.Utilities
         }
 
         /// <summary>
+        /// Gets the size of the asset runtime memory.
+        /// </summary>
+        /// <param name="asset">The asset object.</param>
+        /// <returns>The runtime memory size of this asset object.</returns>
+        public static int GetAssetRuntimeMemorySize(UnityEngine.Object asset)
+        {
+            return Profiler.GetRuntimeMemorySize(asset);
+        }
+
+        /// <summary>
+        /// Gets the size of the asset storage memory.
+        /// </summary>
+        /// <param name="asset">The asset object.</param>
+        /// <returns>The storage memory size of this asset object.</returns>
+        public static long GetAssetStorageMemorySize(UnityEngine.Object asset)
+        {
+            long size = 0;
+
+            if (asset is Texture)
+            {
+                size = (int)ReflectionUtility.InvokeStaticMethod("UnityEditor.TextureUtil", "GetStorageMemorySize", new object[] { asset });
+            }
+            else
+            {
+                string path = AssetDatabase.GetAssetPath(asset);
+
+                if (!string.IsNullOrEmpty(path))
+                {
+                    FileInfo fileInfo = new FileInfo(path);
+
+                    if (fileInfo != null)
+                    {
+                        size = fileInfo.Length;
+                    }
+                }
+            }
+
+            return size;
+        }
+
+        /// <summary>
         /// Clears messages of console.
         /// </summary>
         public static void ClearConsole()
