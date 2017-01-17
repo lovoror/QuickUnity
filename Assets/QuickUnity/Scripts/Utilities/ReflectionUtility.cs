@@ -35,36 +35,6 @@ namespace QuickUnity.Utilities
     public sealed class ReflectionUtility
     {
         /// <summary>
-        /// Gets the type of type name.
-        /// </summary>
-        /// <param name="typeName">Name of the type.</param>
-        /// <returns>The type object for the type name.</returns>
-        public static Type GetType(string typeName)
-        {
-            Type type = Type.GetType(typeName);
-
-            if (type == null)
-            {
-                //Reload the project dll.
-                Assembly assembly = Assembly.Load("Assembly-CSharp");
-                type = assembly.GetType(typeName);
-            }
-
-#if UNITY_EDITOR
-
-            if (type == null)
-            {
-                //Reload the project editor dll.
-                Assembly assembly = Assembly.Load("Assembly-CSharp-Editor");
-                type = assembly.GetType(typeName);
-            }
-
-#endif
-
-            return type;
-        }
-
-        /// <summary>
         /// Gets the type of the property.
         /// </summary>
         /// <param name="propertyType">Type of the property.</param>
@@ -135,7 +105,7 @@ namespace QuickUnity.Utilities
         {
             if (!string.IsNullOrEmpty(typeFullName))
             {
-                Type type = GetType(typeFullName);
+                Type type = ProjectAssemblies.GetType(typeFullName);
                 return CreateClassInstance(type, args);
             }
 

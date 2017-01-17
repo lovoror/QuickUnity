@@ -23,6 +23,7 @@
  */
 
 using Excel;
+using QuickUnity;
 using QuickUnity.Core.Miscs;
 using QuickUnity.Data;
 using QuickUnity.Extensions;
@@ -532,7 +533,7 @@ namespace QuickUnityEditor.Data
                 List<DataTableRow> collection = GenerateDataTableRowCollection(table, namespaceString, fileName, rowInfos);
 
                 string classFullName = string.Format("{0}.{1}", namespaceString, fileName);
-                Type type = ReflectionUtility.GetType(classFullName);
+                Type type = ProjectAssemblies.GetType(classFullName);
 
                 if (type != null)
                 {
