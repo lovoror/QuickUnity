@@ -78,6 +78,42 @@ namespace QuickUnity.UnitTests
         }
 
         /// <summary>
+        /// Test case for method HasEventListeners of class EventDispatcher.
+        /// </summary>
+        [Test]
+        public void HasEventListenersByEventTypeTest()
+        {
+            IEventDispatcher dispatcher = new EventDispatcher();
+            Action<TestEvent> TestEventHandler = (testEvent) => { };
+            dispatcher.AddEventListener(TestEvent.Test, TestEventHandler);
+            Assert.IsTrue(dispatcher.HasEventListeners(TestEvent.Test));
+        }
+
+        /// <summary>
+        /// Test case for method HasEventListeners of class EventDispatcher.
+        /// </summary>
+        [Test]
+        public void HasEventListenersByTargetTest()
+        {
+            IEventDispatcher dispatcher = new EventDispatcher();
+            dispatcher.AddEventListener<TestEvent>(TestEvent.Test, ClassTestEventHandler);
+            dispatcher.AddEventListener<TestEvent>(TestEvent.Test, ClassTestBEventHandler);
+            Assert.IsTrue(dispatcher.HasEventListeners(this));
+        }
+
+        /// <summary>
+        /// Test case for method HasAnyEventListener of class EventDispatcher.
+        /// </summary>
+        [Test]
+        public void HasAnyEventListenerTest()
+        {
+            IEventDispatcher dispatcher = new EventDispatcher();
+            Action<TestEvent> TestEventHandler = (testEvent) => { };
+            dispatcher.AddEventListener(TestEvent.Test, TestEventHandler);
+            Assert.IsTrue(dispatcher.HasAnyEventListener());
+        }
+
+        /// <summary>
         /// Test case for method RemoveEventListener of class EventDispatcher.
         /// </summary>
         [Test]
@@ -91,6 +127,19 @@ namespace QuickUnity.UnitTests
         }
 
         /// <summary>
+        /// Test case for method RemoveEventListener of class EventDispatcher.
+        /// </summary>
+        [Test]
+        public void RemoveEventListenerByEventTypeTest()
+        {
+            IEventDispatcher dispatcher = new EventDispatcher();
+            dispatcher.AddEventListener<TestEvent>(TestEvent.Test, ClassTestEventHandler);
+            dispatcher.AddEventListener<TestEvent>(TestEvent.Test, ClassTestBEventHandler);
+            dispatcher.RemoveEventListener(TestEvent.Test);
+            Assert.IsFalse(dispatcher.HasEventListeners(TestEvent.Test));
+        }
+
+        /// <summary>
         /// Test case for method RemoveEventListeners of class EventDispatcher.
         /// </summary>
         [Test]
@@ -100,10 +149,35 @@ namespace QuickUnity.UnitTests
             dispatcher.AddEventListener<TestEvent>(TestEvent.Test, ClassTestEventHandler);
             dispatcher.AddEventListener<TestEvent>(TestEvent.TestB, ClassTestEventHandler);
             dispatcher.RemoveEventListeners(this);
-            Assert.IsFalse(dispatcher.HasEventListener<TestEvent>(TestEvent.Test, ClassTestEventHandler));
+            Assert.IsFalse(dispatcher.HasEventListeners(this));
         }
 
+        /// <summary>
+        /// Test case for method RemoveAllEventListeners of class EventDispatcher.
+        /// </summary>
+        [Test]
+        public void RemoveAllEventListenersTest()
+        {
+            IEventDispatcher dispatcher = new EventDispatcher();
+            dispatcher.AddEventListener<TestEvent>(TestEvent.Test, ClassTestEventHandler);
+            dispatcher.AddEventListener<TestEvent>(TestEvent.TestB, ClassTestBEventHandler);
+            dispatcher.RemoveAllEventListeners();
+            Assert.IsFalse(dispatcher.HasAnyEventListener());
+        }
+
+        /// <summary>
+        /// Method for testing.
+        /// </summary>
+        /// <param name="testEvent">The test event.</param>
         private void ClassTestEventHandler(TestEvent testEvent)
+        {
+        }
+
+        /// <summary>
+        /// Method for testing.
+        /// </summary>
+        /// <param name="testEvent">The test event.</param>
+        private void ClassTestBEventHandler(TestEvent testEvent)
         {
         }
     }

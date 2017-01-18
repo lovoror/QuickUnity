@@ -98,8 +98,7 @@ namespace QuickUnity.Events
         }
 
         /// <summary>
-        /// Checks whether the EventDispatcher object has any listeners registered for a specific
-        /// type of event.
+        /// Checks whether the EventDispatcher object has listener registered for a specific type of event.
         /// </summary>
         /// <typeparam name="T">
         /// The type of the parameter of the method that this delegate encapsulates.
@@ -114,6 +113,54 @@ namespace QuickUnity.Events
             if (m_eventDispatcher != null)
             {
                 return m_eventDispatcher.HasEventListener(eventType, listener);
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Checks whether the EventDispatcher object has listeners registered for a specific type of event.
+        /// </summary>
+        /// <param name="eventType">Type of the event.</param>
+        /// <returns>
+        /// <c>true</c> if [has event listener] [the specified event type]; otherwise, <c>false</c>.
+        /// </returns>
+        public bool HasEventListeners(string eventType)
+        {
+            if (m_eventDispatcher != null)
+            {
+                return m_eventDispatcher.HasEventListeners(eventType);
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Checks whether the EventDispatcher object has listeners registered for a target object.
+        /// </summary>
+        /// <param name="target">The target object.</param>
+        /// <returns>
+        /// <c>true</c> if [has event listeners] for [the specified target]; otherwise, <c>false</c>.
+        /// </returns>
+        public bool HasEventListeners(object target)
+        {
+            if (m_eventDispatcher != null)
+            {
+                return m_eventDispatcher.HasEventListeners(target);
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Checks whether the EventDispatcher object has any listener registered.
+        /// </summary>
+        /// <returns><c>true</c> if [has event listeners]; otherwise, <c>false</c>.</returns>
+        public bool HasAnyEventListener()
+        {
+            if (m_eventDispatcher != null)
+            {
+                return m_eventDispatcher.HasAnyEventListener();
             }
 
             return false;

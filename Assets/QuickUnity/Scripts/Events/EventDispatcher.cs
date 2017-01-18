@@ -26,6 +26,7 @@ using QuickUnity.Utilities;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace QuickUnity.Events
 {
@@ -114,8 +115,7 @@ namespace QuickUnity.Events
         }
 
         /// <summary>
-        /// Checks whether the EventDispatcher object has any listeners registered for a specific
-        /// type of event.
+        /// Checks whether the EventDispatcher object has listener registered for a specific type of event.
         /// </summary>
         /// <typeparam name="T">
         /// The type of the parameter of the method that this delegate encapsulates.
@@ -131,6 +131,83 @@ namespace QuickUnity.Events
                 return false;
 
             return m_listeners != null && m_listeners.ContainsKey(eventType) && m_listeners[eventType].Contains(listener);
+        }
+
+        /// <summary>
+        /// Checks whether the EventDispatcher object has listeners registered for a specific type of event.
+        /// </summary>
+        /// <param name="eventType">Type of the event.</param>
+        /// <returns>
+        /// <c>true</c> if [has event listener] [the specified event type]; otherwise, <c>false</c>.
+        /// </returns>
+        public bool HasEventListeners(string eventType)
+        {
+            if (m_listeners != null && m_listeners.Count > 0)
+            {
+                ArrayList list = m_listeners[eventType];
+
+                if (list != null && list.Count > 0)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Checks whether the EventDispatcher object has listeners registered for a target object.
+        /// </summary>
+        /// <param name="target">The target object.</param>
+        /// <returns>
+        /// <c>true</c> if [has event listeners] for [the specified target]; otherwise, <c>false</c>.
+        /// </returns>
+        public bool HasEventListeners(object target)
+        {
+            if (m_listeners != null && m_listeners.Count > 0)
+            {
+                foreach (KeyValuePair<string, ArrayList> kvp in m_listeners)
+                {
+                    ArrayList list = kvp.Value;
+
+                    if (list != null && list.Count > 0)
+                    {
+                        for (int i = 0, length = list.Count; i < length; ++i)
+                        {
+                            object listenerTarget = ReflectionUtility.GetObjectPropertyValue(list[i], "Target");
+
+                            if (listenerTarget == target)
+                            {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Checks whether the EventDispatcher object has any listener registered.
+        /// </summary>
+        /// <returns><c>true</c> if [has event listeners]; otherwise, <c>false</c>.</returns>
+        public bool HasAnyEventListener()
+        {
+            if (m_listeners != null && m_listeners.Count > 0)
+            {
+                foreach (KeyValuePair<string, ArrayList> kvp in m_listeners)
+                {
+                    ArrayList list = kvp.Value;
+
+                    if (list.Count > 0)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -194,6 +271,9 @@ namespace QuickUnity.Events
                 for (int i = 0, length = list.Count; i < length; ++i)
                 {
                     object listenerTarget = ReflectionUtility.GetObjectPropertyValue(list[i], "Target");
+
+                    //Type type = list[i].GetType();
+                    //Type[] genericArgs = type.GetGenericArguments();
 
                     if (listenerTarget == target)
                     {
