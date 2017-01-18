@@ -204,7 +204,7 @@ namespace QuickUnity.UnitTests
         /// <summary>
         /// Gets the random long value.
         /// </summary>
-        /// <returns>System.Int64 The random long value.</returns>
+        /// <returns>The random long value.</returns>
         private long GetRandomValue()
         {
             Random.InitState(MathUtility.GetRandomSeed());

@@ -144,7 +144,7 @@ namespace QuickUnityEditor.Utilities
         /// <param name="nameFilter">The name filter.</param>
         /// <param name="typeFilter">The type filter.</param>
         /// <param name="searchInFolders">The search in folders.</param>
-        /// <returns>System.String[]. The paths about this asset name.</returns>
+        /// <returns>The paths about this asset name.</returns>
         public static string[] GetAssetPath(string nameFilter, string typeFilter = null, string[] searchInFolders = null)
         {
             if (string.IsNullOrEmpty(nameFilter))
@@ -181,7 +181,7 @@ namespace QuickUnityEditor.Utilities
         /// Gets the object assets.
         /// </summary>
         /// <param name="path">The path.</param>
-        /// <returns>System.String[] The paths of object assets.</returns>
+        /// <returns>The paths of object assets.</returns>
         public static string[] GetObjectAssets(string path)
         {
             if (string.IsNullOrEmpty(path))
@@ -222,7 +222,7 @@ namespace QuickUnityEditor.Utilities
         /// If <c>false</c>, return only assets which are direct dependencies of the input; if
         /// <c>true</c>, include all indirect dependencies of the input. Defaults to true.
         /// </param>
-        /// <returns>Dictionary&lt;System.String, System.String[]&gt; The dependencies map.</returns>
+        /// <returns>The dependencies map.</returns>
         public static Dictionary<string, string[]> GetDependenciesMap(List<string> targetAssets, bool recursive = true)
         {
             if (targetAssets == null)

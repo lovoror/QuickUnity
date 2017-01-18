@@ -53,7 +53,7 @@ namespace QuickUnity.Core.Security
         /// <summary>
         /// Gets the original int value.
         /// </summary>
-        /// <returns>System.Int32 The original int value.</returns>
+        /// <returns>The original int value.</returns>
         public int GetValue()
         {
             return MemDataSecurity.DecryptIntValue(m_value, m_check);

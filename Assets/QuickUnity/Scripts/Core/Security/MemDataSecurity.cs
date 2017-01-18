@@ -72,7 +72,7 @@ namespace QuickUnity.Core.Security
         /// </summary>
         /// <param name="value">The value.</param>
         /// <param name="check">The check.</param>
-        /// <returns>System.Int32 The encrypted int value.</returns>
+        /// <returns>The encrypted int value.</returns>
         public static int EncryptIntValue(int value, out int check)
         {
             int result = (value ^ s_key);
@@ -85,7 +85,7 @@ namespace QuickUnity.Core.Security
         /// </summary>
         /// <param name="value">The value.</param>
         /// <param name="check">The check.</param>
-        /// <returns>System.Int32 The decrypted int value.</returns>
+        /// <returns>The decrypted int value.</returns>
         /// <exception cref="QuickUnity.Core.Security.MemDataModificationException">
         /// If the data has been modified.
         /// </exception>
@@ -107,7 +107,7 @@ namespace QuickUnity.Core.Security
         /// </summary>
         /// <param name="value">The value.</param>
         /// <param name="check">The check.</param>
-        /// <returns>System.Int32 The encrypted float value.</returns>
+        /// <returns>The encrypted float value.</returns>
         public static int EncryptFloatValue(float value, out int check)
         {
             int result = BitConverter.ToInt32(BitConverter.GetBytes(value), 0);
@@ -119,7 +119,7 @@ namespace QuickUnity.Core.Security
         /// </summary>
         /// <param name="value">The value.</param>
         /// <param name="check">The check.</param>
-        /// <returns>System.Single The encrypted float value.</returns>
+        /// <returns>The encrypted float value.</returns>
         public static float DecryptFloatValue(int value, int check)
         {
             int result = DecryptIntValue(value, check);
@@ -131,7 +131,7 @@ namespace QuickUnity.Core.Security
         /// </summary>
         /// <param name="value">The value.</param>
         /// <param name="check">The check.</param>
-        /// <returns>System.Int64 The encrypted long value.</returns>
+        /// <returns>The encrypted long value.</returns>
         public static long EncryptLongValue(long value, out long check)
         {
             long result = (value ^ s_longKey);
@@ -144,7 +144,7 @@ namespace QuickUnity.Core.Security
         /// </summary>
         /// <param name="value">The value.</param>
         /// <param name="check">The check.</param>
-        /// <returns>System.Int64 The decrypted long value.</returns>
+        /// <returns>The decrypted long value.</returns>
         /// <exception cref="QuickUnity.Core.Security.MemDataModificationException">
         /// If the data has been modified.
         /// </exception>
@@ -166,7 +166,7 @@ namespace QuickUnity.Core.Security
         /// </summary>
         /// <param name="value">The value.</param>
         /// <param name="check">The check.</param>
-        /// <returns>System.Int64 The encrypted double value.</returns>
+        /// <returns>The encrypted double value.</returns>
         public static long EncryptDoubleValue(double value, out long check)
         {
             long result = BitConverter.DoubleToInt64Bits(value);
@@ -178,7 +178,7 @@ namespace QuickUnity.Core.Security
         /// </summary>
         /// <param name="value">The value.</param>
         /// <param name="check">The check.</param>
-        /// <returns>System.Double The decrypted double value.</returns>
+        /// <returns>The decrypted double value.</returns>
         public static double DecryptDoubleValue(long value, long check)
         {
             long result = DecryptLongValue(value, check);

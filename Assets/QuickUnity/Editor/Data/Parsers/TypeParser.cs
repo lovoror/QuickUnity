@@ -202,7 +202,7 @@ namespace QuickUnityEditor.Data.Parsers
         /// Parses the specified value.
         /// </summary>
         /// <param name="value">The value.</param>
-        /// <returns>T. The parsed data.</returns>
+        /// <returns>The parsed data.</returns>
         public virtual object Parse(string value)
         {
             return Parse<T>(value);
@@ -213,7 +213,7 @@ namespace QuickUnityEditor.Data.Parsers
         /// </summary>
         /// <typeparam name="V">The type definition of returned object.</typeparam>
         /// <param name="value">The value.</param>
-        /// <returns>V The parsed data.</returns>
+        /// <returns>The parsed data.</returns>
         protected V Parse<V>(string value)
         {
             Type type = typeof(V);
@@ -254,7 +254,7 @@ namespace QuickUnityEditor.Data.Parsers
         /// Parses the bool string.
         /// </summary>
         /// <param name="value">The value.</param>
-        /// <returns>System.Boolean The parsed bool data.</returns>
+        /// <returns>The parsed bool data.</returns>
         protected bool ParseBoolString(string value)
         {
             bool result = false;
@@ -297,7 +297,7 @@ namespace QuickUnityEditor.Data.Parsers
         /// </summary>
         /// <typeparam name="W">The type definition of array element.</typeparam>
         /// <param name="value">The string value.</param>
-        /// <returns>W[]. The parsed array data.</returns>
+        /// <returns>The parsed array data.</returns>
         protected W[] ParseArrayString<W>(string value)
         {
             List<W> list = new List<W>();

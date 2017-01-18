@@ -53,7 +53,7 @@ namespace QuickUnity.Core.Security
         /// <summary>
         /// Gets the original double value.
         /// </summary>
-        /// <returns>System.Double The original double value.</returns>
+        /// <returns>The original double value.</returns>
         public double GetValue()
         {
             return MemDataSecurity.DecryptDoubleValue(m_value, m_check);

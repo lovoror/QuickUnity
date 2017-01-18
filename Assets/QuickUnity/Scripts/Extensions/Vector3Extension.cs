@@ -52,7 +52,7 @@ namespace QuickUnity.Extensions
         /// </summary>
         /// <param name="vector">The self Vector3 object.</param>
         /// <param name="decimalDigits">The decimal digits.</param>
-        /// <returns>System.String The strict string of the Vector3 object.</returns>
+        /// <returns>The strict string of the Vector3 object.</returns>
         public static string StrictlyToString(this Vector3 vector, int decimalDigits = 4)
         {
             string format = string.Format("f{0}", decimalDigits.ToString());

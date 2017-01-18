@@ -114,7 +114,7 @@ public class AudioSourceEffects : MonoBehaviourBase
     /// <param name="fadeInDuration">Duration of the fade in.</param>
     /// <param name="fadeVolume">The fade volume.</param>
     /// <param name="completeCallback">The complete callback function.</param>
-    /// <returns>IEnumerator The enumerator of this coroutine.</returns>
+    /// <returns>The enumerator of this coroutine.</returns>
     private IEnumerator ApplyFadeIn(float fadeInDuration = 0.0f, float fadeVolume = 1.0f, Action completeCallback = null)
     {
         float startVolume = m_audioSource.volume;
@@ -139,7 +139,7 @@ public class AudioSourceEffects : MonoBehaviourBase
     /// <param name="fadeOutDuration">Duration of the fade out.</param>
     /// <param name="fadeVolume">The fade volume.</param>
     /// <param name="completeCallback">The complete callback function.</param>
-    /// <returns>IEnumerator The enumerator of this coroutine.</returns>
+    /// <returns>The enumerator of this coroutine.</returns>
     private IEnumerator ApplyFadeOut(float fadeOutDuration = 0.0f, float fadeVolume = 0.0f, Action completeCallback = null)
     {
         float startVolume = m_audioSource.volume;

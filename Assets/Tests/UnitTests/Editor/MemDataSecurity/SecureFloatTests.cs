@@ -204,7 +204,7 @@ namespace QuickUnity.UnitTests
         /// <summary>
         /// Gets the random float value.
         /// </summary>
-        /// <returns>System.Single The random float value.</returns>
+        /// <returns>The random float value.</returns>
         private float GetRandomValue()
         {
             Random.InitState(MathUtility.GetRandomSeed());

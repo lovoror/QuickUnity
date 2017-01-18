@@ -78,7 +78,7 @@ namespace QuickUnity.Extensions
         /// Get all components.
         /// </summary>
         /// <param name="gameObject">The game object.</param>
-        /// <returns>Component[] The array of all components.</returns>
+        /// <returns>The array of all components.</returns>
         public static Component[] GetAllComponents(this GameObject gameObject)
         {
             return gameObject.GetComponents(typeof(Component));

@@ -42,7 +42,7 @@ namespace QuickUnity.Tasks
         /// <summary>
         /// The wrapper of coroutine.
         /// </summary>
-        /// <returns>IEnumerator object.</returns>
+        /// <returns>The enumerator object.</returns>
         IEnumerator CoroutineWrapper();
 
         /// <summary>

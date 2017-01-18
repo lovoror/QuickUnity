@@ -38,7 +38,7 @@ namespace QuickUnity.Utilities
         /// </summary>
         /// <param name="a">The position of A.</param>
         /// <param name="b">The position of B.</param>
-        /// <returns></returns>
+        /// <returns>The angle between vector a and b.</returns>
         public static float GetAngle(Vector3 a, Vector3 b)
         {
             return Mathf.Acos(Vector3.Dot(a.normalized, b.normalized)) * Mathf.Rad2Deg;
@@ -47,7 +47,7 @@ namespace QuickUnity.Utilities
         /// <summary>
         /// Gets the random seed.
         /// </summary>
-        /// <returns>System.Int32 The random seed.</returns>
+        /// <returns>The random seed.</returns>
         public static int GetRandomSeed()
         {
             byte[] bytes = new byte[4];
@@ -60,7 +60,7 @@ namespace QuickUnity.Utilities
         /// Gets the reciprocal of a number.
         /// </summary>
         /// <param name="number">The number.</param>
-        /// <returns>System.Single The reciprocal of the number.</returns>
+        /// <returns>The reciprocal of the number.</returns>
         public static float GetReciprocal(float number)
         {
             return 1.0f / number;
@@ -69,7 +69,7 @@ namespace QuickUnity.Utilities
         /// <summary>
         /// Generate Gaussian Random Number.
         /// </summary>
-        /// <returns>System.Single The Gaussian Random Number.</returns>
+        /// <returns>The Gaussian Random Number.</returns>
         public static float GenGaussianRandomNumber()
         {
             float x1 = UnityEngine.Random.value;

@@ -51,7 +51,7 @@ namespace QuickUnity.Core.Security
         /// <summary>
         /// Gets the original long value.
         /// </summary>
-        /// <returns>System.Int64 The original long value.</returns>
+        /// <returns>The original long value.</returns>
         public long GetValue()
         {
             return MemDataSecurity.DecryptLongValue(m_value, m_check);

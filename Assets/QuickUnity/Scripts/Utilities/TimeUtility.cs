@@ -35,7 +35,7 @@ namespace QuickUnity.Utilities
         /// Converts the date time to UNIX time stamp.
         /// </summary>
         /// <param name="dateTime">The date time.</param>
-        /// <returns>System.Int32 The UNIX time stamp.</returns>
+        /// <returns>The UNIX time stamp.</returns>
         public static int ConvertToUnixTimeStamp(DateTime dateTime)
         {
             TimeSpan ts = dateTime - new DateTime(1970, 1, 1, 0, 0, 0, 0);
@@ -45,7 +45,7 @@ namespace QuickUnity.Utilities
         /// <summary>
         /// Gets the UNIX time stamp.
         /// </summary>
-        /// <returns>System.Int32 The UNIX time stamp.</returns>
+        /// <returns>The UNIX time stamp.</returns>
         public static int GetUnixTimeStamp()
         {
             TimeSpan ts = DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0);
@@ -55,7 +55,7 @@ namespace QuickUnity.Utilities
         /// <summary>
         /// Gets the time stamp.
         /// </summary>
-        /// <returns>System.String The time stamp.</returns>
+        /// <returns>The time stamp.</returns>
         public static string GetTimeStamp()
         {
             return GetUnixTimeStamp().ToString();

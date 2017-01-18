@@ -51,7 +51,7 @@ namespace QuickUnity.Core.Security
         /// <summary>
         /// Gets the original float value.
         /// </summary>
-        /// <returns>System.Single The original float value.</returns>
+        /// <returns>The original float value.</returns>
         public float GetValue()
         {
             return MemDataSecurity.DecryptFloatValue(m_value, m_check);

@@ -217,7 +217,7 @@ namespace QuickUnity.Config
         /// Parses the INI configuration file.
         /// </summary>
         /// <param name="filePath">The file path.</param>
-        /// <returns>IniConfigFile object.</returns>
+        /// <returns>The parsed IniConfigFile object.</returns>
         public static IniConfigFile ParseIniConfigFile(string filePath)
         {
             IniConfigFile configFile = null;

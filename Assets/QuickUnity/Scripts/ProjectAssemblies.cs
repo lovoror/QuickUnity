@@ -64,7 +64,7 @@ namespace QuickUnity
         /// Gets the type.
         /// </summary>
         /// <param name="typeName">Name of the type.</param>
-        /// <returns>Type The Type object for the type name.</returns>
+        /// <returns>The Type object for the type name.</returns>
         public static Type GetType(string typeName)
         {
             Type result = null;

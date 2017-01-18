@@ -308,7 +308,7 @@ namespace QuickUnityEditor.Data
         /// <summary>
         /// Gets the text content of template.
         /// </summary>
-        /// <returns>System.String. The text content of template.</returns>
+        /// <returns>The text content of template.</returns>
         private static string GetTplText()
         {
             string[] assetPaths = Utilities.EditorUtility.GetAssetPath(DataTableRowScriptTemplateFileName, "t:TextAsset");
@@ -340,7 +340,7 @@ namespace QuickUnityEditor.Data
         /// <summary>
         /// Gets the namespace.
         /// </summary>
-        /// <returns>System.String. The namespace of scripts.</returns>
+        /// <returns>The namespace of scripts.</returns>
         private static string GetNamespace()
         {
             string namespaceString = string.Empty;
@@ -373,7 +373,7 @@ namespace QuickUnityEditor.Data
         /// Generates the namespace.
         /// </summary>
         /// <param name="preferencesData">The preferences data.</param>
-        /// <returns>System.String. The generated namespace string.</returns>
+        /// <returns>The generated namespace string.</returns>
         private static string GenerateNamespace(DataTablePreferences preferencesData)
         {
             string namespaceString = string.Empty;
@@ -416,7 +416,7 @@ namespace QuickUnityEditor.Data
         /// Generates the list of DataTableRowInfo.
         /// </summary>
         /// <param name="dataTable">The data table.</param>
-        /// <returns>List&lt;DataTableRowInfo&gt; The list of DataTableRowInfo.</returns>
+        /// <returns>The list of DataTableRowInfo.</returns>
         private static List<DataTableRowInfo> GenerateDataTableRowInfos(DataTable dataTable)
         {
             DataColumnCollection columns = dataTable.Columns;
@@ -562,7 +562,7 @@ namespace QuickUnityEditor.Data
         /// <param name="table">The data table.</param>
         /// <param name="className">Name of the class.</param>
         /// <param name="rowInfos">The list of DataTableRow.</param>
-        /// <returns>List&lt;DataTableRow&gt; The data collection of data table row.</returns>
+        /// <returns>The data collection of data table row.</returns>
         private static List<DataTableRow> GenerateDataTableRowCollection(DataTable table, string namespaceString, string className, List<DataTableRowInfo> rowInfos)
         {
             List<DataTableRow> dataCollection = new List<DataTableRow>();
@@ -611,7 +611,7 @@ namespace QuickUnityEditor.Data
         /// Generates the script fields string.
         /// </summary>
         /// <param name="rowInfos">The row infos.</param>
-        /// <returns>System.String The fields string.</returns>
+        /// <returns>The fields string.</returns>
         private static string GenerateScriptFieldsString(List<DataTableRowInfo> rowInfos)
         {
             string fieldsString = string.Empty;
@@ -658,7 +658,7 @@ namespace QuickUnityEditor.Data
         /// Gets the type parser.
         /// </summary>
         /// <param name="typeKeyword">The type keyword.</param>
-        /// <returns>ITypeParser The type parser.</returns>
+        /// <returns>The type parser.</returns>
         private static ITypeParser GetTypeParser(string typeKeyword)
         {
             if (!string.IsNullOrEmpty(typeKeyword))
@@ -848,7 +848,7 @@ namespace QuickUnityEditor.Data
         /// <summary>
         /// Gets the database files path.
         /// </summary>
-        /// <returns>System.String The database files path.</returns>
+        /// <returns>The database files path.</returns>
         private static string GetDbFilesPath()
         {
             string path = dataTablesLocationMap[DataTableStorageLocation.PersistentDataPath];
@@ -866,7 +866,7 @@ namespace QuickUnityEditor.Data
         /// <summary>
         /// Gets the database adapter of address map database.
         /// </summary>
-        /// <returns>BoxDbAdapter The adapter of address map database.</returns>
+        /// <returns>The adapter of address map database.</returns>
         private static BoxDbAdapter GetAddressMapDbAdapter()
         {
             string path = GetDbFilesPath();

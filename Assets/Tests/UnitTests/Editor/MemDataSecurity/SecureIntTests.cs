@@ -204,7 +204,7 @@ namespace QuickUnity.UnitTests
         /// <summary>
         /// Gets the random int value.
         /// </summary>
-        /// <returns>System.Int32 The random int value.</returns>
+        /// <returns>The random int value.</returns>
         private int GetRandomValue()
         {
             int seed = MathUtility.GetRandomSeed();

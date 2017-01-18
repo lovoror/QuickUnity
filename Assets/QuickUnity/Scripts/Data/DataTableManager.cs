@@ -81,7 +81,7 @@ namespace QuickUnity.Data
         /// </summary>
         /// <typeparam name="T">The type definition of data table row.</typeparam>
         /// <param name="primaryValue">The primary value.</param>
-        /// <returns>T The object of type definition.</returns>
+        /// <returns>The object of type definition.</returns>
         public T GetDataTableRow<T>(object primaryValue) where T : DataTableRow, new()
         {
             DataTableAddressMap addressMap = GetDatabaseAddressMap<T>();
@@ -119,7 +119,7 @@ namespace QuickUnity.Data
         /// <typeparam name="T">The type definition of data table row.</typeparam>
         /// <param name="conditions">The conditions.</param>
         /// <param name="multiConditionOperators">The multi condition operators.</param>
-        /// <returns>T[] The result list of data table rows.</returns>
+        /// <returns>The result list of data table rows.</returns>
         public T[] GetDataTableRows<T>(List<BoxDbQueryCondition> conditions,
             List<BoxDbMultiConditionOperator> multiConditionOperators = null) where T : DataTableRow, new()
         {
@@ -153,7 +153,7 @@ namespace QuickUnity.Data
         /// Gets all data table rows.
         /// </summary>
         /// <typeparam name="T">The type definition of data table row.</typeparam>
-        /// <returns>T[] The object array of type definition.</returns>
+        /// <returns>The object array of type definition.</returns>
         public T[] GetAllDataTableRows<T>() where T : DataTableRow, new()
         {
             DataTableAddressMap addressMap = GetDatabaseAddressMap<T>();
@@ -186,7 +186,7 @@ namespace QuickUnity.Data
         /// Gets all data table rows count.
         /// </summary>
         /// <typeparam name="T">The type definition of data table row.</typeparam>
-        /// <returns>System.Int64 All data table row count.</returns>
+        /// <returns>All data table row count.</returns>
         public long GetAllDataTableRowsCount<T>() where T : DataTableRow, new()
         {
             DataTableAddressMap addressMap = GetDatabaseAddressMap<T>();
@@ -221,7 +221,7 @@ namespace QuickUnity.Data
         /// <typeparam name="T">The type definition of data table row.</typeparam>
         /// <param name="conditions">The conditions.</param>
         /// <param name="multiConditionOperators">The multi condition operators.</param>
-        /// <returns>System.Int64 The data table row count.</returns>
+        /// <returns>The data table row count.</returns>
         public long GetDataTableRowsCount<T>(List<BoxDbQueryCondition> conditions,
             List<BoxDbMultiConditionOperator> multiConditionOperators = null) where T : DataTableRow, new()
         {
@@ -297,7 +297,7 @@ namespace QuickUnity.Data
         /// Gets the database address.
         /// </summary>
         /// <typeparam name="T">The type definition of data.</typeparam>
-        /// <returns>System.Int64 The database address.</returns>
+        /// <returns>The database address.</returns>
         private DataTableAddressMap GetDatabaseAddressMap<T>()
         {
             string name = typeof(T).Name;
@@ -315,7 +315,7 @@ namespace QuickUnity.Data
         /// Gets the adapter of database.
         /// </summary>
         /// <param name="addressMap">The object of DataTableAddressMap.</param>
-        /// <returns>BoxDbAdapter The adapter of database.</returns>
+        /// <returns>The adapter of database.</returns>
         private BoxDbAdapter GetDatabaseBoxAdapter(DataTableAddressMap addressMap)
         {
             BoxDbAdapter dbAdapter = null;

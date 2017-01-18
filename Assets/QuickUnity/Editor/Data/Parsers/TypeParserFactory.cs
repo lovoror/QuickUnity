@@ -85,7 +85,7 @@ namespace QuickUnityEditor.Data.Parsers
         /// Creates the type parser.
         /// </summary>
         /// <param name="typeKeyword">The type keyword.</param>
-        /// <returns>ITypeParser The type parser.</returns>
+        /// <returns>The type parser.</returns>
         public static ITypeParser CreateTypeParser(string typeKeyword)
         {
             Type type = GetTypeParserType(typeKeyword);

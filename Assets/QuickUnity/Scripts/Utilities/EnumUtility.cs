@@ -36,7 +36,7 @@ namespace QuickUnity.Utilities
         /// </summary>
         /// <typeparam name="T">The enum type</typeparam>
         /// <param name="enumValueStr">The enum value string.</param>
-        /// <returns></returns>
+        /// <returns>The enum object of type definition.</returns>
         public static T ConvertStringToEnumValue<T>(string enumValueStr)
         {
             return (T)Enum.Parse(typeof(T), enumValueStr);

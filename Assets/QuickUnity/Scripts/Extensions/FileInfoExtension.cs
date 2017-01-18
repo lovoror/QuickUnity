@@ -48,7 +48,7 @@ namespace QuickUnity.Extensions
         /// Gets the file name without extension.
         /// </summary>
         /// <param name="source">The source object of FileInfo.</param>
-        /// <returns>System.String The file name without extension.</returns>
+        /// <returns>The file name without extension.</returns>
         public static string GetFileNameWithoutExtension(this FileInfo source)
         {
             return Path.GetFileNameWithoutExtension(source.FullName);

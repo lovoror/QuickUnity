@@ -34,7 +34,7 @@ namespace QuickUnity.Tests.IntegrationTests
         /// <summary>
         /// Coroutine.
         /// </summary>
-        /// <returns>IEnumerator.</returns>
+        /// <returns>The enumerator object.</returns>
         private IEnumerator CoroutineFunc()
         {
             yield return new WaitForSeconds(2f);

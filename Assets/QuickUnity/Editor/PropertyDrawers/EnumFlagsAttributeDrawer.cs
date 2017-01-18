@@ -66,7 +66,7 @@ namespace QuickUnityEditor.PropertyDrawers
         /// </summary>
         /// <typeparam name="T">The type definition of property.</typeparam>
         /// <param name="property">The property.</param>
-        /// <returns>T The property with type definition.</returns>
+        /// <returns>The property with type definition.</returns>
         private static T GetBaseProperty<T>(SerializedProperty property)
         {
             // Separate the steps it takes to get to this property.

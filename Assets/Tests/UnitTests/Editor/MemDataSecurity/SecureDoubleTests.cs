@@ -204,7 +204,7 @@ namespace QuickUnity.UnitTests
         /// <summary>
         /// Gets the random double value.
         /// </summary>
-        /// <returns>System.Double The random long value.</returns>
+        /// <returns>The random long value.</returns>
         private double GetRandomValue()
         {
             int seed = MathUtility.GetRandomSeed();

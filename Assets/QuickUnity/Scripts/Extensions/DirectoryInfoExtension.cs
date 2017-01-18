@@ -38,7 +38,7 @@ namespace QuickUnity.Extensions
         /// <param name="source">The DirectoryInfo source.</param>
         /// <param name="searchPatterns">The search patterns.</param>
         /// <param name="searchOption">The search option.</param>
-        /// <returns>FileInfo[]. The array of FileInfo objects.</returns>
+        /// <returns>The array of FileInfo objects.</returns>
         public static FileInfo[] GetFiles(this DirectoryInfo source, string[] searchPatterns, SearchOption searchOption = SearchOption.TopDirectoryOnly)
         {
             List<FileInfo> result = new List<FileInfo>();

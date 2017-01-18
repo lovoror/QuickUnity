@@ -58,7 +58,7 @@ namespace QuickUnity.Extensions
         /// Get all components.
         /// </summary>
         /// <param name="transform">The transform of GameObject.</param>
-        /// <returns>Component[] The array of all components.</returns>
+        /// <returns>The array of all components.</returns>
         public static Component[] GetAllComponents(this Transform transform)
         {
             return transform.GetComponents(typeof(Component));
@@ -70,7 +70,7 @@ namespace QuickUnity.Extensions
         /// <param name="transform">The transform of game object.</param>
         /// <param name="targetTransformName">Name of the target transform.</param>
         /// <param name="includeInactive">if set to <c>true</c> [include inactive game object].</param>
-        /// <returns>Transform The transform of game object you want to find.</returns>
+        /// <returns>The transform of game object you want to find.</returns>
         public static Transform FindInChildren(this Transform transform, string targetTransformName, bool includeInactive = true)
         {
             if (!string.IsNullOrEmpty(targetTransformName))
@@ -151,7 +151,7 @@ namespace QuickUnity.Extensions
         /// The reverse direction of blue axis of the transform in world space.
         /// </summary>
         /// <param name="transform">The transform.</param>
-        /// <returns>Vector3 The backward direction.</returns>
+        /// <returns>The backward direction.</returns>
         public static Vector3 GetBackwardDirection(this Transform transform)
         {
             return -transform.forward;
@@ -161,7 +161,7 @@ namespace QuickUnity.Extensions
         /// The reverse direction of red axis of the transform in world space.
         /// </summary>
         /// <param name="transform">The transform.</param>
-        /// <returns>Vector3 The left direction.</returns>
+        /// <returns>The left direction.</returns>
         public static Vector3 GetLeftDirection(this Transform transform)
         {
             return -transform.right;
@@ -171,7 +171,7 @@ namespace QuickUnity.Extensions
         /// The reverse direction of green axis of the transform in world space.
         /// </summary>
         /// <param name="transform">The transform.</param>
-        /// <returns>Vector3 The down direction.</returns>
+        /// <returns>The down direction.</returns>
         public static Vector3 GetDownDirection(this Transform transform)
         {
             return -transform.up;
@@ -183,7 +183,7 @@ namespace QuickUnity.Extensions
         /// Gets the position x.
         /// </summary>
         /// <param name="transform">The transform.</param>
-        /// <returns>System.Single The value of axis x in position.</returns>
+        /// <returns>The value of axis x in position.</returns>
         public static float GetPositionX(this Transform transform)
         {
             return transform.position.x;
@@ -206,7 +206,7 @@ namespace QuickUnity.Extensions
         /// Gets the local position x.
         /// </summary>
         /// <param name="transform">The transform.</param>
-        /// <returns>System.Single The value of axis x in local position.</returns>
+        /// <returns>The value of axis x in local position.</returns>
         public static float GetLocalPositionX(this Transform transform)
         {
             return transform.localPosition.x;
@@ -233,7 +233,7 @@ namespace QuickUnity.Extensions
         /// Gets the position y.
         /// </summary>
         /// <param name="transform">The transform.</param>
-        /// <returns>System.Single The value of axis y in position.</returns>
+        /// <returns>The value of axis y in position.</returns>
         public static float GetPositionY(this Transform transform)
         {
             return transform.position.y;
@@ -256,7 +256,7 @@ namespace QuickUnity.Extensions
         /// Gets the local position y.
         /// </summary>
         /// <param name="transform">The transform.</param>
-        /// <returns>System.Single The value of axis y in local position.</returns>
+        /// <returns>The value of axis y in local position.</returns>
         public static float GetLocalPositionY(this Transform transform)
         {
             return transform.localPosition.y;
@@ -283,7 +283,7 @@ namespace QuickUnity.Extensions
         /// Gets the position z.
         /// </summary>
         /// <param name="transform">The transform.</param>
-        /// <returns>System.Single The value of axis z in position.</returns>
+        /// <returns>The value of axis z in position.</returns>
         public static float GetPositionZ(this Transform transform)
         {
             return transform.position.z;
@@ -306,7 +306,7 @@ namespace QuickUnity.Extensions
         /// Gets the local position z.
         /// </summary>
         /// <param name="transform">The transform.</param>
-        /// <returns>System.Single The value of axis z in local position.</returns>
+        /// <returns>The value of axis z in local position.</returns>
         public static float GetLocalPositionZ(this Transform transform)
         {
             return transform.localPosition.z;

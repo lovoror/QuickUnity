@@ -39,7 +39,7 @@ namespace QuickUnity.Utilities
         /// </summary>
         /// <typeparam name="T">The type definition of clone object.</typeparam>
         /// <param name="source">The object of source.</param>
-        /// <returns>T The cloned object.</returns>
+        /// <returns>The cloned object.</returns>
         public static T DeepClone<T>(T source)
         {
             BinaryFormatter fomatter = new BinaryFormatter(null, new StreamingContext(StreamingContextStates.Clone));

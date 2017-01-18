@@ -39,7 +39,7 @@ namespace QuickUnityEditor.Data.Parsers
         /// Parses the specified value.
         /// </summary>
         /// <param name="value">The value.</param>
-        /// <returns>System.Object. The parsed array data.</returns>
+        /// <returns>The parsed array data.</returns>
         public override object Parse(string value)
         {
             return ParseArrayString<double>(value);

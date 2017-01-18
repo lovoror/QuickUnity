@@ -85,7 +85,7 @@ namespace QuickUnity.Config
         /// <typeparam name="T">The type definition of the object deserialized.</typeparam>
         /// <param name="filePath">The file path.</param>
         /// <param name="autoParseFileName">if set to <c>true</c> [automatic parse file name].</param>
-        /// <returns>T The object deserialized.</returns>
+        /// <returns>The object deserialized.</returns>
         public static T Deserialize<T>(string filePath, bool autoParseFileName = true)
         {
             T result = default(T);

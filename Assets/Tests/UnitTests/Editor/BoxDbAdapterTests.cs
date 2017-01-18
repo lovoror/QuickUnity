@@ -198,7 +198,7 @@ namespace QuickUnity.UnitTests
         /// <summary>
         /// Gets the box database adapter.
         /// </summary>
-        /// <returns>BoxDbAdapter.</returns>
+        /// <returns>The BoxDbAdapter object.</returns>
         private BoxDbAdapter GetBoxDBAdapter()
         {
             BoxDbAdapter db = new BoxDbAdapter(Application.persistentDataPath);

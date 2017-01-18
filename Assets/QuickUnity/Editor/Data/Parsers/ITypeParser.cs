@@ -22,8 +22,6 @@
  *	SOFTWARE.
  */
 
-using System;
-
 namespace QuickUnityEditor.Data.Parsers
 {
     /// <summary>
@@ -35,7 +33,7 @@ namespace QuickUnityEditor.Data.Parsers
         /// Parses the specified value.
         /// </summary>
         /// <param name="value">The value.</param>
-        /// <returns>System.Object The parsed data.</returns>
+        /// <returns>The parsed data.</returns>
         object Parse(string value);
     }
 }
