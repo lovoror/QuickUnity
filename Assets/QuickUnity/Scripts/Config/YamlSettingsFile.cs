@@ -102,9 +102,12 @@ namespace QuickUnity.Config
                         filePath = Path.Combine(filePath, fileName);
                     }
 
-                    reader = File.OpenText(filePath);
-                    Deserializer deserializer = new Deserializer();
-                    result = deserializer.Deserialize<T>(reader);
+                    if (File.Exists(filePath))
+                    {
+                        reader = File.OpenText(filePath);
+                        Deserializer deserializer = new Deserializer();
+                        result = deserializer.Deserialize<T>(reader);
+                    }
                 }
                 catch (Exception exception)
                 {
