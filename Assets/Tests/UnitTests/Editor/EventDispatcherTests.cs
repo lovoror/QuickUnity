@@ -23,6 +23,11 @@ namespace QuickUnity.UnitTests
             public const string Test = "Test";
 
             /// <summary>
+            /// The type of event for test cases.
+            /// </summary>
+            public const string TestB = "TestB";
+
+            /// <summary>
             /// Initializes a new instance of the <see cref="TestEvent"/> class.
             /// </summary>
             /// <param name="eventType">The type of event.</param>
@@ -83,6 +88,23 @@ namespace QuickUnity.UnitTests
             dispatcher.AddEventListener(TestEvent.Test, TestEventHandler);
             dispatcher.RemoveEventListener(TestEvent.Test, TestEventHandler);
             Assert.IsFalse(dispatcher.HasEventListener(TestEvent.Test, TestEventHandler));
+        }
+
+        /// <summary>
+        /// Test case for method RemoveEventListeners of class EventDispatcher.
+        /// </summary>
+        [Test]
+        public void RemoveEventListenersTest()
+        {
+            IEventDispatcher dispatcher = new EventDispatcher();
+            dispatcher.AddEventListener<TestEvent>(TestEvent.Test, ClassTestEventHandler);
+            dispatcher.AddEventListener<TestEvent>(TestEvent.TestB, ClassTestEventHandler);
+            dispatcher.RemoveEventListeners(this);
+            Assert.IsFalse(dispatcher.HasEventListener<TestEvent>(TestEvent.Test, ClassTestEventHandler));
+        }
+
+        private void ClassTestEventHandler(TestEvent testEvent)
+        {
         }
     }
 }

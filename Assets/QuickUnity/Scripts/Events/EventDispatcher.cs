@@ -22,6 +22,7 @@
  *	SOFTWARE.
  */
 
+using QuickUnity.Utilities;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -45,6 +46,16 @@ namespace QuickUnity.Events
         public EventDispatcher()
         {
             m_listeners = new Dictionary<string, ArrayList>();
+        }
+
+        /// <summary>
+        /// Performs an implicit conversion from <see cref="EventDispatcher"/> to <see cref="System.Boolean"/>.
+        /// </summary>
+        /// <param name="exists">The exists.</param>
+        /// <returns>The result of the conversion.</returns>
+        public static implicit operator bool(EventDispatcher exists)
+        {
+            return exists != null;
         }
 
         #region IEventDispatcher Implementations
@@ -141,6 +152,90 @@ namespace QuickUnity.Events
 
                 if (listeners.Contains(listener))
                     listeners.Remove(listener);
+            }
+        }
+
+        /// <summary>
+        /// Removes the event listener by event type.
+        /// </summary>
+        /// <param name="eventType">Type of the event.</param>
+        public void RemoveEventListener(string eventType)
+        {
+            if (string.IsNullOrEmpty(eventType))
+            {
+                return;
+            }
+
+            if (m_listeners != null && m_listeners.ContainsKey(eventType))
+            {
+                m_listeners.Remove(eventType);
+            }
+        }
+
+        /// <summary>
+        /// Removes listeners from the EventDispatcher object by matching target.
+        /// </summary>
+        /// <param name="target">The target object.</param>
+        public void RemoveEventListeners(object target)
+        {
+            if (target == null)
+            {
+                return;
+            }
+
+            Dictionary<string, ArrayList> listenersMap = new Dictionary<string, ArrayList>();
+
+            // Mark listeners which need to be removed.
+            foreach (KeyValuePair<string, ArrayList> kvp in m_listeners)
+            {
+                string eventType = kvp.Key;
+                ArrayList list = kvp.Value;
+
+                for (int i = 0, length = list.Count; i < length; ++i)
+                {
+                    object listenerTarget = ReflectionUtility.GetObjectPropertyValue(list[i], "Target");
+
+                    if (listenerTarget == target)
+                    {
+                        if (!listenersMap.ContainsKey(eventType))
+                        {
+                            listenersMap[eventType] = new ArrayList();
+                        }
+
+                        listenersMap[eventType].Add(list[i]);
+                    }
+                }
+            }
+
+            // Remove listeners.
+            if (listenersMap.Count > 0)
+            {
+                foreach (KeyValuePair<string, ArrayList> kvp in listenersMap)
+                {
+                    string eventType = kvp.Key;
+                    ArrayList removedListeners = kvp.Value;
+
+                    for (int i = 0, length = removedListeners.Count; i < length; ++i)
+                    {
+                        ArrayList listeners = m_listeners[eventType];
+
+                        if (listeners != null && listeners.Contains(removedListeners[i]))
+                        {
+                            listeners.Remove(removedListeners[i]);
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Removes all event listeners.
+        /// </summary>
+        public void RemoveAllEventListeners()
+        {
+            if (m_listeners != null)
+            {
+                m_listeners.Clear();
             }
         }
 

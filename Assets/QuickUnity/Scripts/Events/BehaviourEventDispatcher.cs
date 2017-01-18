@@ -23,7 +23,6 @@
  */
 
 using System;
-using UnityEngine;
 
 namespace QuickUnity.Events
 {
@@ -78,7 +77,9 @@ namespace QuickUnity.Events
         public void AddEventListener<T>(string eventType, Action<T> listener) where T : Event
         {
             if (m_eventDispatcher != null)
+            {
                 m_eventDispatcher.AddEventListener(eventType, listener);
+            }
         }
 
         /// <summary>
@@ -91,7 +92,9 @@ namespace QuickUnity.Events
         public void DispatchEvent<T>(T eventObject) where T : Event
         {
             if (m_eventDispatcher != null)
+            {
                 m_eventDispatcher.DispatchEvent(eventObject);
+            }
         }
 
         /// <summary>
@@ -109,7 +112,9 @@ namespace QuickUnity.Events
         public bool HasEventListener<T>(string eventType, Action<T> listener) where T : Event
         {
             if (m_eventDispatcher != null)
+            {
                 return m_eventDispatcher.HasEventListener(eventType, listener);
+            }
 
             return false;
         }
@@ -125,7 +130,44 @@ namespace QuickUnity.Events
         public void RemoveEventListener<T>(string eventType, Action<T> listener) where T : Event
         {
             if (m_eventDispatcher != null)
+            {
                 m_eventDispatcher.RemoveEventListener(eventType, listener);
+            }
+        }
+
+        /// <summary>
+        /// Removes the event listener by event type.
+        /// </summary>
+        /// <param name="eventType">Type of the event.</param>
+        public void RemoveEventListener(string eventType)
+        {
+            if (m_eventDispatcher != null)
+            {
+                m_eventDispatcher.RemoveEventListener(eventType);
+            }
+        }
+
+        /// <summary>
+        /// Removes listeners from the EventDispatcher object by matching target.
+        /// </summary>
+        /// <param name="target">The target object.</param>
+        public void RemoveEventListeners(object target)
+        {
+            if (m_eventDispatcher != null)
+            {
+                m_eventDispatcher.RemoveEventListeners(target);
+            }
+        }
+
+        /// <summary>
+        /// Removes all event listeners.
+        /// </summary>
+        public void RemoveAllEventListeners()
+        {
+            if (m_eventDispatcher != null)
+            {
+                m_eventDispatcher.RemoveAllEventListeners();
+            }
         }
 
         #endregion IEventDispatcher Implementations
