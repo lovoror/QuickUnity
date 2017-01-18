@@ -272,9 +272,6 @@ namespace QuickUnity.Events
                 {
                     object listenerTarget = ReflectionUtility.GetObjectPropertyValue(list[i], "Target");
 
-                    //Type type = list[i].GetType();
-                    //Type[] genericArgs = type.GetGenericArguments();
-
                     if (listenerTarget == target)
                     {
                         if (!listenersMap.ContainsKey(eventType))

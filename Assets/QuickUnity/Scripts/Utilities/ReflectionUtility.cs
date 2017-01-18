@@ -541,6 +541,22 @@ namespace QuickUnity.Utilities
         }
 
         /// <summary>
+        /// Get generic arguments of the object.
+        /// </summary>
+        /// <param name="obj">The object.</param>
+        /// <returns>The generic arguments.</returns>
+        public static Type[] GetObjectGenericArguments(object obj)
+        {
+            if (obj == null)
+            {
+                return null;
+            }
+
+            Type type = obj.GetType();
+            return type.GetGenericArguments();
+        }
+
+        /// <summary>
         /// Gets the types from assembly.
         /// </summary>
         /// <param name="assembly">The assembly.</param>
