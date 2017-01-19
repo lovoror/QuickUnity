@@ -45,7 +45,7 @@ public class AudioSourceEffects : MonoBehaviourBase
     {
         base.OnStart();
 
-        m_audioSource = GetComponent<AudioSource>();
+        Initialize();
     }
 
     /// <summary>
@@ -62,6 +62,18 @@ public class AudioSourceEffects : MonoBehaviourBase
     }
 
     /// <summary>
+    /// Initializes this instance.
+    /// </summary>
+    protected override void Initialize()
+    {
+        if (!m_isInitialized)
+        {
+            m_audioSource = GetComponent<AudioSource>();
+            base.Initialize();
+        }
+    }
+
+    /// <summary>
     /// This can be used in place of "play" when it is desired to fade in the sound over time.
     /// </summary>
     /// <param name="fadeInDuration">Duration of the fade in.</param>
@@ -70,6 +82,8 @@ public class AudioSourceEffects : MonoBehaviourBase
     /// <param name="completeCallback">The complete callback function.</param>
     public void FadeIn(float fadeInDuration = 0.0f, float fadeVolume = 1.0f, float startPosition = 0.0f, Action completeCallback = null)
     {
+        Initialize();
+
         if (m_audioSource)
         {
             m_audioSource.volume = 0.0f;
@@ -95,6 +109,8 @@ public class AudioSourceEffects : MonoBehaviourBase
     /// <param name="completeCallback">The complete callback function.</param>
     public void FadeOut(float fadeOutDuration = 0.0f, float fadeVolume = 0.0f, Action completeCallback = null)
     {
+        Initialize();
+
         if (m_audioSource)
         {
             if (fadeOutDuration <= 0.0f)

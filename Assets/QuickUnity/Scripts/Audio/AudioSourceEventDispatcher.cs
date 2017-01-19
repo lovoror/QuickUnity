@@ -45,7 +45,11 @@ namespace QuickUnity.Audio
         /// <value>The AudioSource component.</value>
         public AudioSource audioSource
         {
-            get { return m_audioSource; }
+            get
+            {
+                Initialize();
+                return m_audioSource;
+            }
         }
 
         /// <summary>
@@ -55,17 +59,50 @@ namespace QuickUnity.Audio
         {
             base.OnStart();
 
-            m_audioSource = GetComponent<AudioSource>();
+            Initialize();
         }
 
         /// <summary>
-        /// Called when script receive message FixedUpdate.
+        /// This function is called when the MonoBehaviour will be destroyed.
         /// </summary>
-        protected override void OnFixedUpdate()
+        protected override void OnDestroy()
         {
-            if (m_audioSource && m_audioSource.clip && m_audioSource.isPlaying && m_audioSource.timeSamples >= m_audioSource.clip.samples)
+            base.OnDestroy();
+
+            CancelInvoke();
+        }
+
+        /// <summary>
+        /// Play the audio source.
+        /// </summary>
+        public void PlayAudio()
+        {
+            Initialize();
+
+            if (m_audioSource && m_audioSource.clip)
             {
-                DispatchEvent(new AudioSourceEvent(AudioSourceEvent.PlayComplete, this));
+                m_audioSource.Play();
+                Invoke("OnPlayComplete", m_audioSource.clip.length);
+            }
+        }
+
+        /// <summary>
+        /// Called when the AudioSource component [play complete].
+        /// </summary>
+        private void OnPlayComplete()
+        {
+            DispatchEvent(new AudioSourceEvent(AudioSourceEvent.PlayComplete, this));
+        }
+
+        /// <summary>
+        /// Initializes this instance.
+        /// </summary>
+        protected override void Initialize()
+        {
+            if (!m_isInitialized)
+            {
+                m_audioSource = GetComponent<AudioSource>();
+                base.Initialize();
             }
         }
     }
