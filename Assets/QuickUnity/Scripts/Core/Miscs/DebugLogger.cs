@@ -44,10 +44,21 @@ namespace QuickUnity.Core.Miscs
         /// </summary>
         private const string LogFileExtension = ".log";
 
+#if (UNITY_ANDROID || UNITY_IPHONE) && !UNITY_EDITOR
+
+        /// <summary>
+        /// The log files root path
+        /// </summary>
+        private static readonly string s_rootPath = Application.persistentDataPath;
+
+#else
+
         /// <summary>
         /// The log files root path
         /// </summary>
         private static readonly string s_rootPath = Directory.GetCurrentDirectory();
+
+#endif
 
         /// <summary>
         /// The log files path.

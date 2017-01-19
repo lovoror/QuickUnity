@@ -22,8 +22,9 @@
  *	SOFTWARE.
  */
 
+using QuickUnity.Core.Miscs;
 using System;
-using UnityEngine;
+using System.Reflection;
 
 namespace QuickUnity
 {
@@ -35,17 +36,17 @@ namespace QuickUnity
         /// <summary>
         /// The project assembly.
         /// </summary>
-        public const string CSharpAssembly = "Assembly-CSharp.dll";
+        public const string CSharpAssembly = "Assembly-CSharp";
 
         /// <summary>
         /// The project editor assembly.
         /// </summary>
-        public const string CSharpEditorAssembly = "Assembly-CSharp-Editor.dll";
+        public const string CSharpEditorAssembly = "Assembly-CSharp-Editor";
 
         /// <summary>
         /// The unity editor assembly.
         /// </summary>
-        public const string UnityEditorAssembly = "UnityEditor.dll";
+        public const string UnityEditorAssembly = "UnityEditor";
 
         /// <summary>
         /// The assembly names.
@@ -81,7 +82,14 @@ namespace QuickUnity
 
                         if (!string.IsNullOrEmpty(assemblyName))
                         {
-                            result = Types.GetType(typeName, assemblyName);
+                            try
+                            {
+                                result = Assembly.Load(assemblyName).GetType(typeName);
+                            }
+                            catch (Exception exception)
+                            {
+                                DebugLogger.LogException(exception);
+                            }
 
                             if (result != null)
                             {
