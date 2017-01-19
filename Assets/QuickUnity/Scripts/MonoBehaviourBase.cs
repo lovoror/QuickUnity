@@ -32,6 +32,20 @@ namespace QuickUnity
     /// <seealso cref="UnityEngine.MonoBehaviour"/>
     public abstract class MonoBehaviourBase : MonoBehaviour
     {
+        /// <summary>
+        /// Whether this instance is initialized.
+        /// </summary>
+        protected bool m_isInitialized;
+
+        /// <summary>
+        /// Gets a value indicating whether this instance is initialized.
+        /// </summary>
+        /// <value><c>true</c> if this instance is initialized; otherwise, <c>false</c>.</value>
+        public bool isInitialized
+        {
+            get { return m_isInitialized; }
+        }
+
         #region Messages
 
         /// <summary>
@@ -86,6 +100,14 @@ namespace QuickUnity
         #endregion Messages
 
         #region Protected Functions
+
+        /// <summary>
+        /// Initializes this instance.
+        /// </summary>
+        protected virtual void Initialize()
+        {
+            m_isInitialized = true;
+        }
 
         /// <summary>
         /// Called when script receive message Awake.
