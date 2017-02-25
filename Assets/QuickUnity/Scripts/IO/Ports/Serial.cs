@@ -98,7 +98,16 @@ namespace QuickUnity.IO.Ports
         public Serial(string portName, int baudRate, Parity parity = Parity.None,
             int dataBits = 8, StopBits stopBits = StopBits.One)
         {
-            m_serialPort = new SerialPort(portName, baudRate, parity, dataBits, stopBits);
+            string[] ports = SerialPort.GetPortNames();
+
+            for (int i = 0, length = ports.Length; i < length; ++i)
+            {
+                if (portName == ports[i])
+                {
+                    m_serialPort = new SerialPort(portName, baudRate, parity, dataBits, stopBits);
+                    break;
+                }
+            }
         }
 
         #region Public Functions
@@ -110,7 +119,7 @@ namespace QuickUnity.IO.Ports
         {
             try
             {
-                if (!isOpen)
+                if (m_serialPort != null && !isOpen)
                 {
                     m_serialPort.Open();
                     DispatchEvent(new SerialEvent(SerialEvent.Open, this));
@@ -159,7 +168,7 @@ namespace QuickUnity.IO.Ports
         {
             base.Update();
 
-            if (Time.frameCount % 5 == 0)
+            if (Time.frameCount % 5 == 0 && m_serialPort != null)
             {
                 if (m_isDataReceived)
                 {
@@ -182,6 +191,11 @@ namespace QuickUnity.IO.Ports
         /// </summary>
         public void Close()
         {
+            if (m_serialPort == null)
+            {
+                return;
+            }
+
             m_isClosingPort = true;
 
             while (!m_isDataReceived)
