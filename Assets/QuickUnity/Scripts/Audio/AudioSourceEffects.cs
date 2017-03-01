@@ -39,13 +39,20 @@ public class AudioSourceEffects : MonoBehaviourBase
     protected AudioSource m_audioSource;
 
     /// <summary>
-    /// Called when script receive message Start.
+    /// Gets the AudioSource component.
     /// </summary>
-    protected override void OnStart()
+    /// <value>The AudioSource component.</value>
+    public AudioSource audioSource
     {
-        base.OnStart();
+        get
+        {
+            if (!m_audioSource)
+            {
+                m_audioSource = GetComponent<AudioSource>();
+            }
 
-        Initialize();
+            return m_audioSource;
+        }
     }
 
     /// <summary>
@@ -55,21 +62,9 @@ public class AudioSourceEffects : MonoBehaviourBase
     {
         StopAllCoroutines();
 
-        if (m_audioSource)
+        if (audioSource)
         {
-            m_audioSource.Stop();
-        }
-    }
-
-    /// <summary>
-    /// Initializes this instance.
-    /// </summary>
-    protected override void Initialize()
-    {
-        if (!m_isInitialized)
-        {
-            m_audioSource = GetComponent<AudioSource>();
-            base.Initialize();
+            audioSource.Stop();
         }
     }
 
@@ -82,17 +77,15 @@ public class AudioSourceEffects : MonoBehaviourBase
     /// <param name="completeCallback">The complete callback function.</param>
     public void FadeIn(float fadeInDuration = 0.0f, float fadeVolume = 1.0f, float startPosition = 0.0f, Action completeCallback = null)
     {
-        Initialize();
-
-        if (m_audioSource)
+        if (audioSource)
         {
-            m_audioSource.volume = 0.0f;
-            m_audioSource.time = startPosition;
-            m_audioSource.Play();
+            audioSource.volume = 0.0f;
+            audioSource.time = startPosition;
+            audioSource.Play();
 
             if (fadeInDuration <= 0.0f)
             {
-                m_audioSource.volume = fadeVolume;
+                audioSource.volume = fadeVolume;
             }
             else
             {
@@ -109,13 +102,11 @@ public class AudioSourceEffects : MonoBehaviourBase
     /// <param name="completeCallback">The complete callback function.</param>
     public void FadeOut(float fadeOutDuration = 0.0f, float fadeVolume = 0.0f, Action completeCallback = null)
     {
-        Initialize();
-
-        if (m_audioSource)
+        if (audioSource)
         {
             if (fadeOutDuration <= 0.0f)
             {
-                m_audioSource.volume = fadeVolume;
+                audioSource.volume = fadeVolume;
             }
             else
             {
@@ -133,19 +124,22 @@ public class AudioSourceEffects : MonoBehaviourBase
     /// <returns>The enumerator of this coroutine.</returns>
     private IEnumerator ApplyFadeIn(float fadeInDuration = 0.0f, float fadeVolume = 1.0f, Action completeCallback = null)
     {
-        float startVolume = m_audioSource.volume;
-
-        while (m_audioSource.volume < fadeVolume)
+        if (audioSource)
         {
-            m_audioSource.volume += startVolume * Time.deltaTime / fadeInDuration;
-            yield return null;
-        }
+            float startVolume = audioSource.volume;
 
-        m_audioSource.volume = fadeVolume;
+            while (audioSource.volume < fadeVolume)
+            {
+                audioSource.volume += startVolume * Time.deltaTime / fadeInDuration;
+                yield return null;
+            }
 
-        if (completeCallback != null)
-        {
-            completeCallback.Invoke();
+            audioSource.volume = fadeVolume;
+
+            if (completeCallback != null)
+            {
+                completeCallback.Invoke();
+            }
         }
     }
 
@@ -158,20 +152,23 @@ public class AudioSourceEffects : MonoBehaviourBase
     /// <returns>The enumerator of this coroutine.</returns>
     private IEnumerator ApplyFadeOut(float fadeOutDuration = 0.0f, float fadeVolume = 0.0f, Action completeCallback = null)
     {
-        float startVolume = m_audioSource.volume;
-
-        while (m_audioSource.volume > fadeVolume)
+        if (audioSource)
         {
-            m_audioSource.volume -= startVolume * Time.deltaTime / fadeOutDuration;
-            yield return null;
-        }
+            float startVolume = audioSource.volume;
 
-        m_audioSource.volume = fadeVolume;
-        m_audioSource.Stop();
+            while (audioSource.volume > fadeVolume)
+            {
+                audioSource.volume -= startVolume * Time.deltaTime / fadeOutDuration;
+                yield return null;
+            }
 
-        if (completeCallback != null)
-        {
-            completeCallback.Invoke();
+            audioSource.volume = fadeVolume;
+            audioSource.Stop();
+
+            if (completeCallback != null)
+            {
+                completeCallback.Invoke();
+            }
         }
     }
 }

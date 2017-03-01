@@ -47,19 +47,13 @@ namespace QuickUnity.Audio
         {
             get
             {
-                Initialize();
+                if (!m_audioSource)
+                {
+                    m_audioSource = GetComponent<AudioSource>();
+                }
+
                 return m_audioSource;
             }
-        }
-
-        /// <summary>
-        /// Called when script receive message Start.
-        /// </summary>
-        protected override void OnStart()
-        {
-            base.OnStart();
-
-            Initialize();
         }
 
         /// <summary>
@@ -77,12 +71,10 @@ namespace QuickUnity.Audio
         /// </summary>
         public void PlayAudio()
         {
-            Initialize();
-
-            if (m_audioSource && m_audioSource.clip)
+            if (audioSource && audioSource.clip)
             {
-                m_audioSource.Play();
-                Invoke("OnPlayComplete", m_audioSource.clip.length);
+                audioSource.Play();
+                Invoke("OnPlayComplete", audioSource.clip.length);
             }
         }
 
@@ -92,18 +84,6 @@ namespace QuickUnity.Audio
         private void OnPlayComplete()
         {
             DispatchEvent(new AudioSourceEvent(AudioSourceEvent.PlayComplete, this));
-        }
-
-        /// <summary>
-        /// Initializes this instance.
-        /// </summary>
-        protected override void Initialize()
-        {
-            if (!m_isInitialized)
-            {
-                m_audioSource = GetComponent<AudioSource>();
-                base.Initialize();
-            }
         }
     }
 }
