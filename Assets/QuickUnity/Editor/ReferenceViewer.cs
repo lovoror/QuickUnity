@@ -36,14 +36,14 @@ namespace QuickUnityEditor
     public class ReferenceViewer : EditorWindow
     {
         /// <summary>
-        /// Dialog messasges collection.
+        /// Information text collection.
         /// </summary>
-        internal sealed class DialogMessages
+        internal sealed class InfoTextCollection
         {
             /// <summary>
-            /// Dialog message of no reference.
+            /// The text of no reference.
             /// </summary>
-            public const string NoReferenceDialog = "Sorry, found no reference to the target asset!";
+            public const string NoReferenceText = "Sorry, target assets got no reference!";
         }
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace QuickUnityEditor
         /// </summary>
         public void FindAllReferences()
         {
-            List<string> targetAssets = new List<string>();
+            List<string> targetAssetPathList = new List<string>();
 
             string[] guids = Selection.assetGUIDs;
 
@@ -92,15 +92,16 @@ namespace QuickUnityEditor
             {
                 string guid = guids[i];
                 string assetPath = AssetDatabase.GUIDToAssetPath(guid);
+                Debug.Log(assetPath);
                 string[] paths = Utilities.EditorUtility.GetObjectAssets(assetPath);
 
                 if (paths != null)
                 {
-                    targetAssets.AddRange(paths);
+                    targetAssetPathList.AddRange(paths);
                 }
             }
 
-            Dictionary<string, string[]> referencesMap = Utilities.EditorUtility.GetDependenciesMap(targetAssets);
+            Dictionary<string, List<string>> referencesMap = Utilities.EditorUtility.GetReferences(targetAssetPathList);
 
             if (referencesMap.Count > 0)
             {
@@ -111,7 +112,6 @@ namespace QuickUnityEditor
             {
                 m_referencesListMap = null;
                 Repaint();
-                QuickUnityEditorApplication.DisplaySimpleDialog("", DialogMessages.NoReferenceDialog);
             }
         }
 
@@ -144,6 +144,10 @@ namespace QuickUnityEditor
                     EditorGUILayout.EndVertical();
                 }
             }
+            else
+            {
+                EditorGUILayout.LabelField(InfoTextCollection.NoReferenceText);
+            }
 
             EditorGUILayout.EndScrollView();
 
@@ -161,15 +165,15 @@ namespace QuickUnityEditor
         /// </summary>
         /// <param name="referencesMap">The references map.</param>
         /// <returns>The references list map.</returns>
-        private Dictionary<string, ReorderableList> GenerateReferencesListMap(Dictionary<string, string[]> referencesMap)
+        private Dictionary<string, ReorderableList> GenerateReferencesListMap(Dictionary<string, List<string>> referencesMap)
         {
             Dictionary<string, ReorderableList> listMap = new Dictionary<string, ReorderableList>();
 
             if (referencesMap != null)
             {
-                foreach (KeyValuePair<string, string[]> kvp in referencesMap)
+                foreach (KeyValuePair<string, List<string>> kvp in referencesMap)
                 {
-                    if (kvp.Value.Length > 0)
+                    if (kvp.Value.Count > 0)
                     {
                         ReorderableList list = new ReorderableList(kvp.Value, typeof(string[]), false, false, false, false);
                         list.elementHeight = 16;

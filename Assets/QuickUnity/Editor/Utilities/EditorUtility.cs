@@ -215,49 +215,47 @@ namespace QuickUnityEditor.Utilities
         }
 
         /// <summary>
-        /// Gets the dependencies map.
+        /// Get the references.
         /// </summary>
-        /// <param name="targetAssets">The target assets.</param>
-        /// <param name="recursive">
-        /// If <c>false</c>, return only assets which are direct dependencies of the input; if
-        /// <c>true</c>, include all indirect dependencies of the input. Defaults to true.
-        /// </param>
-        /// <returns>The dependencies map.</returns>
-        public static Dictionary<string, string[]> GetDependenciesMap(List<string> targetAssets, bool recursive = true)
+        /// <param name="targetAssetPathList">The target asset path list.</param>
+        /// <returns>
+        /// Dictionary&lt;System.String, System.String[]&gt; The dictionary of asset references.
+        /// </returns>
+        public static Dictionary<string, List<string>> GetReferences(List<string> targetAssetPathList)
         {
-            if (targetAssets == null)
+            string[] allAssetGuids = AssetDatabase.FindAssets("");
+
+            Dictionary<string, List<string>> references = new Dictionary<string, List<string>>();
+
+            for (int i = 0, length = allAssetGuids.Length; i < length; ++i)
             {
-                return null;
-            }
+                string assetGuid = allAssetGuids[i];
+                string assetPath = AssetDatabase.GUIDToAssetPath(assetGuid);
 
-            Dictionary<string, string[]> referencesMap = new Dictionary<string, string[]>();
+                // Show the progress bar.
+                UnityEditor.EditorUtility.DisplayProgressBar("Processing...", string.Format("Checking the asset {0}...", assetPath), (float)(i + 1) / length);
 
-            for (int i = 0, length = targetAssets.Count; i < length; ++i)
-            {
-                string targetAsset = targetAssets[i];
+                List<string> dependencies = new List<string>(AssetDatabase.GetDependencies(assetPath, true));
 
-                if (!string.IsNullOrEmpty(targetAsset))
+                for (int j = 0, count = targetAssetPathList.Count; j < count; ++j)
                 {
-                    List<string> dependenciesList = new List<string>(AssetDatabase.GetDependencies(targetAsset, recursive));
+                    string targetAssetPath = targetAssetPathList[j];
 
-                    if (dependenciesList.Contains(targetAsset))
+                    if (dependencies.Contains(targetAssetPath) && targetAssetPath != assetPath)
                     {
-                        dependenciesList.Remove(targetAsset);
-                    }
-
-                    if (dependenciesList != null)
-                    {
-                        string[] dependencies = dependenciesList.ToArray();
-
-                        if (dependencies != null && dependencies.Length > 0)
+                        if (!references.ContainsKey(targetAssetPath))
                         {
-                            referencesMap.AddUnique(targetAsset, dependenciesList.ToArray());
+                            references[targetAssetPath] = new List<string>();
                         }
+
+                        references[targetAssetPath].AddUnique(assetPath);
                     }
                 }
             }
 
-            return referencesMap;
+            UnityEditor.EditorUtility.ClearProgressBar();
+
+            return references;
         }
 
         /// <summary>
