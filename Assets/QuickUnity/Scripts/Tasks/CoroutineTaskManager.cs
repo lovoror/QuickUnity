@@ -31,13 +31,14 @@ namespace QuickUnity.Tasks
     /// <summary>
     /// Class to globally manage CoroutineTask objects.
     /// </summary>
+    /// <seealso cref="QuickUnity.Tasks.ITaskManager"/>
     /// <seealso cref="QuickUnity.Patterns.SingletonBehaviour{QuickUnity.Tasks.CoroutineTaskManager}"/>
-    public class CoroutineTaskManager : SingletonBehaviour<CoroutineTaskManager>
+    public class CoroutineTaskManager : SingletonBehaviour<CoroutineTaskManager>, ITaskManager
     {
         /// <summary>
         /// The CoroutineTask object list.
         /// </summary>
-        private List<ICoroutineTask> m_tasks;
+        private List<ITask> m_tasks;
 
         /// <summary>
         /// Called when script receive message Awake.
@@ -46,7 +47,7 @@ namespace QuickUnity.Tasks
         {
             base.OnAwake();
 
-            m_tasks = new List<ICoroutineTask>();
+            m_tasks = new List<ITask>();
         }
 
         /// <summary>
@@ -81,13 +82,13 @@ namespace QuickUnity.Tasks
         /// <summary>
         /// Contains the task.
         /// </summary>
-        /// <param name="coroutineTask">The coroutine task.</param>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
-        public bool ContainTask(ICoroutineTask coroutineTask)
+        /// <param name="task">The task object.</param>
+        /// <returns><c>true</c> if task is found, <c>false</c> otherwise.</returns>
+        public bool ContainsTask(ITask task)
         {
-            if (m_tasks != null && coroutineTask != null)
+            if (m_tasks != null && task != null)
             {
-                return m_tasks.Contains(coroutineTask);
+                return m_tasks.Contains(task);
             }
 
             return false;
@@ -98,7 +99,7 @@ namespace QuickUnity.Tasks
         /// </summary>
         /// <param name="task">The task.</param>
         /// <param name="autoStart">if set to <c>true</c> [automatic start].</param>
-        public void AddTask(ICoroutineTask task, bool autoStart = true)
+        public void AddTask(ITask task, bool autoStart = true)
         {
             if (m_tasks != null && task != null)
             {
@@ -110,6 +111,59 @@ namespace QuickUnity.Tasks
                 {
                     task.Start();
                 }
+            }
+        }
+
+        /// <summary>
+        /// Removes the task.
+        /// </summary>
+        /// <param name="task">The task.</param>
+        /// <param name="autoStop">if set to <c>true</c> [automatic stop].</param>
+        /// <returns><c>true</c> if task is successfully removed; <c>false</c> otherwise.</returns>
+        public bool RemoveTask(ITask task, bool autoStop = true)
+        {
+            if (task != null)
+            {
+                if (autoStop)
+                {
+                    task.Stop();
+                }
+
+                task.RemoveEventListener<CoroutineTaskEvent>(CoroutineTaskEvent.CoroutineTaskStart, OnTaskStart);
+                task.RemoveEventListener<CoroutineTaskEvent>(CoroutineTaskEvent.CoroutineTaskStop, OnTaskStop);
+
+                if (m_tasks != null)
+                {
+                    return m_tasks.Remove(task);
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Removes all tasks.
+        /// </summary>
+        /// <param name="autoStop">if set to <c>true</c> [automatic stop].</param>
+        public void RemoveAllTasks(bool autoStop = true)
+        {
+            if (m_tasks != null)
+            {
+                m_tasks.ForEach(task =>
+                {
+                    if (task != null)
+                    {
+                        if (autoStop)
+                        {
+                            task.Stop();
+                        }
+
+                        task.RemoveEventListener<CoroutineTaskEvent>(CoroutineTaskEvent.CoroutineTaskStart, OnTaskStart);
+                        task.RemoveEventListener<CoroutineTaskEvent>(CoroutineTaskEvent.CoroutineTaskStop, OnTaskStop);
+                    }
+                });
+
+                m_tasks.Clear();
             }
         }
 
@@ -166,59 +220,6 @@ namespace QuickUnity.Tasks
                 {
                     task.Stop();
                 });
-            }
-        }
-
-        /// <summary>
-        /// Removes the task.
-        /// </summary>
-        /// <param name="task">The task.</param>
-        /// <param name="autoStop">if set to <c>true</c> [automatic stop].</param>
-        /// <returns><c>true</c> if task is successfully removed; <c>false</c> otherwise.</returns>
-        public bool RemoveTask(ICoroutineTask task, bool autoStop = true)
-        {
-            if (task != null)
-            {
-                if (autoStop)
-                {
-                    task.Stop();
-                }
-
-                task.RemoveEventListener<CoroutineTaskEvent>(CoroutineTaskEvent.CoroutineTaskStart, OnTaskStart);
-                task.RemoveEventListener<CoroutineTaskEvent>(CoroutineTaskEvent.CoroutineTaskStop, OnTaskStop);
-
-                if (m_tasks != null)
-                {
-                    return m_tasks.Remove(task);
-                }
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// Removes all tasks.
-        /// </summary>
-        /// <param name="autoStop">if set to <c>true</c> [automatic stop].</param>
-        public void RemoveAllTasks(bool autoStop = true)
-        {
-            if (m_tasks != null)
-            {
-                m_tasks.ForEach(task =>
-                {
-                    if (task != null)
-                    {
-                        if (autoStop)
-                        {
-                            task.Stop();
-                        }
-
-                        task.RemoveEventListener<CoroutineTaskEvent>(CoroutineTaskEvent.CoroutineTaskStart, OnTaskStart);
-                        task.RemoveEventListener<CoroutineTaskEvent>(CoroutineTaskEvent.CoroutineTaskStop, OnTaskStop);
-                    }
-                });
-
-                m_tasks.Clear();
             }
         }
 

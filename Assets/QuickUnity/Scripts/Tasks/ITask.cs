@@ -22,20 +22,45 @@
  *	SOFTWARE.
  */
 
-using System.Collections;
+using QuickUnity.Events;
 
 namespace QuickUnity.Tasks
 {
     /// <summary>
-    /// The interface definition for the CoroutineTask object.
+    /// The interface definition for the Task object.
     /// </summary>
-    /// <seealso cref="QuickUnity.Tasks.ITask"/>
-    public interface ICoroutineTask : ITask
+    /// <seealso cref="QuickUnity.Events.IEventDispatcher"/>
+    public interface ITask : IEventDispatcher
     {
         /// <summary>
-        /// The wrapper of coroutine.
+        /// Gets the state of the task.
         /// </summary>
-        /// <returns>The enumerator object.</returns>
-        IEnumerator CoroutineWrapper();
+        /// <value>The state of the task.</value>
+        TaskState taskState { get; }
+
+        /// <summary>
+        /// Starts this task.
+        /// </summary>
+        void Start();
+
+        /// <summary>
+        /// Pauses this task.
+        /// </summary>
+        void Pause();
+
+        /// <summary>
+        /// Resumes this task.
+        /// </summary>
+        void Resume();
+
+        /// <summary>
+        /// Stops this task.
+        /// </summary>
+        void Stop();
+
+        /// <summary>
+        /// Destroys this task instance.
+        /// </summary>
+        void Destroy();
     }
 }
