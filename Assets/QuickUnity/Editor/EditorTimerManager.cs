@@ -104,11 +104,11 @@ namespace QuickUnityEditor
         /// </summary>
         /// <param name="timer">The timer object.</param>
         /// <returns><c>true</c> if contains the timer object; otherwise, <c>false</c>.</returns>
-        public bool Contains(ITimer timer)
+        public bool ContainsTimer(ITimer timer)
         {
             if (m_timerList != null)
             {
-                return m_timerList.Contains(timer);
+                return m_timerList.ContainsTimer(timer);
             }
 
             return false;
@@ -119,11 +119,11 @@ namespace QuickUnityEditor
         /// </summary>
         /// <param name="timer">The timer object.</param>
         /// <param name="autoStart">if set to <c>true</c> [automatic start].</param>
-        public void Add(ITimer timer, bool autoStart = false)
+        public void AddTimer(ITimer timer, bool autoStart = false)
         {
             if (m_timerList != null)
             {
-                m_timerList.Add(timer, autoStart);
+                m_timerList.AddTimer(timer, autoStart);
             }
         }
 
@@ -131,11 +131,11 @@ namespace QuickUnityEditor
         /// Adds the timers.
         /// </summary>
         /// <param name="collection">The timer collection.</param>
-        public void AddRange(IEnumerable<ITimer> collection)
+        public void AddTimers(IEnumerable<ITimer> collection)
         {
             if (m_timerList != null)
             {
-                m_timerList.AddRange(collection);
+                m_timerList.AddTimers(collection);
             }
         }
 
@@ -148,11 +148,11 @@ namespace QuickUnityEditor
         /// <c>true</c> if timer is successfully removed; otherwise, <c>false</c>. This method also
         /// returns false if timer was not found.
         /// </returns>
-        public bool Remove(ITimer timer, bool autoStop = true)
+        public bool RemoveTimer(ITimer timer, bool autoStop = true)
         {
             if (m_timerList != null)
             {
-                return m_timerList.Remove(timer, autoStop);
+                return m_timerList.RemoveTimer(timer, autoStop);
             }
 
             return false;
@@ -163,11 +163,11 @@ namespace QuickUnityEditor
         /// </summary>
         /// <param name="collection">The collection.</param>
         /// <param name="autoStop">if set to <c>true</c> [automatic stop].</param>
-        public void RemoveRange(ICollection<ITimer> collection, bool autoStop = true)
+        public void RemoveTimers(ICollection<ITimer> collection, bool autoStop = true)
         {
             if (m_timerList != null)
             {
-                m_timerList.RemoveRange(collection, autoStop);
+                m_timerList.RemoveTimers(collection, autoStop);
             }
         }
 
@@ -175,11 +175,11 @@ namespace QuickUnityEditor
         /// Removes all timers.
         /// </summary>
         /// <param name="autoStop">if set to <c>true</c> [automatic stop].</param>
-        public void RemoveAll(bool autoStop = true)
+        public void RemoveAllTimers(bool autoStop = true)
         {
             if (m_timerList != null)
             {
-                m_timerList.RemoveAll(autoStop);
+                m_timerList.RemoveAllTimers(autoStop);
             }
         }
 
@@ -198,66 +198,66 @@ namespace QuickUnityEditor
         /// Sets all timers enabled.
         /// </summary>
         /// <param name="enabled">The enabled value.</param>
-        public void SetAllEnabled(bool enabled = true)
+        public void SetAllTimersEnabled(bool enabled = true)
         {
             if (m_timerList != null)
             {
-                m_timerList.SetAllEnabled(enabled);
+                m_timerList.SetAllTimersEnabled(enabled);
             }
         }
 
         /// <summary>
         /// This timer group start timing.
         /// </summary>
-        public void StartAll()
+        public void StartAllTimers()
         {
             if (m_timerList != null)
             {
-                m_timerList.StartAll();
+                m_timerList.StartAllTimers();
             }
         }
 
         /// <summary>
         /// This timer group pause timing.
         /// </summary>
-        public void PauseAll()
+        public void PauseAllTimers()
         {
             if (m_timerList != null)
             {
-                m_timerList.PauseAll();
+                m_timerList.PauseAllTimers();
             }
         }
 
         /// <summary>
         /// This timer group resume timing.
         /// </summary>
-        public void ResumeAll()
+        public void ResumeAllTimers()
         {
             if (m_timerList != null)
             {
-                m_timerList.ResumeAll();
+                m_timerList.ResumeAllTimers();
             }
         }
 
         /// <summary>
         /// This timer group stop timing.
         /// </summary>
-        public void StopAll()
+        public void StopAllTimers()
         {
             if (m_timerList != null)
             {
-                m_timerList.StopAll();
+                m_timerList.StopAllTimers();
             }
         }
 
         /// <summary>
         /// This timer group resets timing.
         /// </summary>
-        public void ResetAll()
+        public void ResetAllTimers()
         {
             if (m_timerList != null)
             {
-                m_timerList.ResetAll();
+                m_timerList.ResetAllTimers();
             }
         }
 

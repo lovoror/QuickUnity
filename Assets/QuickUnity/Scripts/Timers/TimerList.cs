@@ -82,7 +82,7 @@ namespace QuickUnity.Timers
         /// </summary>
         /// <param name="timer">The timer object.</param>
         /// <returns><c>true</c> if contains the timer object; otherwise, <c>false</c>.</returns>
-        public bool Contains(ITimer timer)
+        public bool ContainsTimer(ITimer timer)
         {
             if (m_timers != null && timer != null)
             {
@@ -97,7 +97,7 @@ namespace QuickUnity.Timers
         /// </summary>
         /// <param name="timer">The timer object.</param>
         /// <param name="autoStart">if set to <c>true</c> [automatic start].</param>
-        public void Add(ITimer timer, bool autoStart = false)
+        public void AddTimer(ITimer timer, bool autoStart = false)
         {
             if (m_timers != null && timer != null)
             {
@@ -114,7 +114,7 @@ namespace QuickUnity.Timers
         /// Adds the timers.
         /// </summary>
         /// <param name="collection">The timer collection.</param>
-        public void AddRange(IEnumerable<ITimer> collection)
+        public void AddTimers(IEnumerable<ITimer> collection)
         {
             if (m_timers != null && collection != null)
             {
@@ -131,7 +131,7 @@ namespace QuickUnity.Timers
         /// <c>true</c> if timer is successfully removed; otherwise, <c>false</c>. This method also
         /// returns false if timer was not found.
         /// </returns>
-        public bool Remove(ITimer timer, bool autoStop = true)
+        public bool RemoveTimer(ITimer timer, bool autoStop = true)
         {
             if (m_timers != null && timer != null)
             {
@@ -156,7 +156,7 @@ namespace QuickUnity.Timers
         /// </summary>
         /// <param name="collection">The collection.</param>
         /// <param name="autoStop">if set to <c>true</c> [automatic stop].</param>
-        public void RemoveRange(ICollection<ITimer> collection, bool autoStop = true)
+        public void RemoveTimers(ICollection<ITimer> collection, bool autoStop = true)
         {
             if (m_timers != null)
             {
@@ -176,7 +176,7 @@ namespace QuickUnity.Timers
         /// Removes all timers.
         /// </summary>
         /// <param name="autoStop">if set to <c>true</c> [automatic stop] all timer objects.</param>
-        public void RemoveAll(bool autoStop = true)
+        public void RemoveAllTimers(bool autoStop = true)
         {
             if (m_timers != null)
             {
@@ -199,7 +199,7 @@ namespace QuickUnity.Timers
         /// Sets all timers enabled.
         /// </summary>
         /// <param name="enabled">The enabled value.</param>
-        public void SetAllEnabled(bool enabled = true)
+        public void SetAllTimersEnabled(bool enabled = true)
         {
             if (m_timers != null)
             {
@@ -216,7 +216,7 @@ namespace QuickUnity.Timers
         /// <summary>
         /// Pauses all timers.
         /// </summary>
-        public void PauseAll()
+        public void PauseAllTimers()
         {
             if (m_timers != null)
             {
@@ -233,7 +233,7 @@ namespace QuickUnity.Timers
         /// <summary>
         /// Resets all timers.
         /// </summary>
-        public void ResetAll()
+        public void ResetAllTimers()
         {
             if (m_timers != null)
             {
@@ -250,7 +250,7 @@ namespace QuickUnity.Timers
         /// <summary>
         /// Resumes all timers.
         /// </summary>
-        public void ResumeAll()
+        public void ResumeAllTimers()
         {
             if (m_timers != null)
             {
@@ -267,7 +267,7 @@ namespace QuickUnity.Timers
         /// <summary>
         /// Starts all timers.
         /// </summary>
-        public void StartAll()
+        public void StartAllTimers()
         {
             if (m_timers != null)
             {
@@ -284,7 +284,7 @@ namespace QuickUnity.Timers
         /// <summary>
         /// Stops all timers.
         /// </summary>
-        public void StopAll()
+        public void StopAllTimers()
         {
             if (m_timers != null)
             {
@@ -303,7 +303,7 @@ namespace QuickUnity.Timers
         /// </summary>
         public void Destroy()
         {
-            StopAll();
+            StopAllTimers();
 
             if (m_timers != null)
             {

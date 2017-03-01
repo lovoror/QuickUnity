@@ -49,20 +49,20 @@ namespace QuickUnity.Timers
         /// </summary>
         /// <param name="timer">The timer object.</param>
         /// <returns><c>true</c> if contains the timer object; otherwise, <c>false</c>.</returns>
-        bool Contains(ITimer timer);
+        bool ContainsTimer(ITimer timer);
 
         /// <summary>
         /// Adds the timer object.
         /// </summary>
         /// <param name="timer">The timer object.</param>
         /// <param name="autoStart">if set to <c>true</c> [automatic start].</param>
-        void Add(ITimer timer, bool autoStart = false);
+        void AddTimer(ITimer timer, bool autoStart = false);
 
         /// <summary>
-        /// Adds the timers.
+        /// Adds timers.
         /// </summary>
         /// <param name="collection">The timer collection.</param>
-        void AddRange(IEnumerable<ITimer> collection);
+        void AddTimers(IEnumerable<ITimer> collection);
 
         /// <summary>
         /// Removes the timer object.
@@ -73,20 +73,20 @@ namespace QuickUnity.Timers
         /// <c>true</c> if timer is successfully removed; otherwise, <c>false</c>. This method also
         /// returns false if timer was not found.
         /// </returns>
-        bool Remove(ITimer timer, bool autoStop = true);
+        bool RemoveTimer(ITimer timer, bool autoStop = true);
 
         /// <summary>
         /// Removes a range of elements from the timer list.
         /// </summary>
         /// <param name="collection">The collection.</param>
         /// <param name="autoStop">if set to <c>true</c> [automatic stop].</param>
-        void RemoveRange(ICollection<ITimer> collection, bool autoStop = true);
+        void RemoveTimers(ICollection<ITimer> collection, bool autoStop = true);
 
         /// <summary>
         /// Removes all timers.
         /// </summary>
         /// <param name="autoStop">if set to <c>true</c> [automatic stop] all timer objects.</param>
-        void RemoveAll(bool autoStop = true);
+        void RemoveAllTimers(bool autoStop = true);
 
         /// <summary>
         /// Destroys this instance.
@@ -96,32 +96,32 @@ namespace QuickUnity.Timers
         /// <summary>
         /// Sets all timers enabled.
         /// </summary>
-        /// <param name="enabled">The enabled value.</param>
-        void SetAllEnabled(bool enabled = true);
+        /// <param name="enabled">Timer enabled or not.</param>
+        void SetAllTimersEnabled(bool enabled = true);
 
         /// <summary>
         /// Starts all timers.
         /// </summary>
-        void StartAll();
+        void StartAllTimers();
 
         /// <summary>
         /// Pauses all timers.
         /// </summary>
-        void PauseAll();
+        void PauseAllTimers();
 
         /// <summary>
         /// Resumes all timers.
         /// </summary>
-        void ResumeAll();
+        void ResumeAllTimers();
 
         /// <summary>
         /// Stops all timers.
         /// </summary>
-        void StopAll();
+        void StopAllTimers();
 
         /// <summary>
         /// Resets all timers.
         /// </summary>
-        void ResetAll();
+        void ResetAllTimers();
     }
 }

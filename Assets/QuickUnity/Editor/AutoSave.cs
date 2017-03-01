@@ -279,7 +279,7 @@ namespace QuickUnityEditor
                     m_autosaveTimer = new Timer(1, autoSaveTimeMinutes * 60);
                     m_autosaveTimer.AddEventListener<TimerEvent>(TimerEvent.Timer, OnAutosaveTimer);
                     m_autosaveTimer.AddEventListener<TimerEvent>(TimerEvent.TimerComplete, OnAutosaveTimerComplete);
-                    EditorTimerManager.instance.Add(m_autosaveTimer);
+                    EditorTimerManager.instance.AddTimer(m_autosaveTimer);
                 }
             }
         }
