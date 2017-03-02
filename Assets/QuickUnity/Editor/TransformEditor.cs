@@ -37,10 +37,6 @@ namespace QuickUnityEditor
     {
         private static readonly string[] s_coordinateButtonTexts = new string[] { "Local", "Global" };
 
-        private bool m_showLocalCoordinate = true;
-
-        private bool m_showGlobalCoordinate = true;
-
         private int m_selectedIndex;
 
         public override void OnInspectorGUI()
