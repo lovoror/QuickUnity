@@ -79,6 +79,20 @@ namespace QuickUnity.Audio
         }
 
         /// <summary>
+        /// Plays the audio by setting audio clip.
+        /// </summary>
+        /// <param name="clip">The audio clip.</param>
+        public void PlayAudio(AudioClip clip)
+        {
+            if (audioSource && clip)
+            {
+                audioSource.clip = clip;
+                audioSource.Play();
+                Invoke("OnPlayComplete", clip.length);
+            }
+        }
+
+        /// <summary>
         /// Called when the AudioSource component [play complete].
         /// </summary>
         private void OnPlayComplete()
