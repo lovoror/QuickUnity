@@ -35,20 +35,43 @@ namespace QuickUnityEditor
     [CanEditMultipleObjects]
     internal class TransformEditor : Editor
     {
-        private static readonly string[] s_coordinateButtonTexts = new string[] { "Local", "Global" };
+        /// <summary>
+        /// The space button texts.
+        /// </summary>
+        private static readonly string[] s_spaceButtonTexts = new string[] { "Local", "Global" };
 
+        /// <summary>
+        /// The selected index of space buttons.
+        /// </summary>
         private int m_selectedIndex;
 
+        /// <summary>
+        /// This function is called when the ScriptableObject script is started.
+        /// </summary>
+        private void Awake()
+        {
+            m_selectedIndex = QuickUnityEditorApplication.GetEditorConfigValue<int>("TransformEditor", "selectedSpaceIndex");
+        }
+
+        /// <summary>
+        /// This function is called when the scriptable object will be destroyed.
+        /// </summary>
+        private void OnDestroy()
+        {
+            QuickUnityEditorApplication.SetEditorConfigValue<int>("TransformEditor", "selectedSpaceIndex", m_selectedIndex);
+        }
+
+        /// <summary>
+        /// Implement this function to make a custom inspector.
+        /// </summary>
         public override void OnInspectorGUI()
         {
-            //base.OnInspectorGUI();
-
             EditorGUILayout.BeginVertical();
 
-            // Draw button bar to select local coordinate or global coordinate.
+            // Draw button bar to select local space or global space.
             EditorGUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
-            m_selectedIndex = GUILayout.Toolbar(m_selectedIndex, s_coordinateButtonTexts, GUILayout.Width(300));
+            m_selectedIndex = GUILayout.Toolbar(m_selectedIndex, s_spaceButtonTexts, GUILayout.Width(250));
             GUILayout.FlexibleSpace();
             EditorGUILayout.EndHorizontal();
 
@@ -62,7 +85,7 @@ namespace QuickUnityEditor
             {
                 if (m_selectedIndex == 0)
                 {
-                    // Draw local coordinate properties.
+                    // Draw local space properties.
                     targetObject.localPosition = EditorGUILayout.Vector3Field(new GUIContent("Local Position", "Position of the transform relative to the parent transform."),
                         targetObject.localPosition);
 
@@ -74,7 +97,7 @@ namespace QuickUnityEditor
                 }
                 else
                 {
-                    // Draw global coordinate properties.
+                    // Draw global space properties.
                     targetObject.position = EditorGUILayout.Vector3Field(new GUIContent("Position", "The position of the transform in world space."),
                         targetObject.position);
 
