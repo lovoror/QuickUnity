@@ -97,7 +97,7 @@ namespace QuickUnity.Audio
         /// </summary>
         private void OnPlayComplete()
         {
-            DispatchEvent(new AudioSourceEvent(AudioSourceEvent.PlayComplete, this));
+            DispatchEvent(new AudioSourceEvent(AudioSourceEvent.PlayComplete, audioSource));
         }
     }
 }
