@@ -22,46 +22,30 @@
  *	SOFTWARE.
  */
 
-using System;
+using QuickUnity.Attributes;
+using UnityEditor;
 using UnityEngine;
 
-namespace QuickUnity.Attributes
+namespace QuickUnityEditor.PropertyDrawers
 {
     /// <summary>
-    /// Class EnumFlagsAttribute for marking attribute as enum flags.
+    /// Property drawer for ReadOnlyFieldAttribute.
     /// </summary>
-    /// <seealso cref="UnityEngine.PropertyAttribute"/>
-    [AttributeUsage(AttributeTargets.Field, Inherited = true, AllowMultiple = false)]
-    public class EnumFlagsAttribute : PropertyAttribute
+    /// <seealso cref="UnityEditor.PropertyDrawer"/>
+    [CustomPropertyDrawer(typeof(ReadOnlyFieldAttribute))]
+    public class ReadOnlyFieldDrawer : PropertyDrawer
     {
         /// <summary>
-        /// Caption/label for the attribute.
+        /// Override this method to make your own GUI for the property.
         /// </summary>
-        private string m_label;
-
-        /// <summary>
-        /// Gets the caption/label for the attribute.
-        /// </summary>
-        /// <value>The caption/label for the attribute.</value>
-        public string label
+        /// <param name="position">Rectangle on the screen to use for the property GUI.</param>
+        /// <param name="property">The SerializedProperty to make the custom GUI for.</param>
+        /// <param name="label">The label of this property.</param>
+        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
-            get { return m_label; }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EnumFlagsAttribute"/> class.
-        /// </summary>
-        public EnumFlagsAttribute()
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EnumFlagsAttribute"/> class.
-        /// </summary>
-        /// <param name="label">The label.</param>
-        public EnumFlagsAttribute(string label)
-        {
-            m_label = label;
+            EditorGUI.BeginDisabledGroup(true);
+            EditorGUI.PropertyField(position, property, label, true);
+            EditorGUI.EndDisabledGroup();
         }
     }
 }

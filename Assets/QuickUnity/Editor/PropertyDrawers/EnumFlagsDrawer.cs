@@ -35,7 +35,7 @@ namespace QuickUnityEditor.PropertyDrawers
     /// </summary>
     /// <seealso cref="UnityEditor.PropertyDrawer"/>
     [CustomPropertyDrawer(typeof(EnumFlagsAttribute))]
-    public class EnumFlagsAttributeDrawer : PropertyDrawer
+    public class EnumFlagsDrawer : PropertyDrawer
     {
         /// <summary>
         /// Override this method to make your own GUI for the property.

@@ -28,40 +28,11 @@ using UnityEngine;
 namespace QuickUnity.Attributes
 {
     /// <summary>
-    /// Class EnumFlagsAttribute for marking attribute as enum flags.
+    /// Class ReadOnlyFieldAttribute for marking attribute as read only in inspector.
     /// </summary>
     /// <seealso cref="UnityEngine.PropertyAttribute"/>
     [AttributeUsage(AttributeTargets.Field, Inherited = true, AllowMultiple = false)]
-    public class EnumFlagsAttribute : PropertyAttribute
+    public class ReadOnlyFieldAttribute : PropertyAttribute
     {
-        /// <summary>
-        /// Caption/label for the attribute.
-        /// </summary>
-        private string m_label;
-
-        /// <summary>
-        /// Gets the caption/label for the attribute.
-        /// </summary>
-        /// <value>The caption/label for the attribute.</value>
-        public string label
-        {
-            get { return m_label; }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EnumFlagsAttribute"/> class.
-        /// </summary>
-        public EnumFlagsAttribute()
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EnumFlagsAttribute"/> class.
-        /// </summary>
-        /// <param name="label">The label.</param>
-        public EnumFlagsAttribute(string label)
-        {
-            m_label = label;
-        }
     }
 }
