@@ -23,6 +23,7 @@
  */
 
 using QuickUnity.Attributes;
+using QuickUnity.Utilities;
 using System;
 using System.Reflection;
 using UnityEditor;
@@ -55,10 +56,13 @@ namespace QuickUnityEditor.PropertyDrawers
                 propertyDisplayName = property.name;
             }
 
-            EditorGUI.BeginProperty(position, label, property);
-            Enum enumMask = EditorGUI.EnumMaskField(position, propertyDisplayName, targetEnum);
-            property.intValue = (int)Convert.ChangeType(enumMask, targetEnum.GetType());
-            EditorGUI.EndProperty();
+            if (targetEnum != null)
+            {
+                EditorGUI.BeginProperty(position, label, property);
+                Enum enumMask = EditorGUI.EnumMaskField(position, propertyDisplayName, targetEnum);
+                property.intValue = (int)Convert.ChangeType(enumMask, targetEnum.GetType());
+                EditorGUI.EndProperty();
+            }
         }
 
         /// <summary>
@@ -77,8 +81,7 @@ namespace QuickUnityEditor.PropertyDrawers
 
             foreach (string path in separatedPaths)
             {
-                FieldInfo fieldInfo = reflectionTarget.GetType().GetField(path);
-                reflectionTarget = fieldInfo.GetValue(reflectionTarget);
+                reflectionTarget = ReflectionUtility.GetObjectFieldValue(reflectionTarget, path, BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
             }
 
             return (T)reflectionTarget;
