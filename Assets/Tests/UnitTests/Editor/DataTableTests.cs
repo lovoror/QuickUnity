@@ -2,6 +2,8 @@
 using QuickUnity.Data;
 using System.Collections.Generic;
 using Tests.UnitTests.Editor.DataTables;
+using UnityEngine;
+using QuickUnity.Extensions;
 
 namespace QuickUnity.UnitTests
 {
@@ -23,7 +25,13 @@ namespace QuickUnity.UnitTests
 
             if (testData != null)
             {
-                Assert.AreEqual(testData.testInt, 2147483647);
+                if (testData.testVector2.ToVector2() == new Vector2(1, 2) &&
+                    testData.testVector3.ToVector3() == new Vector3(1, 2, 3) &&
+                    testData.testQuaternion.ToQuaternion() == new Quaternion(1, 2, 3, 4) &&
+                    testData.testInt == 2147483647)
+                {
+                    Assert.Pass();
+                }
             }
             else
             {
@@ -65,9 +73,9 @@ namespace QuickUnity.UnitTests
         /// Test for the method DataTableManager.GetAllDataTableRow.
         /// </summary>
         [Test]
-        public void GetAllDataTableRowTest()
+        public void GetAllDataTableRowsTest()
         {
-            TestDataTwo[] array = DataTableManager.instance.GetAllDataTableRows<TestDataTwo>();
+            TestData[] array = DataTableManager.instance.GetAllDataTableRows<TestData>();
             DataTableManager.instance.Dispose();
             Assert.IsNotNull(array);
         }

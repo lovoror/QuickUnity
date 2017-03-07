@@ -99,6 +99,21 @@ namespace Tests.UnitTests.Editor.DataTables
 		public string testString;
 
 		/// <summary>
+		/// 测试Vector2
+		/// </summary>
+		public string testVector2;
+
+		/// <summary>
+		/// 测试Vector3
+		/// </summary>
+		public string testVector3;
+
+		/// <summary>
+		/// 测试Quaternion
+		/// </summary>
+		public string testQuaternion;
+
+		/// <summary>
 		/// 测试booleanArray
 		/// </summary>
 		public bool[] testBooleanArray;

@@ -265,6 +265,7 @@ namespace QuickUnityEditor.Data
 
                 if (!string.IsNullOrEmpty(filesFolderPath))
                 {
+                    Utilities.EditorUtility.ClearConsole();
                     excelFilesFolderPath = filesFolderPath;
                     GenerateDataTableRowScripts(filesFolderPath);
                 }
@@ -597,6 +598,10 @@ namespace QuickUnityEditor.Data
                                 object value = typeParser.Parse(cellValue);
                                 ReflectionUtility.SetObjectFieldValue(rowData, rowInfo.fieldName, value);
                             }
+                            else
+                            {
+                                Debug.LogWarningFormat("Type '{0}' is not supported!", rowInfo.type);
+                            }
                         }
                     }
 
@@ -671,23 +676,26 @@ namespace QuickUnityEditor.Data
                 Type type = TypeParserFactory.GetTypeParserType(typeKeyword);
                 ITypeParser typeParser = null;
 
-                if (s_cachedTypeParsersMap.ContainsKey(type))
+                if (type != null)
                 {
-                    typeParser = s_cachedTypeParsersMap[type];
+                    if (s_cachedTypeParsersMap.ContainsKey(type))
+                    {
+                        typeParser = s_cachedTypeParsersMap[type];
 
-                    if (typeParser == null)
+                        if (typeParser == null)
+                        {
+                            typeParser = TypeParserFactory.CreateTypeParser(typeKeyword);
+                            s_cachedTypeParsersMap[type] = typeParser;
+                        }
+                    }
+                    else
                     {
                         typeParser = TypeParserFactory.CreateTypeParser(typeKeyword);
-                        s_cachedTypeParsersMap[type] = typeParser;
+                        s_cachedTypeParsersMap.Add(type, typeParser);
                     }
-                }
-                else
-                {
-                    typeParser = TypeParserFactory.CreateTypeParser(typeKeyword);
-                    s_cachedTypeParsersMap.Add(type, typeParser);
-                }
 
-                return typeParser;
+                    return typeParser;
+                }
             }
 
             return null;
