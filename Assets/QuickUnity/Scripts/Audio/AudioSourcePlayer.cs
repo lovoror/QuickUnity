@@ -64,10 +64,10 @@ namespace QuickUnity.Audio
         /// This can be used in place of "play" when it is desired to fade in the sound over time.
         /// </summary>
         /// <param name="fadeInDuration">Duration of the fade in.</param>
-        /// <param name="fadeVolume">The fade volume.</param>
+        /// <param name="fadeToVolume">The volume need to reach.</param>
         /// <param name="startPosition">The start position.</param>
         /// <param name="completeCallback">The complete callback function.</param>
-        public void FadeIn(float fadeInDuration = 0.0f, float fadeVolume = 1.0f, float startPosition = 0.0f, Action completeCallback = null)
+        public void FadeIn(float fadeInDuration = 0.0f, float fadeToVolume = 1.0f, float startPosition = 0.0f, Action completeCallback = null)
         {
             if (audioSource && audioSource.clip)
             {
@@ -77,11 +77,11 @@ namespace QuickUnity.Audio
 
                 if (fadeInDuration <= 0.0f)
                 {
-                    audioSource.volume = fadeVolume;
+                    audioSource.volume = fadeToVolume;
                 }
                 else
                 {
-                    StartCoroutine(ApplyFadeIn(fadeInDuration, fadeVolume, completeCallback));
+                    StartCoroutine(ApplyFadeIn(fadeInDuration, fadeToVolume, completeCallback));
                 }
             }
         }
@@ -90,19 +90,19 @@ namespace QuickUnity.Audio
         /// This is used in place of "stop" when it is desired to fade the volume of the sound before stopping.
         /// </summary>
         /// <param name="fadeOutDuration">Duration of the fade out.</param>
-        /// <param name="fadeVolume">The fade volume.</param>
+        /// <param name="fadeToVolume">The fade to volume.</param>
         /// <param name="completeCallback">The complete callback function.</param>
-        public void FadeOut(float fadeOutDuration = 0.0f, float fadeVolume = 0.0f, Action completeCallback = null)
+        public void FadeOut(float fadeOutDuration = 0.0f, float fadeToVolume = 0.0f, Action completeCallback = null)
         {
             if (audioSource && audioSource.clip)
             {
                 if (fadeOutDuration <= 0.0f)
                 {
-                    audioSource.volume = fadeVolume;
+                    audioSource.volume = fadeToVolume;
                 }
                 else
                 {
-                    StartCoroutine(ApplyFadeOut(fadeOutDuration, fadeVolume, completeCallback));
+                    StartCoroutine(ApplyFadeOut(fadeOutDuration, fadeToVolume, completeCallback));
                 }
             }
         }
@@ -118,19 +118,19 @@ namespace QuickUnity.Audio
         /// <param name="fadeVolume">The fade volume.</param>
         /// <param name="completeCallback">The complete callback function.</param>
         /// <returns>The enumerator of this coroutine.</returns>
-        private IEnumerator ApplyFadeIn(float fadeInDuration = 0.0f, float fadeVolume = 1.0f, Action completeCallback = null)
+        private IEnumerator ApplyFadeIn(float fadeInDuration = 0.0f, float fadeToVolume = 1.0f, Action completeCallback = null)
         {
             if (audioSource)
             {
                 float startVolume = audioSource.volume;
 
-                while (audioSource.volume < fadeVolume)
+                while (audioSource.volume < fadeToVolume)
                 {
-                    audioSource.volume += startVolume * Time.deltaTime / fadeInDuration;
+                    audioSource.volume += (startVolume + Time.deltaTime) / fadeInDuration;
                     yield return null;
                 }
 
-                audioSource.volume = fadeVolume;
+                audioSource.volume = fadeToVolume;
 
                 if (completeCallback != null)
                 {
@@ -146,19 +146,19 @@ namespace QuickUnity.Audio
         /// <param name="fadeVolume">The fade volume.</param>
         /// <param name="completeCallback">The complete callback function.</param>
         /// <returns>The enumerator of this coroutine.</returns>
-        private IEnumerator ApplyFadeOut(float fadeOutDuration = 0.0f, float fadeVolume = 0.0f, Action completeCallback = null)
+        private IEnumerator ApplyFadeOut(float fadeOutDuration = 0.0f, float fadeToVolume = 0.0f, Action completeCallback = null)
         {
             if (audioSource)
             {
                 float startVolume = audioSource.volume;
 
-                while (audioSource.volume > fadeVolume)
+                while (audioSource.volume > fadeToVolume)
                 {
-                    audioSource.volume -= startVolume * Time.deltaTime / fadeOutDuration;
+                    audioSource.volume -= (startVolume + Time.deltaTime) / fadeOutDuration;
                     yield return null;
                 }
 
-                audioSource.volume = fadeVolume;
+                audioSource.volume = fadeToVolume;
                 audioSource.Stop();
 
                 if (completeCallback != null)
