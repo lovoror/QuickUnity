@@ -90,8 +90,10 @@ namespace QuickUnity.Patterns
                 s_instance = value;
                 s_instantiated = value != null;
 
-                if (value != null)
+                if (Application.isPlaying && value != null)
+                {
                     DontDestroyOnLoad(s_instance.gameObject);
+                }
             }
         }
 

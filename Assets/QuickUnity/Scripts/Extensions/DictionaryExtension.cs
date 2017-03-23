@@ -23,6 +23,7 @@
  */
 
 using System.Collections.Generic;
+using System.Linq;
 
 namespace QuickUnity.Extensions
 {
@@ -45,6 +46,19 @@ namespace QuickUnity.Extensions
             {
                 source.Add(key, value);
             }
+        }
+
+        /// <summary>
+        /// Gets the key by value.
+        /// </summary>
+        /// <typeparam name="TKey">The type of the key.</typeparam>
+        /// <typeparam name="TValue">The type of the value.</typeparam>
+        /// <param name="source">The source Dictionary object.</param>
+        /// <param name="value">The value.</param>
+        /// <returns>The value object.</returns>
+        public static TKey GetKey<TKey, TValue>(this Dictionary<TKey, TValue> source, TValue value)
+        {
+            return source.FirstOrDefault(q => q.Value.Equals(value)).Key;
         }
     }
 }
