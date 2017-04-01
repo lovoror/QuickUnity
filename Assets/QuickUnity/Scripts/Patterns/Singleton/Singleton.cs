@@ -31,9 +31,9 @@ namespace QuickUnity.Patterns
     /// <summary>
     /// Template class for singleton pattern.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="T">The type definition.</typeparam>
     /// <seealso cref="QuickUnity.Events.EventDispatcher"/>
-    public abstract class Singleton<T> : EventDispatcher
+    public abstract class Singleton<T> : EventDispatcher where T : class
     {
         /// <summary>
         /// Used for locking the instance calls.
