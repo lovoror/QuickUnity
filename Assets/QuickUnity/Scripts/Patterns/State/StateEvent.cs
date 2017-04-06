@@ -35,22 +35,22 @@ namespace QuickUnity.Patterns
         /// <summary>
         /// When a state become active, it will dispatch this event.
         /// </summary>
-        public const string StateEnter = "StateEnter";
+        public const string Enter = "Enter";
 
         /// <summary>
-        /// When a state is updating, it will dispatch this event.
+        /// When a state is executing, it will dispatch this event.
         /// </summary>
-        public const string StateUpdate = "StateUpdate";
+        public const string Execute = "Execute";
 
         /// <summary>
         /// When a state become inactive, it will dispatch this event.
         /// </summary>
-        public const string StateExit = "StateExit";
+        public const string Exit = "Exit";
 
         /// <summary>
         /// When the state machine make a state transition, it will dispatch this event.
         /// </summary>
-        public const string StateTransition = "StateTransition";
+        public const string Transition = "Transition";
 
         /// <summary>
         /// Gets or sets the previous state.

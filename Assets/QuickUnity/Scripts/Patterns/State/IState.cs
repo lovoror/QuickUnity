@@ -33,17 +33,17 @@ namespace QuickUnity.Patterns
         /// Called when the state is entered.
         /// </summary>
         /// <param name="prevState">The previous state.</param>
-        void OnEnter(IState prevState);
+        void Enter(IState prevState);
 
         /// <summary>
-        /// Called when the state is updating.
+        /// Called when the state is executing.
         /// </summary>
-        void OnUpate();
+        void Execute();
 
         /// <summary>
         /// Called when the active state is exited.
         /// </summary>
         /// <param name="nextState">The next state.</param>
-        void OnExit(IState nextState);
+        void Exit(IState nextState);
     }
 }

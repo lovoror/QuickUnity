@@ -47,17 +47,17 @@ namespace QuickUnity.Patterns
         /// Called when the state is entered.
         /// </summary>
         /// <param name="prevState">The previous state.</param>
-        public virtual void OnEnter(IState prevState)
+        public virtual void Enter(IState prevState)
         {
-            DispatchEvent(new StateEvent(StateEvent.StateEnter, prevState, null));
+            DispatchEvent(new StateEvent(StateEvent.Enter, prevState, null));
         }
 
         /// <summary>
-        /// Called when the state is updating.
+        /// Called when the state is executing.
         /// </summary>
-        public virtual void OnUpate()
+        public virtual void Execute()
         {
-            StateEvent stateEvent = new StateEvent(StateEvent.StateUpdate);
+            StateEvent stateEvent = new StateEvent(StateEvent.Execute);
             stateEvent.currentState = this;
             DispatchEvent(stateEvent);
         }
@@ -66,9 +66,9 @@ namespace QuickUnity.Patterns
         /// Called when the active state is exited.
         /// </summary>
         /// <param name="nextState">The next state.</param>
-        public virtual void OnExit(IState nextState)
+        public virtual void Exit(IState nextState)
         {
-            DispatchEvent(new StateEvent(StateEvent.StateEnter, nextState));
+            DispatchEvent(new StateEvent(StateEvent.Exit, nextState));
         }
 
         #endregion Public Functions

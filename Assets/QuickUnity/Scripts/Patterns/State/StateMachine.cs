@@ -70,13 +70,13 @@ namespace QuickUnity.Patterns
 
             if (prevState != null)
             {
-                prevState.OnExit(state);
+                prevState.Exit(state);
             }
 
-            state.OnEnter(prevState);
+            state.Enter(prevState);
 
             // Dispatch event.
-            StateEvent stateEvent = new StateEvent(StateEvent.StateTransition, prevState, state);
+            StateEvent stateEvent = new StateEvent(StateEvent.Transition, prevState, state);
             DispatchEvent(stateEvent);
         }
 
@@ -119,7 +119,7 @@ namespace QuickUnity.Patterns
         {
             if (m_currentState != null)
             {
-                m_currentState.OnUpate();
+                m_currentState.Execute();
             }
         }
 
