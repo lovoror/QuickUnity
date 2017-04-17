@@ -40,6 +40,13 @@ namespace QuickUnity.Timers
         protected ITimerList m_timerList;
 
         /// <summary>
+        /// The name of the group.
+        /// </summary>
+        protected string m_groupName;
+
+        #region ITimerList Interface
+
+        /// <summary>
         /// Gets all the timers.
         /// </summary>
         /// <value>All the timers.</value>
@@ -56,10 +63,9 @@ namespace QuickUnity.Timers
             }
         }
 
-        /// <summary>
-        /// The name of the group.
-        /// </summary>
-        protected string m_groupName;
+        #endregion ITimerList Interface
+
+        #region ITimerGroup Interface
 
         /// <summary>
         /// Gets or sets the name of the group.
@@ -72,6 +78,8 @@ namespace QuickUnity.Timers
                 return m_groupName;
             }
         }
+
+        #endregion ITimerGroup Interface
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TimerGroup"/> class.
@@ -95,6 +103,8 @@ namespace QuickUnity.Timers
                 StartAllTimers();
             }
         }
+
+        #region ITimerList Interface
 
         /// <summary>
         /// Performs the specified action on each element of the timer list.
@@ -276,5 +286,7 @@ namespace QuickUnity.Timers
                 DispatchEvent(new TimerGroupEvent(TimerGroupEvent.TimerGroupReset, this));
             }
         }
+
+        #endregion ITimerList Interface
     }
 }

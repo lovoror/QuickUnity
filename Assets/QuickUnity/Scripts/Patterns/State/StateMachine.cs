@@ -53,7 +53,7 @@ namespace QuickUnity.Patterns
             m_transitionEventBindings = new Dictionary<string, IState>();
         }
 
-        #region Public Functions
+        #region IStateMachine Interface
 
         /// <summary>
         /// Directly set the active state by state object.
@@ -123,6 +123,6 @@ namespace QuickUnity.Patterns
             }
         }
 
-        #endregion Public Functions
+        #endregion IStateMachine Interface
     }
 }

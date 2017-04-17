@@ -72,7 +72,7 @@ namespace QuickUnity.Events
             m_pendingEvents = new List<Event>();
         }
 
-        #region IThreadEventDispatcher Implements
+        #region IThreadEventDispatcher Interface
 
         /// <summary>
         /// Update is called every frame.
@@ -224,6 +224,6 @@ namespace QuickUnity.Events
             }
         }
 
-        #endregion IThreadEventDispatcher Implements
+        #endregion IThreadEventDispatcher Interface
     }
 }

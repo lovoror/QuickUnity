@@ -97,20 +97,22 @@ namespace QuickUnity.Patterns
             }
         }
 
-        #region Protected Functions
+        #region Messages
 
         /// <summary>
         /// Called when script receive message Awake.
         /// </summary>
-        protected override void OnAwake()
+        protected override void Awake()
         {
-            base.OnAwake();
+            base.Awake();
 
             // If singleton instance got null, find the instance already have.
             if (s_instance == null)
+            {
                 instance = FindObjectOfType<T>();
+            }
         }
 
-        #endregion Protected Functions
+        #endregion Messages
     }
 }

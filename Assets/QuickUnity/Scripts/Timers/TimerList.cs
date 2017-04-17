@@ -39,6 +39,8 @@ namespace QuickUnity.Timers
         /// </summary>
         private List<ITimer> m_timers;
 
+        #region ITimerList Interface
+
         /// <summary>
         /// Gets all the timers.
         /// </summary>
@@ -47,6 +49,10 @@ namespace QuickUnity.Timers
         {
             get { return m_timers; }
         }
+
+        #endregion ITimerList Interface
+
+        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TimerList"/> class.
@@ -64,6 +70,10 @@ namespace QuickUnity.Timers
         {
             m_timers = new List<ITimer>(collection);
         }
+
+        #endregion Constructors
+
+        #region ITimerList Interface
 
         /// <summary>
         /// Performs the specified action on each element of the timer list.
@@ -311,5 +321,7 @@ namespace QuickUnity.Timers
                 m_timers = null;
             }
         }
+
+        #endregion ITimerList Interface
     }
 }

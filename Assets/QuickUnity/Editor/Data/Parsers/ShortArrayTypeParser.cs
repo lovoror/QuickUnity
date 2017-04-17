@@ -35,6 +35,8 @@ namespace QuickUnityEditor.Data.Parsers
         /// </summary>
         public const string TypeKeyword = "short[]";
 
+        #region ITypeParser Interface
+
         /// <summary>
         /// Parses the specified value.
         /// </summary>
@@ -44,5 +46,7 @@ namespace QuickUnityEditor.Data.Parsers
         {
             return ParseArrayString<short>(value);
         }
+
+        #endregion ITypeParser Interface
     }
 }

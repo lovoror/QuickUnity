@@ -45,6 +45,13 @@ namespace QuickUnity.Timers
         private ITimerList m_timerList;
 
         /// <summary>
+        /// The dictionary of timer groups.
+        /// </summary>
+        private Dictionary<string, ITimerGroup> m_timerGroups;
+
+        #region ITimerList Interface
+
+        /// <summary>
         /// Gets the timers.
         /// </summary>
         /// <value>The timers.</value>
@@ -61,19 +68,16 @@ namespace QuickUnity.Timers
             }
         }
 
-        /// <summary>
-        /// The dictionary of timer groups.
-        /// </summary>
-        private Dictionary<string, ITimerGroup> m_timerGroups;
+        #endregion ITimerList Interface
 
         #region Messages
 
         /// <summary>
         /// Called when script receive message Awake.
         /// </summary>
-        protected override void OnAwake()
+        protected override void Awake()
         {
-            base.OnAwake();
+            base.Awake();
 
             // Initialize all timers list.
             m_timerList = new TimerList();
@@ -132,6 +136,7 @@ namespace QuickUnity.Timers
         protected override void OnDestroy()
         {
             base.OnDestroy();
+
             Destroy();
         }
 
@@ -155,9 +160,7 @@ namespace QuickUnity.Timers
 
         #endregion Messages
 
-        #region Public Functions
-
-        #region Interface ITimerManager Implement Functions
+        #region ITimerList Interface
 
         /// <summary>
         /// Performs the specified action on each element of the timer list.
@@ -339,9 +342,9 @@ namespace QuickUnity.Timers
             RemoveAllTimers();
         }
 
-        #endregion Interface ITimerManager Implement Functions
+        #endregion ITimerList Interface
 
-        #region Interface ITimerGroup Implement Functions
+        #region ITimerGroup Interface
 
         /// <summary>
         /// Gets the timer group.
@@ -464,9 +467,7 @@ namespace QuickUnity.Timers
             }
         }
 
-        #endregion Interface ITimerGroup Implement Functions
-
-        #endregion Public Functions
+        #endregion ITimerGroup Interface
 
         #region Private Functions
 

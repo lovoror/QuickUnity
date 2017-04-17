@@ -23,7 +23,6 @@
  */
 
 using QuickUnity.Events;
-using System.Collections.Generic;
 
 namespace QuickUnity.Timers
 {

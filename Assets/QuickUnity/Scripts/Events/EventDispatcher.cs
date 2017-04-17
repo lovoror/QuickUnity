@@ -59,7 +59,7 @@ namespace QuickUnity.Events
             return exists != null;
         }
 
-        #region IEventDispatcher Implementations
+        #region IEventDispatcher Interface
 
         /// <summary>
         /// Registers an event listener object with an EventDispatcher object so that the listener
@@ -316,6 +316,6 @@ namespace QuickUnity.Events
             }
         }
 
-        #endregion IEventDispatcher Implementations
+        #endregion IEventDispatcher Interface
     }
 }

@@ -49,6 +49,33 @@ namespace QuickUnity.Timers
         protected uint m_currentCount = 0;
 
         /// <summary>
+        /// The delay time of timer.
+        /// </summary>
+        protected float m_delay;
+
+        /// <summary>
+        /// The repeat count of timer.
+        /// </summary>
+        protected uint m_repeatCount;
+
+        /// <summary>
+        /// The state of timer.
+        /// </summary>
+        protected TimerState m_timerState;
+
+        /// <summary>
+        /// The m_ignore time scale
+        /// </summary>
+        protected bool m_ignoreTimeScale = true;
+
+        /// <summary>
+        /// Whether [stop on disable].
+        /// </summary>
+        protected bool m_stopOnDisable = true;
+
+        #region ITimer Interface
+
+        /// <summary>
         /// Gets the current count of timer.
         /// </summary>
         /// <value>The current count.</value>
@@ -56,11 +83,6 @@ namespace QuickUnity.Timers
         {
             get { return m_currentCount; }
         }
-
-        /// <summary>
-        /// The delay time of timer.
-        /// </summary>
-        protected float m_delay;
 
         /// <summary>
         /// Gets or sets the delay time of timer.
@@ -71,11 +93,6 @@ namespace QuickUnity.Timers
             get { return m_delay; }
             set { m_delay = value; }
         }
-
-        /// <summary>
-        /// The repeat count of timer.
-        /// </summary>
-        protected uint m_repeatCount;
 
         /// <summary>
         /// Gets or sets the repeat count of timer.
@@ -119,11 +136,6 @@ namespace QuickUnity.Timers
         }
 
         /// <summary>
-        /// The state of timer.
-        /// </summary>
-        protected TimerState m_timerState;
-
-        /// <summary>
         /// Gets the state of the timer.
         /// </summary>
         /// <value>The state of the timer.</value>
@@ -131,11 +143,6 @@ namespace QuickUnity.Timers
         {
             get { return m_timerState; }
         }
-
-        /// <summary>
-        /// The m_ignore time scale
-        /// </summary>
-        protected bool m_ignoreTimeScale = true;
 
         /// <summary>
         /// Gets or sets a value indicating whether [ignore time scale].
@@ -148,11 +155,6 @@ namespace QuickUnity.Timers
         }
 
         /// <summary>
-        /// Whether [stop on disable].
-        /// </summary>
-        protected bool m_stopOnDisable = true;
-
-        /// <summary>
         /// Gets or sets a value indicating whether [stop on disable].
         /// </summary>
         /// <value><c>true</c> if [stop on disable]; otherwise, <c>false</c>.</value>
@@ -161,6 +163,8 @@ namespace QuickUnity.Timers
             get { return m_stopOnDisable; }
             set { m_stopOnDisable = value; }
         }
+
+        #endregion ITimer Interface
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Timer"/> class.
@@ -192,6 +196,8 @@ namespace QuickUnity.Timers
                 Start();
             }
         }
+
+        #region ITimer Interface
 
         /// <summary>
         /// This timer start timing.
@@ -282,5 +288,7 @@ namespace QuickUnity.Timers
                 }
             }
         }
+
+        #endregion ITimer Interface
     }
 }

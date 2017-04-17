@@ -41,7 +41,7 @@ namespace QuickUnity.Patterns
         {
         }
 
-        #region Public Functions
+        #region IState Interface
 
         /// <summary>
         /// Called when the state is entered.
@@ -71,6 +71,6 @@ namespace QuickUnity.Patterns
             DispatchEvent(new StateEvent(StateEvent.Exit, nextState));
         }
 
-        #endregion Public Functions
+        #endregion IState Interface
     }
 }

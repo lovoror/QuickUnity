@@ -22,7 +22,6 @@
  *	SOFTWARE.
  */
 
-using QuickUnity.Events;
 using System.Collections.Generic;
 
 namespace QuickUnity.Patterns
@@ -30,14 +29,14 @@ namespace QuickUnity.Patterns
     /// <summary>
     /// A base <c>IMacroCommand</c> implementation that executes other <c>ICommand</c> s asynchronously.
     /// </summary>
-    public abstract class AsyncMacroCommand : EventDispatcher, ICommand, IAsyncMacroCommand
+    /// <seealso cref="QuickUnity.Patterns.ICommand"/>
+    /// <seealso cref="QuickUnity.Patterns.IAsyncMacroCommand"/>
+    public class AsyncMacroCommand : ICommand, IAsyncMacroCommand
     {
         /// <summary>
         /// The command queue.
         /// </summary>
         protected Queue<IAsyncCommand> m_commandQueue;
-
-        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MacroCommand"/> class.
@@ -48,9 +47,19 @@ namespace QuickUnity.Patterns
             Initialize();
         }
 
-        #endregion Constructors
+        #region ICommand Interface
 
-        #region Public Functions
+        /// <summary>
+        /// Executes this command.
+        /// </summary>
+        public void Execute()
+        {
+            ExecuteNextSubCommand();
+        }
+
+        #endregion ICommand Interface
+
+        #region IAsyncMacroCommand Interface
 
         /// <summary>
         /// Adds sub command.
@@ -64,15 +73,7 @@ namespace QuickUnity.Patterns
             }
         }
 
-        /// <summary>
-        /// Executes this command.
-        /// </summary>
-        public void Execute()
-        {
-            ExecuteNextSubCommand();
-        }
-
-        #endregion Public Functions
+        #endregion IAsyncMacroCommand Interface
 
         #region Protected Functions
 

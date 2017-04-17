@@ -44,14 +44,10 @@ namespace QuickUnity.Events
         /// <summary>
         /// Called when script receive message Awake.
         /// </summary>
-        protected override void OnAwake()
+        protected virtual void Awake()
         {
             m_eventDispatcher = new EventDispatcher();
         }
-
-        #endregion Protected Functions
-
-        #region Messages
 
         /// <summary>
         /// This function is called when the MonoBehaviour will be destroyed.
@@ -61,9 +57,9 @@ namespace QuickUnity.Events
             m_eventDispatcher = null;
         }
 
-        #endregion Messages
+        #endregion Protected Functions
 
-        #region IEventDispatcher Implementations
+        #region IEventDispatcher Interface
 
         /// <summary>
         /// Registers an event listener object with an EventDispatcher object so that the listener
@@ -217,6 +213,6 @@ namespace QuickUnity.Events
             }
         }
 
-        #endregion IEventDispatcher Implementations
+        #endregion IEventDispatcher Interface
     }
 }

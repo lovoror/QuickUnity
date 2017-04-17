@@ -22,14 +22,13 @@
  *	SOFTWARE.
  */
 
-using QuickUnity.Events;
-
 namespace QuickUnity.Patterns
 {
     /// <summary>
     /// A base <c>ICommand</c> implementation.
     /// </summary>
-    public abstract class Command : EventDispatcher, ICommand
+    /// <seealso cref="QuickUnity.Patterns.ICommand"/>
+    public abstract class Command : ICommand
     {
         /// <summary>
         /// The data for this command.
@@ -87,7 +86,7 @@ namespace QuickUnity.Patterns
 
         #endregion Constrcutors
 
-        #region Public Functions
+        #region ICommand Interface
 
         /// <summary>
         /// Executes this command.
@@ -96,6 +95,6 @@ namespace QuickUnity.Patterns
         {
         }
 
-        #endregion Public Functions
+        #endregion ICommand Interface
     }
 }

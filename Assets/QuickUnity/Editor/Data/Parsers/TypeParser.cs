@@ -198,6 +198,8 @@ namespace QuickUnityEditor.Data.Parsers
         /// </summary>
         public const string ArrayElementSeparator = "|";
 
+        #region ITypeParser Interface
+
         /// <summary>
         /// Parses the specified value.
         /// </summary>
@@ -207,6 +209,10 @@ namespace QuickUnityEditor.Data.Parsers
         {
             return Parse<T>(value);
         }
+
+        #endregion ITypeParser Interface
+
+        #region Protected Functions
 
         /// <summary>
         /// Parses the specified value.
@@ -314,5 +320,7 @@ namespace QuickUnityEditor.Data.Parsers
 
             return list.ToArray();
         }
+
+        #endregion Protected Functions
     }
 }

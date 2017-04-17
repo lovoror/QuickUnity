@@ -40,12 +40,14 @@ namespace QuickUnity.Tasks
         /// </summary>
         private List<ITask> m_tasks;
 
+        #region Messages
+
         /// <summary>
         /// Called when script receive message Awake.
         /// </summary>
-        protected override void OnAwake()
+        protected override void Awake()
         {
-            base.OnAwake();
+            base.Awake();
 
             m_tasks = new List<ITask>();
         }
@@ -77,7 +79,9 @@ namespace QuickUnity.Tasks
             StopAllCoroutines();
         }
 
-        #region Public Functions
+        #endregion Messages
+
+        #region ITaskManager Interface
 
         /// <summary>
         /// Contains the task.
@@ -223,7 +227,9 @@ namespace QuickUnity.Tasks
             }
         }
 
-        #endregion Public Functions
+        #endregion ITaskManager Interface
+
+        #region Private Functions
 
         /// <summary>
         /// Runs the task.
@@ -272,5 +278,7 @@ namespace QuickUnity.Tasks
                 StopTask(taskEvent.coroutineTask);
             }
         }
+
+        #endregion Private Functions
     }
 }

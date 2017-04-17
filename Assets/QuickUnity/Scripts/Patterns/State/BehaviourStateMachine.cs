@@ -38,7 +38,42 @@ namespace QuickUnity.Patterns
         /// </summary>
         protected IStateMachine m_stateMachine;
 
-        #region Public Functions
+        #region Messages
+
+        /// <summary>
+        /// Called when script receive message Awake.
+        /// </summary>
+        protected override void Awake()
+        {
+            base.Awake();
+
+            m_stateMachine = new StateMachine();
+        }
+
+        /// <summary>
+        /// Called when script receive message Update.
+        /// </summary>
+        protected virtual void Update()
+        {
+            Run();
+        }
+
+        /// <summary>
+        /// This function is called when the MonoBehaviour will be destroyed.
+        /// </summary>
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+
+            if (m_stateMachine != null)
+            {
+                m_stateMachine = null;
+            }
+        }
+
+        #endregion Messages
+
+        #region IStateMachine Interface
 
         /// <summary>
         /// Directly set the active state by state object.
@@ -88,41 +123,6 @@ namespace QuickUnity.Patterns
             }
         }
 
-        #endregion Public Functions
-
-        #region Protected Functions
-
-        /// <summary>
-        /// Called when script receive message Awake.
-        /// </summary>
-        protected override void OnAwake()
-        {
-            base.OnAwake();
-
-            m_stateMachine = new StateMachine();
-        }
-
-        /// <summary>
-        /// Called when script receive message Update.
-        /// </summary>
-        protected override void OnUpdate()
-        {
-            Run();
-        }
-
-        /// <summary>
-        /// This function is called when the MonoBehaviour will be destroyed.
-        /// </summary>
-        protected override void OnDestroy()
-        {
-            base.OnDestroy();
-
-            if (m_stateMachine != null)
-            {
-                m_stateMachine = null;
-            }
-        }
-
-        #endregion Protected Functions
+        #endregion IStateMachine Interface
     }
 }

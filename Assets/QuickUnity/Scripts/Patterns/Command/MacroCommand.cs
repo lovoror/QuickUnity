@@ -22,7 +22,6 @@
  *	SOFTWARE.
  */
 
-using QuickUnity.Events;
 using System.Collections.Generic;
 
 namespace QuickUnity.Patterns
@@ -30,14 +29,14 @@ namespace QuickUnity.Patterns
     /// <summary>
     /// A base <c>IMacroCommand</c> implementation that executes other <c>ICommand</c> s.
     /// </summary>
-    public abstract class MacroCommand : EventDispatcher, ICommand, IMacroCommand
+    /// <seealso cref="QuickUnity.Patterns.ICommand"/>
+    /// <seealso cref="QuickUnity.Patterns.IMacroCommand"/>
+    public class MacroCommand : ICommand, IMacroCommand
     {
         /// <summary>
         /// The command queue.
         /// </summary>
         protected Queue<ICommand> m_commandQueue;
-
-        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MacroCommand"/> class.
@@ -48,21 +47,7 @@ namespace QuickUnity.Patterns
             Initialize();
         }
 
-        #endregion Constructors
-
-        #region Public Functions
-
-        /// <summary>
-        /// Adds sub command.
-        /// </summary>
-        /// <param name="subCommand">The sub command.</param>
-        public void AddSubCommand(ICommand subCommand)
-        {
-            if (m_commandQueue != null)
-            {
-                m_commandQueue.Enqueue(subCommand);
-            }
-        }
+        #region ICommand Interface
 
         /// <summary>
         /// Executes this command.
@@ -79,7 +64,23 @@ namespace QuickUnity.Patterns
             }
         }
 
-        #endregion Public Functions
+        #endregion ICommand Interface
+
+        #region IMacroCommand Interface
+
+        /// <summary>
+        /// Adds sub command.
+        /// </summary>
+        /// <param name="subCommand">The sub command.</param>
+        public void AddSubCommand(ICommand subCommand)
+        {
+            if (m_commandQueue != null)
+            {
+                m_commandQueue.Enqueue(subCommand);
+            }
+        }
+
+        #endregion IMacroCommand Interface
 
         #region Protected Functions
 

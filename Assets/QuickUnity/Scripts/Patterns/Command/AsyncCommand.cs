@@ -29,6 +29,8 @@ namespace QuickUnity.Patterns
     /// <summary>
     /// A base <c>IAsyncCommand</c> implementation.
     /// </summary>
+    /// <seealso cref="QuickUnity.Patterns.Command"/>
+    /// <seealso cref="QuickUnity.Patterns.IAsyncCommand"/>
     public abstract class AsyncCommand : Command, IAsyncCommand
     {
         /// <summary>
@@ -36,16 +38,7 @@ namespace QuickUnity.Patterns
         /// </summary>
         protected Action m_executedCallback;
 
-        #region Public Functions
-
-        /// <summary>
-        /// Sets the executed callback.
-        /// </summary>
-        /// <param name="callback">The callback function.</param>
-        public void SetExecutedCallback(Action callback)
-        {
-            m_executedCallback = callback;
-        }
+        #region ICommand Interface
 
         /// <summary>
         /// Executes this command.
@@ -60,6 +53,19 @@ namespace QuickUnity.Patterns
             }
         }
 
-        #endregion Public Functions
+        #endregion ICommand Interface
+
+        #region IAsyncCommand Interface
+
+        /// <summary>
+        /// Sets the executed callback.
+        /// </summary>
+        /// <param name="callback">The callback function.</param>
+        public void SetExecutedCallback(Action callback)
+        {
+            m_executedCallback = callback;
+        }
+
+        #endregion IAsyncCommand Interface
     }
 }

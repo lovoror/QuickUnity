@@ -85,7 +85,7 @@ namespace QuickUnityEditor
             EditorApplication.update += OnEditorUpdate;
         }
 
-        #region Interface ITimerManager Implement Functions
+        #region ITimerList Interface
 
         /// <summary>
         /// Fors the each.
@@ -261,7 +261,7 @@ namespace QuickUnityEditor
             }
         }
 
-        #endregion Interface ITimerManager Implement Functions
+        #endregion ITimerList Interface
 
         #region Private Functions
 

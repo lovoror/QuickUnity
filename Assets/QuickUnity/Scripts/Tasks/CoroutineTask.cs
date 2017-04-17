@@ -39,6 +39,8 @@ namespace QuickUnity.Tasks
         /// </summary>
         protected TaskState m_taskState;
 
+        #region ITask Interface
+
         /// <summary>
         /// Gets the state of the task.
         /// </summary>
@@ -47,6 +49,8 @@ namespace QuickUnity.Tasks
         {
             get { return m_taskState; }
         }
+
+        #endregion ITask Interface
 
         /// <summary>
         /// The coroutine function to be executed.
@@ -64,6 +68,8 @@ namespace QuickUnity.Tasks
             m_coroutine = coroutine;
             CoroutineTaskManager.instance.AddTask(this, autoStart);
         }
+
+        #region ICroutineTask Interface
 
         /// <summary>
         /// The wrapper of coroutine.
@@ -89,6 +95,10 @@ namespace QuickUnity.Tasks
                 }
             }
         }
+
+        #endregion ICroutineTask Interface
+
+        #region ITask Interface
 
         /// <summary>
         /// Starts this task.
@@ -133,5 +143,7 @@ namespace QuickUnity.Tasks
         {
             CoroutineTaskManager.instance.RemoveTask(this);
         }
+
+        #endregion ITask Interface
     }
 }
