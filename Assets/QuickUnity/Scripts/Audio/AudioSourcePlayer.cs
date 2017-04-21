@@ -175,7 +175,7 @@ namespace QuickUnity.Audio
         private IEnumerator DoPlayAudio()
         {
             audioSource.Play();
-            yield return new WaitForSeconds(audioSource.clip.length);
+            yield return new WaitForSeconds(audioSource.clip.length / audioSource.pitch);
             DispatchEvent(new AudioSourceEvent(AudioSourceEvent.PlayComplete, audioSource));
         }
 
