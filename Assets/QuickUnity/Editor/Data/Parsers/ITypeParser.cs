@@ -27,7 +27,7 @@ namespace QuickUnityEditor.Data.Parsers
     /// <summary>
     /// The interface of data type parser.
     /// </summary>
-    public interface ITypeParser
+    internal interface ITypeParser
     {
         /// <summary>
         /// Parses the specified value.

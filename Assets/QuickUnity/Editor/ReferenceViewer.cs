@@ -33,7 +33,7 @@ namespace QuickUnityEditor
     /// The window for finding assets references.
     /// </summary>
     /// <seealso cref="UnityEditor.EditorWindow"/>
-    public class ReferenceViewer : EditorWindow
+    internal class ReferenceViewer : EditorWindow
     {
         /// <summary>
         /// Information text collection.

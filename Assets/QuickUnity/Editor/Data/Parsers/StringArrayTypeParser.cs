@@ -28,7 +28,7 @@ namespace QuickUnityEditor.Data.Parsers
     /// The parser of type System.String[].
     /// </summary>
     /// <seealso cref="QuickUnityEditor.Data.Parsers.TypeParser{System.String[]}"/>
-    public class StringArrayTypeParser : TypeParser<string[]>
+    internal class StringArrayTypeParser : TypeParser<string[]>
     {
         /// <summary>
         /// The type keyword.

@@ -373,6 +373,70 @@ namespace QuickUnity.Utilities
         }
 
         /// <summary>
+        /// Gets the static field value.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="fieldName">Name of the field.</param>
+        /// <returns>The value of the static field.</returns>
+        public static object GetStaticFieldValue(Type type, string fieldName)
+        {
+            object fieldValue = null;
+
+            if (type != null && !string.IsNullOrEmpty(fieldName))
+            {
+                Type targetType = type;
+
+                while (targetType != null)
+                {
+                    FieldInfo fieldInfo = targetType.GetField(fieldName,
+                        BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+
+                    if (fieldInfo != null)
+                    {
+                        fieldValue = fieldInfo.GetValue(null);
+                        targetType = null;
+                    }
+                    else
+                    {
+                        targetType = targetType.BaseType;
+                    }
+                }
+            }
+
+            return fieldValue;
+        }
+
+        /// <summary>
+        /// Sets the static field value.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="fieldName">Name of the field.</param>
+        /// <param name="value">The value of the static field.</param>
+        public static void SetStaticFieldValue(Type type, string fieldName, object value)
+        {
+            if (type != null && !string.IsNullOrEmpty(fieldName))
+            {
+                Type targetType = type;
+
+                while (targetType != null)
+                {
+                    FieldInfo fieldInfo = targetType.GetField(fieldName,
+                        BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+
+                    if (fieldInfo != null)
+                    {
+                        fieldInfo.SetValue(null, value);
+                        targetType = null;
+                    }
+                    else
+                    {
+                        targetType = targetType.BaseType;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// Gets the object fields values.
         /// </summary>
         /// <param name="obj">The object.</param>
@@ -453,6 +517,70 @@ namespace QuickUnity.Utilities
 
                 if (info != null)
                     info.SetValue(obj, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets the static property value.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <returns>The value of the static property.</returns>
+        public static object GetStaticPropertyValue(Type type, string propertyName)
+        {
+            object propertyValue = null;
+
+            if (type != null && !string.IsNullOrEmpty(propertyName))
+            {
+                Type targetType = type;
+
+                while (targetType != null)
+                {
+                    PropertyInfo propertyInfo = targetType.GetProperty(propertyName,
+                        BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+
+                    if (propertyInfo != null)
+                    {
+                        propertyValue = propertyInfo.GetValue(null, null);
+                        targetType = null;
+                    }
+                    else
+                    {
+                        targetType = targetType.BaseType;
+                    }
+                }
+            }
+
+            return propertyValue;
+        }
+
+        /// <summary>
+        /// Sets the static property value.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <param name="value">The value of the static property.</param>
+        public static void SetStaticPropertyValue(Type type, string propertyName, object value)
+        {
+            if (type != null && !string.IsNullOrEmpty(propertyName))
+            {
+                Type targetType = type;
+
+                while (targetType != null)
+                {
+                    PropertyInfo propertyInfo = targetType.GetProperty(propertyName,
+                        BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+
+                    if (propertyInfo != null)
+                    {
+                        propertyInfo.SetValue(null, value, null);
+                        targetType = null;
+                    }
+                    else
+                    {
+                        targetType = targetType.BaseType;
+                    }
+                }
             }
         }
 

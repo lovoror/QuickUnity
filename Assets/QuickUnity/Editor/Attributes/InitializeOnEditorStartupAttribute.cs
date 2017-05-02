@@ -31,7 +31,7 @@ namespace QuickUnityEditor.Attributes
     /// </summary>
     /// <seealso cref="System.Attribute"/>
     [AttributeUsage(AttributeTargets.Class)]
-    public class InitializeOnEditorStartupAttribute : Attribute
+    internal class InitializeOnEditorStartupAttribute : Attribute
     {
         /// <summary>
         /// The execution order.

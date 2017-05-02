@@ -28,7 +28,7 @@ namespace QuickUnityEditor.Data.Parsers
     /// The parser of type System.Boolean[].
     /// </summary>
     /// <seealso cref="QuickUnityEditor.Data.Parsers.TypeParser{System.Boolean[]}"/>
-    public class BoolArrayTypeParser : TypeParser<bool[]>
+    internal class BoolArrayTypeParser : TypeParser<bool[]>
     {
         /// <summary>
         /// The type keyword.

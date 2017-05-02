@@ -28,7 +28,7 @@ namespace QuickUnityEditor.Data.Parsers
     /// The parser of type System.Single[].
     /// </summary>
     /// <seealso cref="QuickUnityEditor.Data.Parsers.TypeParser{System.Single[]}"/>
-    public class FloatArrayTypeParser : TypeParser<float[]>
+    internal class FloatArrayTypeParser : TypeParser<float[]>
     {
         /// <summary>
         /// The type keyword.

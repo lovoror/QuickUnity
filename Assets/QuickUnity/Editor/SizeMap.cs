@@ -33,7 +33,7 @@ namespace QuickUnityEditor
     /// The window for showing assets size map.
     /// </summary>
     /// <seealso cref="UnityEditor.EditorWindow"/>
-    public class SizeMap : EditorWindow
+    internal class SizeMap : EditorWindow
     {
         /// <summary>
         /// Dialog messasges collection.

@@ -28,7 +28,7 @@ namespace QuickUnityEditor.Data.Parsers
     /// The parser of type System.Decimal[].
     /// </summary>
     /// <seealso cref="QuickUnityEditor.Data.Parsers.TypeParser{System.Decimal[]}"/>
-    public class DecimalArrayTypeParser : TypeParser<decimal[]>
+    internal class DecimalArrayTypeParser : TypeParser<decimal[]>
     {
         /// <summary>
         /// The type keyword.

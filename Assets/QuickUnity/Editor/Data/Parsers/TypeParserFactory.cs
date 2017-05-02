@@ -31,7 +31,7 @@ namespace QuickUnityEditor.Data.Parsers
     /// <summary>
     /// The factory class of type parser.
     /// </summary>
-    public static class TypeParserFactory
+    internal static class TypeParserFactory
     {
         /// <summary>
         /// The map of type parsers.

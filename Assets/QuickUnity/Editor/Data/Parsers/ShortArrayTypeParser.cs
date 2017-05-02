@@ -28,7 +28,7 @@ namespace QuickUnityEditor.Data.Parsers
     /// The parser of type System.Int16[].
     /// </summary>
     /// <seealso cref="QuickUnityEditor.Data.Parsers.TypeParser{System.Int16[]}"/>
-    public class ShortArrayTypeParser : TypeParser<short[]>
+    internal class ShortArrayTypeParser : TypeParser<short[]>
     {
         /// <summary>
         /// The type keyword.

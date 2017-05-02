@@ -34,7 +34,7 @@ namespace QuickUnityEditor.Data.Parsers
     /// The parser of type System.Boolean.
     /// </summary>
     /// <seealso cref="QuickUnityEditor.Data.Parsers.TypeParser{System.Boolean}"/>
-    public class BoolTypeParser : TypeParser<bool>
+    internal class BoolTypeParser : TypeParser<bool>
     {
         /// <summary>
         /// The type keyword.
@@ -46,7 +46,7 @@ namespace QuickUnityEditor.Data.Parsers
     /// The parser of type System.Byte.
     /// </summary>
     /// <seealso cref="QuickUnityEditor.Data.Parsers.TypeParser{System.Byte}"/>
-    public class ByteTypeParser : TypeParser<byte>
+    internal class ByteTypeParser : TypeParser<byte>
     {
         /// <summary>
         /// The type keyword.
@@ -58,7 +58,7 @@ namespace QuickUnityEditor.Data.Parsers
     /// The parser of type System.SByte.
     /// </summary>
     /// <seealso cref="QuickUnityEditor.Data.Parsers.TypeParser{System.SByte}"/>
-    public class SByteTypeParser : TypeParser<sbyte>
+    internal class SByteTypeParser : TypeParser<sbyte>
     {
         /// <summary>
         /// The type keyword.
@@ -70,7 +70,7 @@ namespace QuickUnityEditor.Data.Parsers
     /// The parser of type System.Decimal.
     /// </summary>
     /// <seealso cref="QuickUnityEditor.Data.Parsers.TypeParser{System.Decimal}"/>
-    public class DecimalTypeParser : TypeParser<decimal>
+    internal class DecimalTypeParser : TypeParser<decimal>
     {
         /// <summary>
         /// The type keyword.
@@ -82,7 +82,7 @@ namespace QuickUnityEditor.Data.Parsers
     /// The parser of type System.Double.
     /// </summary>
     /// <seealso cref="QuickUnityEditor.Data.Parsers.TypeParser{System.Byte}"/>
-    public class DoubleTypeParser : TypeParser<double>
+    internal class DoubleTypeParser : TypeParser<double>
     {
         /// <summary>
         /// The type keyword.
@@ -94,7 +94,7 @@ namespace QuickUnityEditor.Data.Parsers
     /// The parser of type System.Single.
     /// </summary>
     /// <seealso cref="QuickUnityEditor.Data.Parsers.TypeParser{System.Single}"/>
-    public class FloatTypeParser : TypeParser<float>
+    internal class FloatTypeParser : TypeParser<float>
     {
         /// <summary>
         /// The type keyword.
@@ -106,7 +106,7 @@ namespace QuickUnityEditor.Data.Parsers
     /// The parser of type System.Int32.
     /// </summary>
     /// <seealso cref="QuickUnityEditor.Data.Parsers.TypeParser{System.Int32}"/>
-    public class IntTypeParser : TypeParser<int>
+    internal class IntTypeParser : TypeParser<int>
     {
         /// <summary>
         /// The type keyword.
@@ -118,7 +118,7 @@ namespace QuickUnityEditor.Data.Parsers
     /// The parser of type System.UInt32.
     /// </summary>
     /// <seealso cref="QuickUnityEditor.Data.Parsers.TypeParser{System.UInt32}"/>
-    public class UIntTypeParser : TypeParser<uint>
+    internal class UIntTypeParser : TypeParser<uint>
     {
         /// <summary>
         /// The type keyword.
@@ -130,7 +130,7 @@ namespace QuickUnityEditor.Data.Parsers
     /// The parser of type System.Int64.
     /// </summary>
     /// <seealso cref="QuickUnityEditor.Data.Parsers.TypeParser{System.Int64}"/>
-    public class LongTypeParser : TypeParser<long>
+    internal class LongTypeParser : TypeParser<long>
     {
         /// <summary>
         /// The type keyword.
@@ -142,7 +142,7 @@ namespace QuickUnityEditor.Data.Parsers
     /// The parser of type System.UInt64.
     /// </summary>
     /// <seealso cref="QuickUnityEditor.Data.Parsers.TypeParser{System.UInt64}"/>
-    public class ULongTypeParser : TypeParser<ulong>
+    internal class ULongTypeParser : TypeParser<ulong>
     {
         /// <summary>
         /// The type keyword.
@@ -154,7 +154,7 @@ namespace QuickUnityEditor.Data.Parsers
     /// The parser of type System.Int16.
     /// </summary>
     /// <seealso cref="QuickUnityEditor.Data.Parsers.TypeParser{System.Int16}"/>
-    public class ShortTypeParser : TypeParser<short>
+    internal class ShortTypeParser : TypeParser<short>
     {
         /// <summary>
         /// The type keyword.
@@ -166,7 +166,7 @@ namespace QuickUnityEditor.Data.Parsers
     /// The parser of type System.UInt16.
     /// </summary>
     /// <seealso cref="QuickUnityEditor.Data.Parsers.TypeParser{System.UInt16}"/>
-    public class UShortTypeParser : TypeParser<ushort>
+    internal class UShortTypeParser : TypeParser<ushort>
     {
         /// <summary>
         /// The type keyword.
@@ -178,7 +178,7 @@ namespace QuickUnityEditor.Data.Parsers
     /// The parser of type System.String.
     /// </summary>
     /// <seealso cref="QuickUnityEditor.Data.Parsers.TypeParser{System.String}"/>
-    public class StringTypeParser : TypeParser<string>
+    internal class StringTypeParser : TypeParser<string>
     {
         /// <summary>
         /// The type keyword.
@@ -191,7 +191,7 @@ namespace QuickUnityEditor.Data.Parsers
     /// </summary>
     /// <typeparam name="T">The type definition.</typeparam>
     /// <seealso cref="QuickUnityEditor.Data.Parsers.ITypeParser{T}"/>
-    public abstract class TypeParser<T> : ITypeParser
+    internal abstract class TypeParser<T> : ITypeParser
     {
         /// <summary>
         /// The separator for array element.

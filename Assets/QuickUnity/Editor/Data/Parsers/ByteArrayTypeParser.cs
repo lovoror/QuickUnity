@@ -28,7 +28,7 @@ namespace QuickUnityEditor.Data.Parsers
     /// The parser of type System.Byte[].
     /// </summary>
     /// <seealso cref="QuickUnityEditor.Data.Parsers.TypeParser{System.Byte[]}"/>
-    public class ByteArrayTypeParser : TypeParser<byte[]>
+    internal class ByteArrayTypeParser : TypeParser<byte[]>
     {
         /// <summary>
         /// The type keyword.

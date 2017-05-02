@@ -30,7 +30,7 @@ namespace QuickUnityEditor.Preferences
     /// <summary>
     /// This class provide method for adding preference section "Auto Save".
     /// </summary>
-    public sealed class AutoSavePreferenceItem
+    internal sealed class AutoSavePreferenceItem
     {
         /// <summary>
         /// The collections of GUI contents.

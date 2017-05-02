@@ -38,7 +38,7 @@ namespace QuickUnityEditor.Data
     /// The editor window of DataTable Preferences.
     /// </summary>
     /// <seealso cref="UnityEditor.EditorWindow"/>
-    public class DataTablePreferencesWindow : EditorWindow
+    internal class DataTablePreferencesWindow : EditorWindow
     {
         /// <summary>
         /// The message collection of dialog.

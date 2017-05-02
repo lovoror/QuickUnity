@@ -33,7 +33,7 @@ namespace QuickUnityEditor.PropertyDrawers
     /// </summary>
     /// <seealso cref="UnityEditor.PropertyDrawer"/>
     [CustomPropertyDrawer(typeof(ReadOnlyFieldAttribute))]
-    public class ReadOnlyFieldDrawer : PropertyDrawer
+    internal class ReadOnlyFieldDrawer : PropertyDrawer
     {
         /// <summary>
         /// Override this method to make your own GUI for the property.

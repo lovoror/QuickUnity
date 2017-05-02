@@ -45,7 +45,7 @@ namespace QuickUnityEditor.Data
     /// Handle the process of data tables import.
     /// </summary>
     [InitializeOnEditorStartup]
-    public static class DataImport
+    internal static class DataImport
     {
         /// <summary>
         /// Struct DataTableRowInfo.

@@ -28,7 +28,7 @@ namespace QuickUnityEditor.Data.Parsers
     /// The parser of type System.Int64[].
     /// </summary>
     /// <seealso cref="QuickUnityEditor.Data.Parsers.TypeParser{System.Int64[]}"/>
-    public class LongArrayTypeParser : TypeParser<long[]>
+    internal class LongArrayTypeParser : TypeParser<long[]>
     {
         /// <summary>
         /// The type keyword.

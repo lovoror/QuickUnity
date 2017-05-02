@@ -28,7 +28,7 @@ namespace QuickUnityEditor.Data.Parsers
     /// The parser of type System.Double[].
     /// </summary>
     /// <seealso cref="QuickUnityEditor.Data.Parsers.TypeParser{System.Double[]}"/>
-    public class DoubleArrayTypeParser : TypeParser<double[]>
+    internal class DoubleArrayTypeParser : TypeParser<double[]>
     {
         /// <summary>
         /// The type keyword.
