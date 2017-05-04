@@ -30,3 +30,8 @@
 /QuickUnityV2.Editor.csproj
 /QuickUnityV2.csproj
 /QuickUnityV2.Plugins.csproj
+/Assets/VSCode
+/.vscode
+Assets/VSCode.meta
+
+Assembly-CSharp-Editor.csproj
