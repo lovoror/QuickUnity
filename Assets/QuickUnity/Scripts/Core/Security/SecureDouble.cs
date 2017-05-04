@@ -29,7 +29,7 @@ namespace QuickUnity.Core.Security
     /// <summary>
     /// Represents double value that should be protected.
     /// </summary>
-    public struct SecureDouble
+    public struct SecureDouble : IComparable<SecureDouble>
     {
         /// <summary>
         /// The encrypted long value.
@@ -108,6 +108,18 @@ namespace QuickUnity.Core.Security
         public override string ToString()
         {
             return GetValue().ToString();
+        }
+
+        /// <summary>
+        /// Compares the current instance with another object of the same type and returns an integer
+        /// that indicates whether the current instance precedes, follows, or occurs in the same
+        /// position in the sort order as the other object.
+        /// </summary>
+        /// <param name="other">An object to compare with this instance.</param>
+        /// <returns>A value that indicates the relative order of the objects being compared.</returns>
+        public int CompareTo(SecureDouble other)
+        {
+            return m_value.CompareTo(other.GetValue());
         }
 
         /// <summary>

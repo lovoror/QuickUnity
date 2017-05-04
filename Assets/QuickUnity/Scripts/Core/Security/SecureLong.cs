@@ -22,12 +22,14 @@
  *	SOFTWARE.
  */
 
+using System;
+
 namespace QuickUnity.Core.Security
 {
     /// <summary>
     /// Represents long value that should be protected.
     /// </summary>
-    public struct SecureLong
+    public struct SecureLong : IComparable<SecureLong>
     {
         /// <summary>
         /// The encrypted long value.
@@ -106,6 +108,18 @@ namespace QuickUnity.Core.Security
         public override string ToString()
         {
             return GetValue().ToString();
+        }
+
+        /// <summary>
+        /// Compares the current instance with another object of the same type and returns an integer
+        /// that indicates whether the current instance precedes, follows, or occurs in the same
+        /// position in the sort order as the other object.
+        /// </summary>
+        /// <param name="other">An object to compare with this instance.</param>
+        /// <returns>A value that indicates the relative order of the objects being compared.</returns>
+        public int CompareTo(SecureLong other)
+        {
+            return m_value.CompareTo(other.GetValue());
         }
 
         /// <summary>
