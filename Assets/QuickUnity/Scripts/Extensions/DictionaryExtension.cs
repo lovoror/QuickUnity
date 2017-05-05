@@ -28,7 +28,7 @@ using System.Linq;
 namespace QuickUnity.Extensions
 {
     /// <summary>
-    /// Extension methods collection for System.Collections.Generic.Dictionary.
+    /// Extension methods to the <see cref="System.Collections.Generic.Dictionary{T, V}"/>.
     /// </summary>
     public static class DictionaryExtension
     {

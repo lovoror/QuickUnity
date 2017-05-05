@@ -29,7 +29,7 @@ using UnityEngine;
 namespace QuickUnity.Extensions
 {
     /// <summary>
-    /// Extension methods collection for UnityEngine.Component.
+    /// Extension methods to the <see cref="UnityEngine.Component"/>.
     /// </summary>
     public static class ComponentExtension
     {

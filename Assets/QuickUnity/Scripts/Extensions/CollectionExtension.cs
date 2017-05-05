@@ -22,21 +22,34 @@
  *	SOFTWARE.
  */
 
-using QuickUnity.Events;
+using System.Collections.ObjectModel;
 
-namespace QuickUnity.Timers
+namespace QuickUnity.Extensions
 {
     /// <summary>
-    /// The interface definition for the TimerGroup object.
+    /// Extension methods to the <see cref="System.Collections.ObjectModel.Collection{T}"/>.
     /// </summary>
-    /// <seealso cref="QuickUnity.Events.IEventDispatcher"/>
-    /// <seealso cref="QuickUnity.Timers.ITimerList"/>
-    public interface ITimerGroup : ITimerList, IEventDispatcher
+    public static class CollectionExtension
     {
         /// <summary>
-        /// Gets or sets the name of the group.
+        /// Adds an unique object for the <see cref="System.Collections.ObjectModel.Collection{T}"/>
+        /// to the end of the <see cref="System.Collections.ObjectModel.Collection{T}"/>.
         /// </summary>
-        /// <value>The name of the group.</value>
-        string groupName { get; }
+        /// <typeparam name="T">The type of the elements in the collection.</typeparam>
+        /// <param name="source">
+        /// The source <see cref="System.Collections.ObjectModel.Collection{T}"/> object.
+        /// </param>
+        /// <param name="item">
+        /// The object to be added to the end of the <see
+        /// cref="System.Collections.ObjectModel.Collection{T}"/>. The value can be null for
+        /// reference types.
+        /// </param>
+        public static void AddUnique<T>(this Collection<T> source, T item)
+        {
+            if (!source.Contains(item))
+            {
+                source.Add(item);
+            }
+        }
     }
 }

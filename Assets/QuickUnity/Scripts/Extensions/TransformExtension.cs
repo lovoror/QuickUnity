@@ -27,7 +27,7 @@ using UnityEngine;
 namespace QuickUnity.Extensions
 {
     /// <summary>
-    /// Extension methods collection for UnityEngine.Transform.
+    /// Extension methods to the <see cref="UnityEngine.Transform"/>.
     /// </summary>
     public static class TransformExtension
     {

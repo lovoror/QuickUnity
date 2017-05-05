@@ -21,19 +21,19 @@ namespace QuickUnity.Tests.IntegrationTests
         /// </summary>
         private void Start()
         {
-            m_testTimer = new Timer(1.0f, 3);
+            m_testTimer = new Timer(1.0f, 3, true, true, false);
             m_testTimer.AddEventListener<TimerEvent>(TimerEvent.Timer, OnTimer);
             m_testTimer.AddEventListener<TimerEvent>(TimerEvent.TimerComplete, OnTimerComplete);
-            TimerManager.instance.AddTimer(m_testTimer);
+            m_testTimer.Start();
         }
 
         private void OnDestroy()
         {
             if (m_testTimer != null)
             {
-                TimerManager.instance.RemoveTimer(m_testTimer);
                 m_testTimer.RemoveEventListener<TimerEvent>(TimerEvent.Timer, OnTimer);
                 m_testTimer.RemoveEventListener<TimerEvent>(TimerEvent.TimerComplete, OnTimerComplete);
+                m_testTimer.Dispose();
                 m_testTimer = null;
             }
         }

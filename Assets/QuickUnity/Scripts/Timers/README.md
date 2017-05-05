@@ -7,7 +7,7 @@ If you were a **Flash** developer or **Unreal** developer, you must knew both th
 ### Limited Repeat Count
 
 ```c#
-ITimer timer = new Timer(1.0f, 3);
+ITimer timer = new Timer(1.0f, 3, true, true, false);
 
 // Timer event that when timer reach delay time each time.
 timer.AddEventListener<TimerEvent>(TimerEvent.Timer, (timerEvent) => 
@@ -21,8 +21,8 @@ timer.AddEventListener<TimerEvent>(TimerEvent.TimerComplete, (timerEvent) =>
   // Your logic codes.
 });
 
-// Add timer object into timer manager.
-TimerManager.instance.Add(timer);
+// Start timer.
+timer.Start();
 ```
 
 
@@ -31,7 +31,7 @@ TimerManager.instance.Add(timer);
 
 ```c#
 // Just set repeatCount to 0 to implement infinite repeat count.
-ITimer timer = new Timer(1.0f, 0);
+ITimer timer = new Timer(1.0f, 0, true, true, false);
 
 // Timer event that when timer reach delay time each time.
 timer.AddEventListener<TimerEvent>(TimerEvent.Timer, (timerEvent) => 
@@ -45,8 +45,8 @@ timer.AddEventListener<TimerEvent>(TimerEvent.TimerComplete, (timerEvent) =>
   // Your logic codes.
 });
 
-// Add timer object into timer manager.
-TimerManager.instance.Add(timer);
+// Start timer.
+timer.Start();
 ```
 
 
@@ -57,10 +57,10 @@ By default, the timer frequency will not change with **Time.timeScale**. Just be
 
 ```c#
 // Set parameter 'ignoreTimeScale' to false to implement scaled timer.
-ITimer timer = new Timer(1.0f, 3, false);
+ITimer timer = new Timer(1.0f, 3, false, true, false);
 
-// Add timer object into timer manager.
-TimerManager.instance.Add(timer);
+// Start timer.
+timer.Start();
 ```
 
 
@@ -71,16 +71,16 @@ By default, the timer will stop when it be disabled (**TimerManager.instance.ena
 
 ```c#
 // Set parameter 'stopOnDisable' to false to implement that.
-ITimer timer = new Timer(1.0f, 3, true, false);
+ITimer timer = new Timer(1.0f, 3, true, false, false);
 
-// Add timer object into timer manager.
-TimerManager.instance.Add(timer);
+// Start timer.
+timer.Start();
 ```
 
 
-## **TimerGroup**
+## **TimerList**
 
-**TimerGroup** is a feature that allow you to gather some timers into a group. For example, skill cooldown timers. To use **TimerGroup** is simple, example usage:
+**TimerList** is a feature that allow you to gather some timers into a list. For example, skill cooldown timers. To use **TimerList** is simple, example usage:
 
 ```c#
 // Skill A CD Timer.
@@ -89,9 +89,10 @@ ITimer skillACDTimer = new Timer(1, 3, true, true, false);
 // Skill B CD Timer.
 ITimer skillBCDTimer = new Timer(1, 5, true, true, false);
 
-// Initialize skill CDs timer group.
-ITimerGroup skillCDsTimerGroup = new TimerGroup("SkillCDTimers", true, skillACDTimer, skillBCDTimer);
+// Initialize skill CDs timer list.
+ITimerList skillCDsTimerList = new TimerList(skillACDTimer, skillBCDTimer);
 
-// Add timer group object into timer manager.
-TimerManager.instance.AddTimerGroup(skillCDsTimerGroup);
+// Start your timers.
+skillACDTimer.Start();
+skillBCDTimer.Start();
 ```

@@ -23,84 +23,90 @@
  */
 
 using QuickUnity.Events;
+using System;
 
 namespace QuickUnity.Timers
 {
     /// <summary>
-    /// The interface definition for the Timer object.
+    /// Defines methods to manipulate timer object.
     /// </summary>
+    /// <seealso cref="System.IDisposable"/>
     /// <seealso cref="QuickUnity.Events.IEventDispatcher"/>
-    public interface ITimer : IEventDispatcher
+    public interface ITimer : IEventDispatcher, IDisposable
     {
         /// <summary>
-        /// Gets the current count of timer.
+        /// Gets the current count of <see cref="ITimer"/>.
         /// </summary>
-        /// <value>The current count.</value>
+        /// <value>The current count of <see cref="ITimer"/>.</value>
         uint currentCount { get; }
 
         /// <summary>
-        /// Gets or sets the delay time of timer.
+        /// Gets the delay time of <see cref="ITimer"/>.
         /// </summary>
-        /// <value>The delay.</value>
+        /// <value>The delay timer of <see cref="ITimer"/>.</value>
         float delay { get; set; }
 
         /// <summary>
-        /// Gets or sets the repeat count of timer.
+        /// Gets the repeat count of <see cref="ITimer"/>.
         /// </summary>
-        /// <value>The repeat count.</value>
+        /// <value>The repeat count of <see cref="ITimer"/>.</value>
         uint repeatCount { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="ITimer"/> is enabled.
+        /// Gets a value indicating whether this <see cref="ITimer"/> is enabled.
         /// </summary>
         /// <value><c>true</c> if enabled Tick function will be invoked; otherwise, <c>false</c>.</value>
         bool enabled { set; }
 
         /// <summary>
-        /// Gets the state of the timer.
+        /// Gets the state of the <see cref="ITimer"/>.
         /// </summary>
-        /// <value>The state of the timer.</value>
+        /// <value>The state of the <see cref="ITimer"/>.</value>
         TimerState timerState { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether [ignore time scale].
+        /// Gets a value indicating whether the <see cref="ITimer"/> ignore time scale of Unity.
         /// </summary>
-        /// <value><c>true</c> if [ignore time scale]; otherwise, <c>false</c>.</value>
+        /// <value><c>true</c> if ignore time scale of Unity; otherwise, <c>false</c>.</value>
         bool ignoreTimeScale { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether [stop on disable].
+        /// Gets a value indicating whether the <see cref="ITimer"/> stop when the <see
+        /// cref="ITimer"/> is disabled.
         /// </summary>
-        /// <value><c>true</c> if [stop on disable]; otherwise, <c>false</c>.</value>
+        /// <value>
+        /// <c>true</c> if the <see cref="ITimer"/> stop whtn the <see cref="ITimer"/> is disabled;
+        /// otherwise, <c>false</c>.
+        /// </value>
         bool stopOnDisable { get; set; }
 
         /// <summary>
-        /// This timer start timing.
+        /// This <see cref="ITimer"/> start timing.
         /// </summary>
         void Start();
 
         /// <summary>
-        /// This timer pause timing.
+        /// This <see cref="ITimer"/> pause timing.
         /// </summary>
         void Pause();
 
         /// <summary>
-        /// This timer resume timing.
+        /// This <see cref="ITimer"/> resume timing.
         /// </summary>
         void Resume();
 
         /// <summary>
-        /// This timer resets timing. Set currentCount to 0.
+        /// This <see cref="ITimer"/> resets timing. Set currentCount to 0.
         /// </summary>
         void Reset();
 
         /// <summary>
-        /// This timer stop timing.
+        /// This <see cref="ITimer"/> stop timing.
         /// </summary>
         void Stop();
 
         /// <summary>
-        /// Tick.
+        /// This <see cref="ITimer"/> tick.
         /// </summary>
         /// <param name="deltaTime">The delta time.</param>
         void Tick(float deltaTime);

@@ -28,7 +28,7 @@ using System.IO;
 namespace QuickUnity.Extensions
 {
     /// <summary>
-    /// Extension methods collection for System.IO.DirectoryInfo.
+    /// Extension methods to the <see cref="System.IO.DirectoryInfo"/>.
     /// </summary>
     public static class DirectoryInfoExtension
     {

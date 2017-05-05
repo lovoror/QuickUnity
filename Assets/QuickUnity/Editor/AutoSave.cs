@@ -25,6 +25,7 @@
 using QuickUnity.Patterns;
 using QuickUnity.Timers;
 using QuickUnityEditor.Attributes;
+using QuickUnityEditor.Timers;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 
@@ -276,10 +277,9 @@ namespace QuickUnityEditor
                 // Initialize autosave timer.
                 if (m_autosaveTimer == null)
                 {
-                    m_autosaveTimer = new Timer(1, autoSaveTimeMinutes * 60);
+                    m_autosaveTimer = new EditorTimer(1, autoSaveTimeMinutes * 60);
                     m_autosaveTimer.AddEventListener<TimerEvent>(TimerEvent.Timer, OnAutosaveTimer);
                     m_autosaveTimer.AddEventListener<TimerEvent>(TimerEvent.TimerComplete, OnAutosaveTimerComplete);
-                    EditorTimerManager.instance.AddTimer(m_autosaveTimer);
                 }
             }
         }

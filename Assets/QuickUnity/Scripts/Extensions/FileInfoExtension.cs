@@ -27,7 +27,7 @@ using System.IO;
 namespace QuickUnity.Extensions
 {
     /// <summary>
-    /// Extension methods collection for System.IO.FileInfo.
+    /// Extension methods to the <see cref="System.IO.FileInfo"/>.
     /// </summary>
     public static class FileInfoExtension
     {

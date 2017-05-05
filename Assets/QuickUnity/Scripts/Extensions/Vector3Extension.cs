@@ -27,7 +27,7 @@ using UnityEngine;
 namespace QuickUnity.Extensions
 {
     /// <summary>
-    /// Extension methods collection for UnityEngine.Vector3.
+    /// Extension methods to the <see cref="UnityEngine.Vector3"/>.
     /// </summary>
     public static class Vector3Extension
     {

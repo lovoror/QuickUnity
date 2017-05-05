@@ -22,35 +22,41 @@
  *	SOFTWARE.
  */
 
+using QuickUnity.Events;
 using QuickUnity.Extensions;
 using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace QuickUnity.Timers
 {
     /// <summary>
-    /// Represents timer object list.
+    /// Class used internally to store the list of <see cref="ITimer"/> objects.
     /// </summary>
     /// <seealso cref="QuickUnity.Timers.ITimerList"/>
-    public class TimerList : ITimerList
+    /// <seealso cref="QuickUnity.Events.EventDispatcher"/>
+    public class TimerList : EventDispatcher, ITimerList
     {
         /// <summary>
-        /// The timer list.
+        /// The timer collection.
         /// </summary>
-        private List<ITimer> m_timers;
-
-        #region ITimerList Interface
+        private Collection<ITimer> m_timerCollection;
 
         /// <summary>
-        /// Gets all the timers.
+        /// Gets the number of <see cref="ITimer"/> elements contained in the <see cref="ITimerCollection"/>.
         /// </summary>
-        /// <value>All the timers.</value>
-        public List<ITimer> timers
+        /// <value>The number of <see cref="ITimer"/> elements contained in the <see cref="ITimerCollection"/>.</value>
+        public int count
         {
-            get { return m_timers; }
-        }
+            get
+            {
+                if (m_timerCollection != null)
+                {
+                    return m_timerCollection.Count;
+                }
 
-        #endregion ITimerList Interface
+                return 0;
+            }
+        }
 
         #region Constructors
 
@@ -58,270 +64,201 @@ namespace QuickUnity.Timers
         /// Initializes a new instance of the <see cref="TimerList"/> class.
         /// </summary>
         public TimerList()
+            : base()
         {
-            m_timers = new List<ITimer>();
+            m_timerCollection = new Collection<ITimer>();
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TimerList"/> class.
         /// </summary>
-        /// <param name="collection">The timer object collection.</param>
-        public TimerList(IEnumerable<ITimer> collection)
+        /// <param name="timers">The timers array.</param>
+        public TimerList(params ITimer[] timers)
+            : base()
         {
-            m_timers = new List<ITimer>(collection);
+            m_timerCollection = new Collection<ITimer>(timers);
         }
 
         #endregion Constructors
 
-        #region ITimerList Interface
+        #region ITimerList
 
         /// <summary>
-        /// Performs the specified action on each element of the timer list.
+        /// Adds an <see cref="ITimer"/> item to the <see cref="ITimerCollection"/>.
         /// </summary>
-        /// <param name="action">The action.</param>
+        /// <param name="item">The <see cref="ITimer"/> object to add to the <see cref="ITimerCollection"/>.</param>
+        public void Add(ITimer item)
+        {
+            if (m_timerCollection != null && item != null)
+            {
+                m_timerCollection.AddUnique(item);
+            }
+        }
+
+        /// <summary>
+        /// Removes all <see cref="ITimer"/> items from the <see cref="ITimerCollection"/>.
+        /// </summary>
+        public void Clear()
+        {
+            if (m_timerCollection != null)
+            {
+                m_timerCollection.Clear();
+            }
+        }
+
+        /// <summary>
+        /// Determines whether the <see cref="ITimerCollection"/>. contains a specific <see
+        /// cref="ITimer"/> object.
+        /// </summary>
+        /// <param name="item">The <see cref="ITimer"/> object to locate in the <see cref="ITimerCollection"/>.</param>
+        /// <returns>
+        /// <c>true</c> if <see cref="ITimer"/> item is found in the <see cref="ITimerCollection"/>;
+        /// otherwise, <c>false</c>.
+        /// </returns>
+        public bool Contains(ITimer item)
+        {
+            if (m_timerCollection != null && item != null)
+            {
+                return m_timerCollection.Contains(item);
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Removes the first occurrence of a specific object from the <see cref="ITimerCollection"/>.
+        /// </summary>
+        /// <param name="item">The object to remove from the <see cref="ITimerCollection"/>.</param>
+        /// <returns>
+        /// <c>true</c> if item was successfully removed from the <see cref="ITimerCollection"/>;
+        /// otherwise, <c>false</c>. This method also returns <c>false</c> if item is not found in
+        /// the original <see cref="ITimerCollection"/>.
+        /// </returns>
+        public bool Remove(ITimer item)
+        {
+            if (m_timerCollection != null && item != null)
+            {
+                return m_timerCollection.Remove(item);
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Performs the specified action on each <see cref="ITimer"/> element of the <see cref="ITimerCollection"/>.
+        /// </summary>
+        /// <param name="action">
+        /// The <see cref="Action{ITimer}"/> delegate to perform on each <see cref="ITimer"/> element
+        /// of the <see cref="ITimerCollection"/>.
+        /// </param>
         public void ForEach(Action<ITimer> action)
         {
-            if (m_timers != null)
+            for (int i = 0, length = m_timerCollection.Count; i < length; ++i)
             {
-                m_timers.ForEach(action);
-            }
-        }
+                ITimer timer = m_timerCollection[i];
 
-        /// <summary>
-        /// Determines whether contains the timer object.
-        /// </summary>
-        /// <param name="timer">The timer object.</param>
-        /// <returns><c>true</c> if contains the timer object; otherwise, <c>false</c>.</returns>
-        public bool ContainsTimer(ITimer timer)
-        {
-            if (m_timers != null && timer != null)
-            {
-                return m_timers.Contains(timer);
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// Adds the timer object.
-        /// </summary>
-        /// <param name="timer">The timer object.</param>
-        /// <param name="autoStart">if set to <c>true</c> [automatic start].</param>
-        public void AddTimer(ITimer timer, bool autoStart = false)
-        {
-            if (m_timers != null && timer != null)
-            {
-                m_timers.AddUnique(timer);
-
-                if (autoStart)
+                if (action != null && timer != null)
                 {
-                    timer.Start();
+                    action.Invoke(timer);
                 }
             }
         }
 
         /// <summary>
-        /// Adds the timers.
+        /// Sets all timers in the <see cref="ITimerCollection"/> to be enabled or not.
         /// </summary>
-        /// <param name="collection">The timer collection.</param>
-        public void AddTimers(IEnumerable<ITimer> collection)
+        /// <param name="value">
+        /// Set to <c>true</c> to enable all timers in the <see cref="ITimerCollection"/> control to
+        /// trigger their timer event; otherwise, set to <c>false</c>.
+        /// </param>
+        public void SetAllEnabled(bool value = true)
         {
-            if (m_timers != null && collection != null)
+            ForEach((timer) =>
             {
-                m_timers.AddRangeUnique(collection);
+                timer.enabled = value;
+            });
+        }
+
+        /// <summary>
+        /// Starts all timers in the <see cref="ITimerCollection"/>.
+        /// </summary>
+        public void StartAll()
+        {
+            ForEach((timer) =>
+            {
+                timer.Start();
+            });
+
+            if (m_timerCollection != null)
+            {
+                DispatchEvent(new TimerListEvent(TimerListEvent.AllStart, this));
             }
         }
 
         /// <summary>
-        /// Removes the timer object.
+        /// Pauses all timers in the <see cref="ITimerCollection"/>.
         /// </summary>
-        /// <param name="timer">The timer object.</param>
-        /// <param name="autoStop">if set to <c>true</c> [automatic stop] timer object.</param>
-        /// <returns>
-        /// <c>true</c> if timer is successfully removed; otherwise, <c>false</c>. This method also
-        /// returns false if timer was not found.
-        /// </returns>
-        public bool RemoveTimer(ITimer timer, bool autoStop = true)
+        public void PauseAll()
         {
-            if (m_timers != null && timer != null)
+            ForEach((timer) =>
             {
-                bool success = m_timers.Remove(timer);
+                timer.Pause();
+            });
 
-                if (success)
-                {
-                    if (autoStop)
-                    {
-                        timer.Stop();
-                    }
-                }
-
-                return success;
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// Removes a range of elements from the timer list.
-        /// </summary>
-        /// <param name="collection">The collection.</param>
-        /// <param name="autoStop">if set to <c>true</c> [automatic stop].</param>
-        public void RemoveTimers(ICollection<ITimer> collection, bool autoStop = true)
-        {
-            if (m_timers != null)
+            if (m_timerCollection != null)
             {
-                m_timers.RemoveRange(collection);
-
-                if (autoStop)
-                {
-                    foreach (ITimer timer in collection)
-                    {
-                        timer.Stop();
-                    }
-                }
+                DispatchEvent(new TimerListEvent(TimerListEvent.AllPause, this));
             }
         }
 
         /// <summary>
-        /// Removes all timers.
+        /// Resumes all timers in <see cref="ITimerCollection"/>.
         /// </summary>
-        /// <param name="autoStop">if set to <c>true</c> [automatic stop] all timer objects.</param>
-        public void RemoveAllTimers(bool autoStop = true)
+        public void ResumeAll()
         {
-            if (m_timers != null)
+            ForEach((timer) =>
             {
-                if (autoStop)
-                {
-                    m_timers.ForEach(timer =>
-                    {
-                        if (timer != null)
-                        {
-                            timer.Stop();
-                        }
-                    });
-                }
+                timer.Resume();
+            });
 
-                m_timers.Clear();
+            if (m_timerCollection != null)
+            {
+                DispatchEvent(new TimerListEvent(TimerListEvent.AllResume, this));
             }
         }
 
         /// <summary>
-        /// Sets all timers enabled.
+        /// Stops all timers in the <see cref="ITimerCollection"/>.
         /// </summary>
-        /// <param name="enabled">The enabled value.</param>
-        public void SetAllTimersEnabled(bool enabled = true)
+        public void StopAll()
         {
-            if (m_timers != null)
+            ForEach((timer) =>
             {
-                m_timers.ForEach(timer =>
-                {
-                    if (timer != null)
-                    {
-                        timer.enabled = enabled;
-                    }
-                });
+                timer.Stop();
+            });
+
+            if (m_timerCollection != null)
+            {
+                DispatchEvent(new TimerListEvent(TimerListEvent.AllStop, this));
             }
         }
 
         /// <summary>
-        /// Pauses all timers.
+        /// Resets all timers in the <see cref="ITimerCollection"/>.
         /// </summary>
-        public void PauseAllTimers()
+        public void ResetAll()
         {
-            if (m_timers != null)
+            ForEach((timer) =>
             {
-                m_timers.ForEach(timer =>
-                {
-                    if (timer != null)
-                    {
-                        timer.Pause();
-                    }
-                });
+                timer.Reset();
+            });
+
+            if (m_timerCollection != null)
+            {
+                DispatchEvent(new TimerListEvent(TimerListEvent.AllReset, this));
             }
         }
 
-        /// <summary>
-        /// Resets all timers.
-        /// </summary>
-        public void ResetAllTimers()
-        {
-            if (m_timers != null)
-            {
-                m_timers.ForEach(timer =>
-                {
-                    if (timer != null)
-                    {
-                        timer.Reset();
-                    }
-                });
-            }
-        }
-
-        /// <summary>
-        /// Resumes all timers.
-        /// </summary>
-        public void ResumeAllTimers()
-        {
-            if (m_timers != null)
-            {
-                m_timers.ForEach(timer =>
-                {
-                    if (timer != null)
-                    {
-                        timer.Resume();
-                    }
-                });
-            }
-        }
-
-        /// <summary>
-        /// Starts all timers.
-        /// </summary>
-        public void StartAllTimers()
-        {
-            if (m_timers != null)
-            {
-                m_timers.ForEach(timer =>
-                {
-                    if (timer != null)
-                    {
-                        timer.Start();
-                    }
-                });
-            }
-        }
-
-        /// <summary>
-        /// Stops all timers.
-        /// </summary>
-        public void StopAllTimers()
-        {
-            if (m_timers != null)
-            {
-                m_timers.ForEach(timer =>
-                {
-                    if (timer != null)
-                    {
-                        timer.Stop();
-                    }
-                });
-            }
-        }
-
-        /// <summary>
-        /// Destroys this instance.
-        /// </summary>
-        public void Destroy()
-        {
-            StopAllTimers();
-
-            if (m_timers != null)
-            {
-                m_timers.Clear();
-                m_timers = null;
-            }
-        }
-
-        #endregion ITimerList Interface
+        #endregion ITimerList
     }
 }

@@ -22,15 +22,40 @@
  *	SOFTWARE.
  */
 
-namespace QuickUnity.Timers
+using System;
+using System.Collections.ObjectModel;
+
+namespace QuickUnity.Core.Collections.Generic
 {
     /// <summary>
-    /// <see cref="ITimer"/> state.
+    /// Represents a list of <see cref="TreeNode"/>.
     /// </summary>
-    public enum TimerState
+    /// <typeparam name="T">Specifies the element type of the tree.</typeparam>
+    /// <seealso cref="System.Collections.ObjectModel.Collection{QuickUnity.Core.Collections.Generic.TreeNode{T}}"/>
+    public class TreeNodeList<T> : Collection<TreeNode<T>> where T : IComparable
     {
-        Running,
-        Pause,
-        Stop
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TreeNodeList{T}"/> class.
+        /// </summary>
+        public TreeNodeList()
+            : base()
+        {
+        }
+    }
+
+    /// <summary>
+    /// Represents a node in the Tree&lt;T&gt;. This class cannot be inherited.
+    /// </summary>
+    /// <typeparam name="T">Specifies the element type of the tree.</typeparam>
+    public sealed class TreeNode<T> where T : IComparable
+    {
+    }
+
+    /// <summary>
+    /// Represents tree data structure.
+    /// </summary>
+    /// <typeparam name="T">Specifies the element type of the tree.</typeparam>
+    public class Tree<T> where T : IComparable
+    {
     }
 }

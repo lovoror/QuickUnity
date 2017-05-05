@@ -27,7 +27,7 @@ using UnityEngine;
 namespace QuickUnity.Extensions
 {
     /// <summary>
-    /// Extension methods collection for UnityEngine.GameObject.
+    /// Extension methods to the <see cref="UnityEngine.GameObject"/>.
     /// </summary>
     public static class GameObjectExtension
     {
