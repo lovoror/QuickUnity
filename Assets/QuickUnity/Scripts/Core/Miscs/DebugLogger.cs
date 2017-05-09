@@ -70,6 +70,11 @@ namespace QuickUnity.Core.Miscs
         /// </summary>
         public static bool logFileEnabled = true;
 
+        /// <summary>
+        /// Whether allow to show log messages in Console window.
+        /// </summary>
+        public static bool showInConsole = true;
+
         #region Public Static Functions
 
         /// <summary>
@@ -267,9 +272,16 @@ namespace QuickUnity.Core.Miscs
                 builder.AppendLine();
             }
 
+            string messageToShow = builder.ToString();
+
+            if (showInConsole)
+            {
+                Debug.logger.Log(logType, messageToShow, context);
+            }
+
             if (logFileEnabled)
             {
-                WriteIntoLogFile(builder.ToString());
+                WriteIntoLogFile(messageToShow);
             }
         }
 
