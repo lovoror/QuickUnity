@@ -132,7 +132,6 @@ namespace QuickUnity.Core.Collections.Generic
     /// Represents binary tree data structure.
     /// </summary>
     /// <typeparam name="T">Specifies the element type of the binary tree.</typeparam>
-    /// <seealso cref="System.IComparable"/>
     public class BinaryTree<T> where T : IComparable
     {
         /// <summary>
@@ -311,16 +310,15 @@ namespace QuickUnity.Core.Collections.Generic
     }
 
     /// <summary>
-    /// Represents binary search tree data structure. A binary search tree is a special kind of binary tree 
-    /// designed to improve the efficiency of searching through the contents of a binary tree. 
+    /// Represents binary search tree data structure. A binary search tree is a special kind of
+    /// binary tree designed to improve the efficiency of searching through the contents of a binary tree.
     /// </summary>
     /// <typeparam name="T">Specifies the element type of the <see cref="BinarySearchTree{T}"/>.</typeparam>
     /// <seealso cref="System.Collections.ICollection"/>
     /// <seealso cref="System.Collections.Generic.ICollection{T}"/>
     /// <seealso cref="System.Collections.IEnumerable"/>
-    /// <seealso cref="System.Collections.Generic.IEnumberable{T}"/>
-    /// <seealso cref="System.IComparable"/>
-    public class BinarySearchTree<T> /*: ICollection, ICollection<T>, IEnumerable, IEnumerbale<T>*/ where T : IComparable
+    /// <seealso cref="System.Collections.Generic.IEnumerable{T}"/>
+    public class BinarySearchTree<T> /*: ICollection, ICollection<T>, IEnumerable, IEnumerable<T>*/ where T : IComparable
     {
         /// <summary>
         /// The root node of the <see cref="BinarySearchTree{T}"/>.
@@ -343,12 +341,10 @@ namespace QuickUnity.Core.Collections.Generic
         /// Initializes a new instance of the <see cref="BinarySearchTree{T}"/> class.
         /// </summary>
         public BinarySearchTree()
-            :this(Comparer<T>.Default)
+            : this(Comparer<T>.Default)
         {
-            
         }
 
-        
         /// <summary>
         /// Initializes a new instance of the <see cref="BinarySearchTree{T}"/> class.
         /// </summary>
@@ -383,21 +379,21 @@ namespace QuickUnity.Core.Collections.Generic
             BinaryTreeNode<T> current = m_root;
             int result;
 
-            while(current != null)
+            while (current != null)
             {
                 result = m_comparer.Compare(current.element, item);
-                
-                if(result == 0)
+
+                if (result == 0)
                 {
                     // Found the item.
                     return true;
                 }
-                else if(result > 0)
+                else if (result > 0)
                 {
                     // current.element > item, so search the left subtree of current.
                     current = current.leftChild;
                 }
-                else if(result < 0)
+                else if (result < 0)
                 {
                     // current.element < item, so search the right subtree of current.
                     current = current.rightChild;
@@ -416,23 +412,23 @@ namespace QuickUnity.Core.Collections.Generic
             BinaryTreeNode<T> node = new BinaryTreeNode<T>(item);
             BinaryTreeNode<T> current = m_root, parent = null;
             int result;
-            
-            while(current != null)
+
+            while (current != null)
             {
                 result = m_comparer.Compare(current.element, item);
 
-                if(result == 0)
+                if (result == 0)
                 {
                     // equal items, do nothing.
                     return;
                 }
-                else if(result > 0)
+                else if (result > 0)
                 {
                     // current.element > item, add the node to current's left subtree.
                     parent = current;
                     current = current.leftChild;
                 }
-                else if(result < 0)
+                else if (result < 0)
                 {
                     // current.element < item
                     parent = current;
@@ -442,7 +438,7 @@ namespace QuickUnity.Core.Collections.Generic
 
             m_count++;
 
-            if(parent == null)
+            if (parent == null)
             {
                 m_root = node;
             }
@@ -450,7 +446,7 @@ namespace QuickUnity.Core.Collections.Generic
             {
                 result = m_comparer.Compare(parent.element, item);
 
-                if(result > 0)
+                if (result > 0)
                 {
                     // parent.element > item, therefore node must be added to the left subtree.
                     parent.leftChild = node;
@@ -468,13 +464,13 @@ namespace QuickUnity.Core.Collections.Generic
         /// </summary>
         /// <param name="item">The object to remove from the <see cref="BinarySearchTree{T}"/>.</param>
         /// <returns>
-        /// <c>true</c> if item was successfully removed from the <see cref="BinarySearchTree{T}"/>; 
-        /// otherwise, <c>false</c>. This method also returns false if item is not found in the original 
-        /// <see cref="BinarySearchTree{T}"/>.
+        /// <c>true</c> if item was successfully removed from the <see cref="BinarySearchTree{T}"/>;
+        /// otherwise, <c>false</c>. This method also returns false if item is not found in the
+        /// original <see cref="BinarySearchTree{T}"/>.
         /// </returns>
         public bool Remove(T item)
         {
-            if(m_root == null)
+            if (m_root == null)
             {
                 // nothing to remove.
                 return false;
@@ -483,22 +479,22 @@ namespace QuickUnity.Core.Collections.Generic
             BinaryTreeNode<T> current = m_root, parent = null;
             int result = m_comparer.Compare(current.element, item);
 
-            while(result != 0)
+            while (result != 0)
             {
-                if(result > 0)
+                if (result > 0)
                 {
                     // current.element > item, if item exists it's in the left subtree.
                     parent = current;
                     current = current.leftChild;
                 }
-                else if(result < 0)
+                else if (result < 0)
                 {
                     // current.element < item, if item exists it's in the right substree.
                     parent = current;
                     current = current.rightChild;
                 }
 
-                if(current == null)
+                if (current == null)
                 {
                     return false;
                 }
@@ -510,12 +506,11 @@ namespace QuickUnity.Core.Collections.Generic
 
             m_count--;
 
-            // Rebuilds the tree.
-            // CASE 1: If current has no right child, then current's left child becomes the node 
-            //         pointed to by the parent.
-            if(current.rightChild == null)
+            // Rebuilds the tree. CASE 1: If current has no right child, then current's left child
+            // becomes the node pointed to by the parent.
+            if (current.rightChild == null)
             {
-                if(parent == null)
+                if (parent == null)
                 {
                     m_root = current.leftChild;
                 }
@@ -523,23 +518,23 @@ namespace QuickUnity.Core.Collections.Generic
                 {
                     result = m_comparer.Compare(parent.element, current.element);
 
-                    if(result > 0)
+                    if (result > 0)
                     {
                         parent.leftChild = current.leftChild;
                     }
-                    else if(result < 0)
+                    else if (result < 0)
                     {
                         parent.rightChild = current.leftChild;
                     }
                 }
             }
-            // CASE 2: If current's right child has no left child, then current's right child replaces 
-            //         current in the tree.
-            else if(current.rightChild.leftChild == null)
+            // CASE 2: If current's right child has no left child, then current's right child
+            // replaces current in the tree.
+            else if (current.rightChild.leftChild == null)
             {
                 current.rightChild.leftChild = current.leftChild;
 
-                if(parent == null)
+                if (parent == null)
                 {
                     m_root = current.rightChild;
                 }
@@ -547,24 +542,24 @@ namespace QuickUnity.Core.Collections.Generic
                 {
                     result = m_comparer.Compare(parent.element, current.element);
 
-                    if(result > 0)
+                    if (result > 0)
                     {
                         parent.leftChild = current.rightChild;
                     }
-                    else if(result < 0)
+                    else if (result < 0)
                     {
                         parent.rightChild = current.rightChild;
                     }
                 }
             }
-            // CASE 3: If current's right child has a left child, replace current with current's right 
-            //         child's left-most descendent.
+            // CASE 3: If current's right child has a left child, replace current with current's
+            // right child's left-most descendent.
             else
             {
                 // Find the left-most child.
                 BinaryTreeNode<T> leftmost = current.rightChild.leftChild, leftmostParent = current.rightChild;
 
-                while(leftmost.leftChild != null)
+                while (leftmost.leftChild != null)
                 {
                     leftmostParent = leftmost;
                     leftmost = leftmost.leftChild;
@@ -577,7 +572,7 @@ namespace QuickUnity.Core.Collections.Generic
                 leftmost.leftChild = current.leftChild;
                 leftmost.rightChild = current.rightChild;
 
-                if(parent == null)
+                if (parent == null)
                 {
                     m_root = leftmost;
                 }
@@ -585,12 +580,12 @@ namespace QuickUnity.Core.Collections.Generic
                 {
                     result = m_comparer.Compare(parent.element, current.element);
 
-                    if(result > 0)
+                    if (result > 0)
                     {
                         // parent.Value > current.Value, so make leftmost a left child of parent.
                         parent.leftChild = leftmost;
                     }
-                    else if(result < 0)
+                    else if (result < 0)
                     {
                         // parent.Value < current.Value, so make leftmost a right child of parent.
                         parent.rightChild = leftmost;

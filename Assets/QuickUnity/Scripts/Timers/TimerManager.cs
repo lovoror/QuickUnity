@@ -25,6 +25,8 @@
 using QuickUnity.Patterns;
 using System;
 using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace QuickUnity.Timers
 {
@@ -130,20 +132,84 @@ namespace QuickUnity.Timers
         #region ITimerCollection Interface
 
         /// <summary>
-        /// Gets the number of <see cref="ITimer"/> elements contained in the <see cref="ITimerCollection"/>.
+        /// Gets the number of <see cref="ITimer"/> elements contained in the <see cref="TimerManager"/>.
         /// </summary>
-        /// <value>The number of <see cref="ITimer"/> elements contained in the <see cref="ITimerCollection"/>.</value>
-        public int count
+        /// <value>The number of <see cref="ITimer"/> elements contained in the <see cref="TimerManager"/>.</value>
+        public int Count
         {
             get
             {
                 if (m_timerList != null)
                 {
-                    return m_timerList.count;
+                    return m_timerList.Count;
                 }
 
                 return 0;
             }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the <see cref="TimerManager"/> is read-only.
+        /// </summary>
+        /// <value><c>true</c> if the <see cref="TimerManager"/> is read-only; otherwise, <c>false</c>.</value>
+        bool ICollection<ITimer>.IsReadOnly
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Copies the elements of the <see cref="TimerManager"/> to an <see cref="System.Array"/>,
+        /// starting at a particular <see cref="System.Array"/> index.
+        /// </summary>
+        /// <param name="array">
+        /// The one-dimensional <see cref="System.Array"/> that is the destination of the elements
+        /// copied from <see cref="TimerManager"/>. The <see cref="System.Array"/> must have
+        /// zero-based indexing.
+        /// </param>
+        /// <param name="arrayIndex">The zero-based index in <c>array</c> at which copying begins.</param>
+        void ICollection<ITimer>.CopyTo(ITimer[] array, int arrayIndex)
+        {
+            if (m_timerList != null)
+            {
+                m_timerList.CopyTo(array, arrayIndex);
+            }
+        }
+
+        /// <summary>
+        /// Returns an enumerator that iterates through the collection.
+        /// </summary>
+        /// <returns>
+        /// <see cref="System.Collections.Generic.IEnumerator{ITimer}"/>
+        /// <para>An enumerator that can be used to iterate through the collection.</para>
+        /// </returns>
+        IEnumerator<ITimer> IEnumerable<ITimer>.GetEnumerator()
+        {
+            if (m_timerList != null)
+            {
+                return m_timerList.GetEnumerator();
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Returns an enumerator that iterates through the collection.
+        /// </summary>
+        /// <returns>
+        /// <see cref="System.Collections.Generic.IEnumerator"/>
+        /// <para>An enumerator that can be used to iterate through the collection.</para>
+        /// </returns>
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            if (m_timerList != null)
+            {
+                return m_timerList.GetEnumerator();
+            }
+
+            return null;
         }
 
         /// <summary>

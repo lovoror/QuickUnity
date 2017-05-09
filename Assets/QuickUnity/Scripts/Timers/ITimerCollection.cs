@@ -22,56 +22,16 @@
  *	SOFTWARE.
  */
 
+using System.Collections.Generic;
+
 namespace QuickUnity.Timers
 {
     /// <summary>
     /// Defines methods to manipulate timer collection.
     /// </summary>
     /// <seealso cref="QuickUnity.Core.Collections.Generic.ISimpleCollection{QuickUnity.Timers.ITimer}"/>
-    public interface ITimerCollection
+    public interface ITimerCollection : ICollection<ITimer>
     {
-        /// <summary>
-        /// Gets the number of <see cref="ITimer"/> elements contained in the <see cref="ITimerCollection"/>.
-        /// </summary>
-        /// <value>The number of <see cref="ITimer"/> elements contained in the <see cref="ITimerCollection"/>.</value>
-        int count
-        {
-            get;
-        }
-
-        /// <summary>
-        /// Adds an <see cref="ITimer"/> item to the <see cref="ITimerCollection"/>.
-        /// </summary>
-        /// <param name="item">The <see cref="ITimer"/> object to add to the <see cref="ITimerCollection"/>.</param>
-        void Add(ITimer item);
-
-        /// <summary>
-        /// Removes all <see cref="ITimer"/> items from the <see cref="ITimerCollection"/>.
-        /// </summary>
-        void Clear();
-
-        /// <summary>
-        /// Determines whether the <see cref="ITimerCollection"/>. contains a specific <see
-        /// cref="ITimer"/> object.
-        /// </summary>
-        /// <param name="item">The <see cref="ITimer"/> object to locate in the <see cref="ITimerCollection"/>.</param>
-        /// <returns>
-        /// <c>true</c> if <see cref="ITimer"/> item is found in the <see cref="ITimerCollection"/>;
-        /// otherwise, <c>false</c>.
-        /// </returns>
-        bool Contains(ITimer item);
-
-        /// <summary>
-        /// Removes the first occurrence of a specific object from the <see cref="ITimerCollection"/>.
-        /// </summary>
-        /// <param name="item">The object to remove from the <see cref="ITimerCollection"/>.</param>
-        /// <returns>
-        /// <c>true</c> if item was successfully removed from the <see cref="ITimerCollection"/>;
-        /// otherwise, <c>false</c>. This method also returns <c>false</c> if item is not found in
-        /// the original <see cref="ITimerCollection"/>.
-        /// </returns>
-        bool Remove(ITimer item);
-
         /// <summary>
         /// Sets all timers in the <see cref="ITimerCollection"/> to be enabled or not.
         /// </summary>
