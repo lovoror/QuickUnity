@@ -102,7 +102,7 @@ namespace QuickUnityEditor
                 configFilePath = projectEditorConfigFilePath;
             }
 
-            INIConfigFile configFileObj = INIConfigFile.ParseINIConfigFile(configFilePath);
+            IniConfigFile configFileObj = IniConfigFile.Create(configFilePath);
 
             if (configFileObj != null)
             {
@@ -129,11 +129,11 @@ namespace QuickUnityEditor
                 configFilePath = projectEditorConfigFilePath;
             }
 
-            INIConfigFile configFileObj = INIConfigFile.ParseINIConfigFile(configFilePath);
+            IniConfigFile configFileObj = IniConfigFile.Create(configFilePath);
 
             if (configFileObj == null)
             {
-                configFileObj = new INIConfigFile();
+                configFileObj = new IniConfigFile();
             }
 
             configFileObj.AddOrUpdateValue(sectionName, key, value);
@@ -157,7 +157,7 @@ namespace QuickUnityEditor
                 configFilePath = projectEditorConfigFilePath;
             }
 
-            INIConfigFile configFileObj = INIConfigFile.ParseINIConfigFile(configFilePath);
+            IniConfigFile configFileObj = IniConfigFile.Create(configFilePath);
 
             if (configFileObj != null)
             {
@@ -184,7 +184,7 @@ namespace QuickUnityEditor
                 configFilePath = projectEditorConfigFilePath;
             }
 
-            INIConfigFile configFileObj = INIConfigFile.ParseINIConfigFile(configFilePath);
+            IniConfigFile configFileObj = IniConfigFile.Create(configFilePath);
 
             if (configFileObj != null)
             {
