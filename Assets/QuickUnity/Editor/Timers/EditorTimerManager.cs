@@ -124,10 +124,7 @@ namespace QuickUnityEditor
         /// <summary>
         /// Returns an enumerator that iterates through the collection.
         /// </summary>
-        /// <returns>
-        /// <see cref="System.Collections.Generic.IEnumerator{ITimer}"/>
-        /// <para>An enumerator that can be used to iterate through the collection.</para>
-        /// </returns>
+        /// <returns>An enumerator that can be used to iterate through the collection.</returns>
         IEnumerator<ITimer> IEnumerable<ITimer>.GetEnumerator()
         {
             if (m_timerList != null)
@@ -141,10 +138,7 @@ namespace QuickUnityEditor
         /// <summary>
         /// Returns an enumerator that iterates through the collection.
         /// </summary>
-        /// <returns>
-        /// <see cref="System.Collections.Generic.IEnumerator"/>
-        /// <para>An enumerator that can be used to iterate through the collection.</para>
-        /// </returns>
+        /// <returns>An enumerator that can be used to iterate through the collection.</returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
             if (m_timerList != null)
