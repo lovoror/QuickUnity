@@ -33,14 +33,14 @@ namespace QuickUnity.Core.Collections.Generic
     public sealed class BinaryTreeNode<T> where T : IComparable
     {
         /// <summary>
-        /// The element contained in the node.
+        /// The element contained in the <see cref="BinaryTreeNode{T}"/>.
         /// </summary>
         private T m_element;
 
         /// <summary>
-        /// Gets the element contained in the node.
+        /// Gets the element contained in the <see cref="BinaryTreeNode{T}"/>.
         /// </summary>
-        /// <value>The element contained in the node.</value>
+        /// <value>The element contained in the <see cref="BinaryTreeNode{T}"/>.</value>
         public T element
         {
             get
@@ -55,14 +55,14 @@ namespace QuickUnity.Core.Collections.Generic
         }
 
         /// <summary>
-        /// The left child node of this node.
+        /// The left child node of the <see cref="BinaryTreeNode{T}"/>.
         /// </summary>
         private BinaryTreeNode<T> m_leftChild;
 
         /// <summary>
-        /// Gets the left child node of this node.
+        /// Gets the left child node of the <see cref="BinaryTreeNode{T}"/>.
         /// </summary>
-        /// <value>The left child node of this node.</value>
+        /// <value>The left child node of the <see cref="BinaryTreeNode{T}"/>.</value>
         public BinaryTreeNode<T> leftChild
         {
             get
@@ -77,14 +77,14 @@ namespace QuickUnity.Core.Collections.Generic
         }
 
         /// <summary>
-        /// The right child node of this node.
+        /// The right child node of the <see cref="BinaryTreeNode{T}"/>.
         /// </summary>
         private BinaryTreeNode<T> m_rightChild;
 
         /// <summary>
-        /// Gets the right child node of this node.
+        /// Gets the right child node of the <see cref="BinaryTreeNode{T}"/>.
         /// </summary>
-        /// <value>The right child node of this node.</value>
+        /// <value>The right child node of the <see cref="BinaryTreeNode{T}"/>.</value>
         public BinaryTreeNode<T> rightChild
         {
             get
@@ -132,12 +132,12 @@ namespace QuickUnity.Core.Collections.Generic
     public class BinaryTree<T> where T : IComparable
     {
         /// <summary>
-        /// The root node of this binary tree.
+        /// The root node of the <see cref="Tree{T}"/>.
         /// </summary>
         protected BinaryTreeNode<T> m_root;
 
         /// <summary>
-        /// Gets the root node of this binary tree.
+        /// Gets the root node of the <see cref="Tree{T}"/>.
         /// </summary>
         /// <value>The root node of this binary tree.</value>
         public BinaryTreeNode<T> root
@@ -176,10 +176,18 @@ namespace QuickUnity.Core.Collections.Generic
 
         #region Public Functions
 
+        /// <summary>
+        /// Remove all nodes from the <see cref="BinaryTree{T}"/>.
+        /// </summary>
+        public void Clear()
+        {
+            m_root = null;
+        }
+
         #region Traversing Functions
 
         /// <summary>
-        /// Preorder traverse the binary tree.
+        /// Preorder traverse the <see cref="BinaryTree{T}"/> from the target node.
         /// </summary>
         /// <param name="targetNode">The target binary tree node.</param>
         /// <param name="action">The action to handle the element of the node.</param>
@@ -200,7 +208,7 @@ namespace QuickUnity.Core.Collections.Generic
         }
 
         /// <summary>
-        /// Preorder traverse the binary tree.
+        /// Preorder traverse the <see cref="BinaryTree{T}"/> from the root node.
         /// </summary>
         /// <param name="action">The action to handle the element of the node.</param>
         public void PreorderTraverse(Action<T> action)
@@ -217,7 +225,7 @@ namespace QuickUnity.Core.Collections.Generic
         }
 
         /// <summary>
-        /// Inorder traverse the binary tree.
+        /// Inorder traverse the <see cref="BinaryTree{T}"/> from the target node.
         /// </summary>
         /// <param name="targetNode">The target binary tree node.</param>
         /// <param name="action">The action to handle the element of the node.</param>
@@ -239,7 +247,7 @@ namespace QuickUnity.Core.Collections.Generic
         }
 
         /// <summary>
-        /// Inorder traverse the binary tree.
+        /// Inorder traverse the <see cref="BinaryTree{T}"/> from the root node.
         /// </summary>
         /// <param name="action">The action to handle the element of the node.</param>
         public void InorderTraverse(Action<T> action)
@@ -256,7 +264,7 @@ namespace QuickUnity.Core.Collections.Generic
         }
 
         /// <summary>
-        /// Postorder traverse the binary tree.
+        /// Postorder traverse the <see cref="BinaryTree{T}"/> from the target node.
         /// </summary>
         /// <param name="targetNode">The target binary tree node.</param>
         /// <param name="action">The action to handle the element of the node.</param>
@@ -277,7 +285,7 @@ namespace QuickUnity.Core.Collections.Generic
         }
 
         /// <summary>
-        /// Postorder traverse the binary tree.
+        /// Postorder traverse the <see cref="BinaryTree{T}"/> from the root node.
         /// </summary>
         /// <param name="action">The action to handle the element of the node.</param>
         public void PostorderTraverse(Action<T> action)
