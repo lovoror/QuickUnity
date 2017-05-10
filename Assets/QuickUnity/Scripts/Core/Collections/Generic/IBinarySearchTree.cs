@@ -36,12 +36,12 @@ namespace QuickUnity.Core.Collections.Generic
     public interface IBinarySearchTree<T> : ICollection<T>, IEnumerable<T> where T : IComparable
     {
         /// <summary>
-        /// Gets the <see cref="System.Collections.Generic.IEnumerable{T}"/> instance that can be used to enumerate 
-        /// the items in the <see cref="IBinarySearchTree{T}"/> in a preoder traversal.
+        /// Gets the <see cref="System.Collections.Generic.IEnumerable{T}"/> instance that can be
+        /// used to enumerate the items in the <see cref="IBinarySearchTree{T}"/> in a preorder traversal.
         /// </summary>
         /// <returns>
-        /// The <see cref="System.Collections.Generic.IEnumerable{T}"/> instance that can be used to enumerate 
-        /// the items in the <see cref="IBinarySearchTree{T}"/> in a preoder traversal.
+        /// The <see cref="System.Collections.Generic.IEnumerable{T}"/> instance that can be used to
+        /// enumerate the items in the <see cref="IBinarySearchTree{T}"/> in a preorder traversal.
         /// </returns>
         IEnumerable<T> preorder
         {
@@ -49,12 +49,12 @@ namespace QuickUnity.Core.Collections.Generic
         }
 
         /// <summary>
-        /// Gets the <see cref="System.Collections.Generic.IEnumerable{T}"/> instance that can be used to enumerate 
-        /// the items in the <see cref="IBinarySearchTree{T}"/> in an inorder traversal.
+        /// Gets the <see cref="System.Collections.Generic.IEnumerable{T}"/> instance that can be
+        /// used to enumerate the items in the <see cref="IBinarySearchTree{T}"/> in an inorder traversal.
         /// </summary>
         /// <returns>
-        /// The <see cref="System.Collections.Generic.IEnumerable{T}"/> instance that can be used to enumerate 
-        /// the items in the <see cref="IBinarySearchTree{T}"/> in an inorder traversal.
+        /// The <see cref="System.Collections.Generic.IEnumerable{T}"/> instance that can be used to
+        /// enumerate the items in the <see cref="IBinarySearchTree{T}"/> in an inorder traversal.
         /// </returns>
         IEnumerable<T> inorder
         {
@@ -62,12 +62,12 @@ namespace QuickUnity.Core.Collections.Generic
         }
 
         /// <summary>
-        /// Gets the <see cref="System.Collections.Generic.IEnumerable{T}"/> instance that can be used to enumerate 
-        /// the items in the <see cref="IBinarySearchTree{T}"/> in a postorder traversal.
+        /// Gets the <see cref="System.Collections.Generic.IEnumerable{T}"/> instance that can be
+        /// used to enumerate the items in the <see cref="IBinarySearchTree{T}"/> in a postorder traversal.
         /// </summary>
         /// <returns>
-        /// The <see cref="System.Collections.Generic.IEnumerable{T}"/> instance that can be used to enumerate 
-        /// the items in the <see cref="IBinarySearchTree{T}"/> in a postorder traversal.
+        /// The <see cref="System.Collections.Generic.IEnumerable{T}"/> instance that can be used to
+        /// enumerate the items in the <see cref="IBinarySearchTree{T}"/> in a postorder traversal.
         /// </returns>
         IEnumerable<T> postorder
         {
@@ -82,10 +82,15 @@ namespace QuickUnity.Core.Collections.Generic
         BinaryTreeNode<T> Find(T item);
 
         /// <summary>
-        /// Copies the nodes of the <see cref="IBinarySearchTree{T}"/> to an <see cref="System.Array"/>, starting at a particular <see cref="System.Array"/> index, 
-        /// and in a specified traversal order.
+        /// Copies the nodes of the <see cref="IBinarySearchTree{T}"/> to an <see
+        /// cref="System.Array"/>, starting at a particular <see cref="System.Array"/> index, and in
+        /// a specified traversal order.
         /// </summary>
-        /// <param name="array">The one-dimensional <see cref="System.Array"/> that is the destination of the nodes copied from <see cref="IBinarySearchTree{T}"/>. The <see cref="System.Array"/> must have zero-based indexing.</param>
+        /// <param name="array">
+        /// The one-dimensional <see cref="System.Array"/> that is the destination of the nodes
+        /// copied from <see cref="IBinarySearchTree{T}"/>. The <see cref="System.Array"/> must have
+        /// zero-based indexing.
+        /// </param>
         /// <param name="arrayIndex">The zero-based index in <c>array</c> at which copying begins.</param>
         /// <param name="traversalMethod">The traversal method for getting each node.</param>
         void CopyTo(T[] array, int arrayIndex, TraversalMethod traversalMethod);

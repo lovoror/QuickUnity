@@ -115,16 +115,16 @@ namespace QuickUnity.Core.Collections.Generic
             int result;
 
             // Find the right place to insert this node.
-            while(current != null)
+            while (current != null)
             {
                 result = m_comparer.Compare(current.value, item);
 
-                if(result > 0)
+                if (result > 0)
                 {
                     parent = current;
                     current = current.leftChild;
                 }
-                else if(result < 0)
+                else if (result < 0)
                 {
                     parent = current;
                     current = current.rightChild;
@@ -136,7 +136,7 @@ namespace QuickUnity.Core.Collections.Generic
                 }
             }
 
-            if(parent == null)
+            if (parent == null)
             {
                 m_root = node;
             }
@@ -144,7 +144,7 @@ namespace QuickUnity.Core.Collections.Generic
             {
                 result = m_comparer.Compare(parent.value, item);
 
-                if(result > 0)
+                if (result > 0)
                 {
                     parent.leftChild = node;
                 }
@@ -166,21 +166,25 @@ namespace QuickUnity.Core.Collections.Generic
             m_root = null;
         }
 
-        /// <summary>
-        /// Determines whether the <see cref="BinarySearchTree{T}"/> contains a specific value.
-        /// </summary>
-        /// <param name="item">The object to locate in the <see cref="BinarySearchTree{T}"/>.</param>
-        /// <returns><c>true</c> if item is found in the ICollection<T>; otherwise, false.</returns>
+        /// <summary> Determines whether the <see cref="BinarySearchTree{T}"/> contains a specific
+        /// value. </summary> <param name="item">The object to locate in the <see
+        /// cref="BinarySearchTree{T}"/>.</param> <returns><c>true</c> if item is found in the
+        /// ICollection<T>; otherwise, false.</returns>
         public bool Contains(T item)
         {
             return Find(item) != null;
         }
 
         /// <summary>
-        /// Copies the nodes of the <see cref="BinarySearchTree{T}"/> to an <see cref="System.Array"/>, starting at a particular <see cref="System.Array"/> index, 
-        /// and in a inorder traversal.
+        /// Copies the nodes of the <see cref="BinarySearchTree{T}"/> to an <see
+        /// cref="System.Array"/>, starting at a particular <see cref="System.Array"/> index, and in
+        /// a inorder traversal.
         /// </summary>
-        /// <param name="array">The one-dimensional <see cref="System.Array"/> that is the destination of the nodes copied from <see cref="BinarySearchTree{T}"/>. The <see cref="System.Array"/> must have zero-based indexing.</param>
+        /// <param name="array">
+        /// The one-dimensional <see cref="System.Array"/> that is the destination of the nodes
+        /// copied from <see cref="BinarySearchTree{T}"/>. The <see cref="System.Array"/> must have
+        /// zero-based indexing.
+        /// </param>
         /// <param name="index">The zero-based index in <c>array</c> at which copying begins.</param>
         public void CopyTo(T[] array, int arrayIndex)
         {
@@ -191,10 +195,14 @@ namespace QuickUnity.Core.Collections.Generic
         /// Removes the first occurrence of a specific object from the <see cref="BinarySearchTree{T}"/>.
         /// </summary>
         /// <param name="item">The object to remove from the <see cref="BinarySearchTree{T}"/>.</param>
-        /// <returns><c>true</c> if <c>item</c> was successfully removed from the <see cref="BinarySearchTree{T}"/>; otherwise, <c>false</c>. This method also returns <c>false</c> if <c>item</c> is not found in the original <see cref="BinarySearchTree{T}"/>.</returns>
+        /// <returns>
+        /// <c>true</c> if <c>item</c> was successfully removed from the <see
+        /// cref="BinarySearchTree{T}"/>; otherwise, <c>false</c>. This method also returns
+        /// <c>false</c> if <c>item</c> is not found in the original <see cref="BinarySearchTree{T}"/>.
+        /// </returns>
         public bool Remove(T item)
         {
-            if(m_root == null)
+            if (m_root == null)
             {
                 return false;
             }
@@ -207,12 +215,12 @@ namespace QuickUnity.Core.Collections.Generic
             {
                 result = m_comparer.Compare(current.value, item);
 
-                if(result > 0)
+                if (result > 0)
                 {
                     parent = current;
                     current = current.leftChild;
                 }
-                else if(result < 0)
+                else if (result < 0)
                 {
                     parent = current;
                     current = current.rightChild;
@@ -223,7 +231,7 @@ namespace QuickUnity.Core.Collections.Generic
                 }
             }
 
-            if(current == null)
+            if (current == null)
             {
                 return false;
             }
@@ -240,9 +248,12 @@ namespace QuickUnity.Core.Collections.Generic
         /// <summary>
         /// Returns an enumerator that iterates through a collection.
         /// </summary>
-        /// <returns>An <see cref="System.Collections.IEnumerator"/> object that can be used to iterate through the collection.</returns>
-        IEnumerator IEnumerable.GetEnumerator() 
-        { 
+        /// <returns>
+        /// An <see cref="System.Collections.IEnumerator"/> object that can be used to iterate
+        /// through the collection.
+        /// </returns>
+        IEnumerator IEnumerable.GetEnumerator()
+        {
             return GetEnumerator();
         }
 
@@ -252,7 +263,7 @@ namespace QuickUnity.Core.Collections.Generic
         /// <returns>An enumerator that can be used to iterate through the collection.</returns>
         public IEnumerator<T> GetEnumerator()
         {
-            return GetEnumerator(TraversalMethod.Inorder);;
+            return GetEnumerator(TraversalMethod.Inorder); ;
         }
 
         #endregion I​Enumerable<​T> Interface
@@ -260,29 +271,30 @@ namespace QuickUnity.Core.Collections.Generic
         #region IBinarySearchTree<T> Interface
 
         /// <summary>
-        /// Gets the <see cref="System.Collections.Generic.IEnumerable{T}"/> instance that can be used to enumerate 
-        /// the items in the <see cref="BinarySearchTree{T}"/> in a preoder traversal.
+        /// Gets the <see cref="System.Collections.Generic.IEnumerable{T}"/> instance that can be
+        /// used to enumerate the items in the <see cref="BinarySearchTree{T}"/> in a preorder traversal.
         /// </summary>
         /// <returns>
-        /// The <see cref="System.Collections.Generic.IEnumerable{T}"/> instance that can be used to enumerate 
-        /// the items in the <see cref="BinarySearchTree{T}"/> in a preoder traversal.
+        /// The <see cref="System.Collections.Generic.IEnumerable{T}"/> instance that can be used to
+        /// enumerate the items in the <see cref="BinarySearchTree{T}"/> in a preorder traversal.
         /// </returns>
         public IEnumerable<T> preorder
         {
             get
             {
-                // A single stack is sufficient here - it simply maintains the correct order with which to process the children.
+                // A single stack is sufficient here - it simply maintains the correct order with
+                // which to process the children.
                 Stack<BinaryTreeNode<T>> stack = new Stack<BinaryTreeNode<T>>(Count);
                 BinaryTreeNode<T> current = m_root;
 
-                if(m_root != null)
+                if (m_root != null)
                 {
                     stack.Push(m_root);
                 }
 
                 while (stack.Count != 0)
                 {
-                    // Take the top item from the stack.    
+                    // Take the top item from the stack.
                     current = stack.Pop();
 
                     // Add the right and left children, if not null.
@@ -296,19 +308,18 @@ namespace QuickUnity.Core.Collections.Generic
         }
 
         /// <summary>
-        /// Gets the <see cref="System.Collections.Generic.IEnumerable{T}"/> instance that can be used to enumerate 
-        /// the items in the <see cref="BinarySearchTree{T}"/> in an inorder traversal.
+        /// Gets the <see cref="System.Collections.Generic.IEnumerable{T}"/> instance that can be
+        /// used to enumerate the items in the <see cref="BinarySearchTree{T}"/> in an inorder traversal.
         /// </summary>
         /// <returns>
-        /// The <see cref="System.Collections.Generic.IEnumerable{T}"/> instance that can be used to enumerate 
-        /// the items in the <see cref="BinarySearchTree{T}"/> in an inorder traversal.
+        /// The <see cref="System.Collections.Generic.IEnumerable{T}"/> instance that can be used to
+        /// enumerate the items in the <see cref="BinarySearchTree{T}"/> in an inorder traversal.
         /// </returns>
         public IEnumerable<T> inorder
         {
             get
             {
-                // A single stack is sufficient - this code was made available by Grant Richins:
-                // http://blogs.msdn.com/grantri/archive/2004/04/08/110165.aspx.
+                // A single stack is sufficient - this code was made available by Grant Richins: http://blogs.msdn.com/grantri/archive/2004/04/08/110165.aspx.
                 Stack<BinaryTreeNode<T>> stack = new Stack<BinaryTreeNode<T>>(Count);
 
                 for (BinaryTreeNode<T> current = m_root; current != null || stack.Count != 0; current = current.rightChild)
@@ -327,22 +338,23 @@ namespace QuickUnity.Core.Collections.Generic
         }
 
         /// <summary>
-        /// Gets the <see cref="System.Collections.Generic.IEnumerable{T}"/> instance that can be used to enumerate 
-        /// the items in the <see cref="BinarySearchTree{T}"/> in a postorder traversal.
+        /// Gets the <see cref="System.Collections.Generic.IEnumerable{T}"/> instance that can be
+        /// used to enumerate the items in the <see cref="BinarySearchTree{T}"/> in a postorder traversal.
         /// </summary>
         /// <returns>
-        /// The <see cref="System.Collections.Generic.IEnumerable{T}"/> instance that can be used to enumerate 
-        /// the items in the <see cref="BinarySearchTree{T}"/> in a postorder traversal.
+        /// The <see cref="System.Collections.Generic.IEnumerable{T}"/> instance that can be used to
+        /// enumerate the items in the <see cref="BinarySearchTree{T}"/> in a postorder traversal.
         /// </returns>
         public IEnumerable<T> postorder
         {
             get
             {
-                // Maintain two stacks, one of a list of nodes to visit, and one of booleans, indicating if the nodee has been processed or not.
+                // Maintain two stacks, one of a list of nodes to visit, and one of booleans,
+                // indicating if the node has been processed or not.
                 Stack<BinaryTreeNode<T>> toVisit = new Stack<BinaryTreeNode<T>>(Count);
                 Stack<bool> hasBeenProcessed = new Stack<bool>(Count);
                 BinaryTreeNode<T> current = m_root;
-                
+
                 if (current != null)
                 {
                     toVisit.Push(current);
@@ -372,8 +384,8 @@ namespace QuickUnity.Core.Collections.Generic
                             hasBeenProcessed.Push(true);    // It's now been processed.
                             current = node.rightChild;
                         }
-                        else 
-                        { 
+                        else
+                        {
                             yield return node.value;
                         }
                     }
@@ -391,15 +403,15 @@ namespace QuickUnity.Core.Collections.Generic
             BinaryTreeNode<T> current = m_root;
             int result;
 
-            while(current != null)
+            while (current != null)
             {
                 result = m_comparer.Compare(current.value, item);
 
-                if(result > 0)
+                if (result > 0)
                 {
                     current = current.leftChild;
                 }
-                else if(result < 0)
+                else if (result < 0)
                 {
                     current = current.rightChild;
                 }
@@ -413,25 +425,30 @@ namespace QuickUnity.Core.Collections.Generic
         }
 
         /// <summary>
-        /// Copies the nodes of the <see cref="BinarySearchTree{T}"/> to an <see cref="System.Array"/>, starting at a particular <see cref="System.Array"/> index, 
-        /// and in a specified traversal order.
+        /// Copies the nodes of the <see cref="BinarySearchTree{T}"/> to an <see
+        /// cref="System.Array"/>, starting at a particular <see cref="System.Array"/> index, and in
+        /// a specified traversal order.
         /// </summary>
-        /// <param name="array">The one-dimensional <see cref="System.Array"/> that is the destination of the nodes copied from <see cref="BinarySearchTree{T}"/>. The <see cref="System.Array"/> must have zero-based indexing.</param>
+        /// <param name="array">
+        /// The one-dimensional <see cref="System.Array"/> that is the destination of the nodes
+        /// copied from <see cref="BinarySearchTree{T}"/>. The <see cref="System.Array"/> must have
+        /// zero-based indexing.
+        /// </param>
         /// <param name="arrayIndex">The zero-based index in <c>array</c> at which copying begins.</param>
         /// <param name="traversalMethod">The traversal method for getting each node.</param>
         public void CopyTo(T[] array, int arrayIndex, TraversalMethod traversalMethod)
         {
             IEnumerable<T> enumerable = null;
 
-            if(traversalMethod == TraversalMethod.Preorder)
+            if (traversalMethod == TraversalMethod.Preorder)
             {
                 enumerable = preorder;
             }
-            else if(traversalMethod == TraversalMethod.Inorder)
+            else if (traversalMethod == TraversalMethod.Inorder)
             {
                 enumerable = inorder;
             }
-            else if(traversalMethod == TraversalMethod.Postorder)
+            else if (traversalMethod == TraversalMethod.Postorder)
             {
                 enumerable = postorder;
             }
@@ -453,11 +470,11 @@ namespace QuickUnity.Core.Collections.Generic
         /// <returns>An enumerator that can be used to iterate through the collection.</returns>
         public IEnumerator<T> GetEnumerator(TraversalMethod traversalMethod)
         {
-            if(traversalMethod == TraversalMethod.Preorder)
+            if (traversalMethod == TraversalMethod.Preorder)
             {
                 return preorder.GetEnumerator();
             }
-            else if(traversalMethod == TraversalMethod.Postorder)
+            else if (traversalMethod == TraversalMethod.Postorder)
             {
                 return postorder.GetEnumerator();
             }
@@ -472,13 +489,14 @@ namespace QuickUnity.Core.Collections.Generic
         #region Private Functions
 
         /// <summary>
-        /// Removes the specific <see cref="BinaryTreeNode{T}"/> from the <see cref="BinarySearchTree{T}"/>, and rebuild the <see cref="BinarySearchTree{T}"/>.
+        /// Removes the specific <see cref="BinaryTreeNode{T}"/> from the <see
+        /// cref="BinarySearchTree{T}"/>, and rebuild the <see cref="BinarySearchTree{T}"/>.
         /// </summary>
         /// <param name="node">The target node to be removed from the <see cref="BinarySearchTree{T}"/>.</param>
         /// <param name="parent">The parent of node in the <see cref="BinarySearchTree{T}"/>.</param>
         private void RemoveNode(BinaryTreeNode<T> node, BinaryTreeNode<T> parent)
         {
-            if(node  == null)
+            if (node == null)
             {
                 throw new ArgumentNullException("node");
             }
@@ -486,12 +504,12 @@ namespace QuickUnity.Core.Collections.Generic
             BinaryTreeNode<T> target = null;
             m_count--;
 
-            if(node.rightChild == null)
+            if (node.rightChild == null)
             {
                 // Case 1: current has only smaller children, therefore the left side replaces current.
                 target = node.leftChild;
             }
-            else if(node.rightChild.leftChild == null)
+            else if (node.rightChild.leftChild == null)
             {
                 // Case 2: right side has only bigger children, therefore the right side replaces current.
                 target = node.rightChild;
@@ -502,8 +520,8 @@ namespace QuickUnity.Core.Collections.Generic
                 // Case 3: right side has smaller children, find the smallest and replace current.
                 BinaryTreeNode<T> leftParent = node.rightChild;
                 target = node.rightChild.leftChild;
-                
-                while(target.leftChild != null)
+
+                while (target.leftChild != null)
                 {
                     leftParent = target;
                     target = target.leftChild;
@@ -518,7 +536,7 @@ namespace QuickUnity.Core.Collections.Generic
             }
 
             // Attach the remaining nodes.
-            if(parent == null)
+            if (parent == null)
             {
                 m_root = target;
             }
@@ -526,11 +544,11 @@ namespace QuickUnity.Core.Collections.Generic
             {
                 int result = m_comparer.Compare(parent.value, node.value);
 
-                if(result > 0)
+                if (result > 0)
                 {
                     parent.leftChild = target;
                 }
-                else if(result < 0)
+                else if (result < 0)
                 {
                     parent.rightChild = target;
                 }
