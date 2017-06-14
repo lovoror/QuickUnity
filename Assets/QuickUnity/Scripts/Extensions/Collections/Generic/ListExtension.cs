@@ -23,9 +23,11 @@
  */
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using QuickUnity.Utilities;
 
-namespace QuickUnity.Extensions.Generic
+namespace QuickUnity.Extensions.Collections.Generic
 {
     /// <summary>
     /// Extension methods to the <see cref="System.Collections.Generic.List{T}"/>.
@@ -79,21 +81,15 @@ namespace QuickUnity.Extensions.Generic
         }
 
         /// <summary>
-        /// Swaps the elements of two index.
-        /// </summary>
+		/// Swaps a element in one index with another element in another index.
+		/// </summary>
         /// <typeparam name="T">The type of elements in the list.</typeparam>
-        /// <param name="source">The source <see cref="System.Collections.Generic.List{T}"/> object.</param>
-        /// <param name="i">The first index of element in the <see cref="System.Collections.Generic.List{T}"/> to swap.</param>
-        /// <param name="j">The second index of element in the <see cref="System.Collections.Generic.List{T}"/> to swap.</param>
-        public static void Swap<T>(this List<T> source, int i, int j)
+        /// <param name="source">The <see cref="System.Collections.Generic.List{T}"/> to swap elements. </param>
+		/// <param name="a">The first index of element in the <see cref="System.Collections.Generic.List{T}"/> to swap. </param>
+		/// <param name="b">The second index of element in the <see cref="System.Collections.Generic.List{T}"/> to swap. </param>
+        public static void Swap<T>(this List<T> source, int a, int b)
         {
-            if(i >= 0 && i < source.Count
-                && j >= 0 && j < source.Count)
-            {
-                T temp = source[j];
-                source[j] = source[i];
-                source[i] = temp;
-            }
+            (source as IList).Swap(a, b);
         }
 
         /// <summary>
@@ -104,14 +100,7 @@ namespace QuickUnity.Extensions.Generic
         /// <returns>The array string representation of the value of <see cref="System.Collections.Generic.List{T}"/> object.</returns>
         public static string ToArrayString<T>(this List<T> source)
         {
-            string[] strArr = new string[source.Count];
-
-            for(int i = 0, length = source.Count; i < length; ++i)
-            {
-                strArr[i] = source[i].ToString();
-            }
-
-            return string.Format("{{ {0} }}", string.Join(", ", strArr));
+            return (source as IList).ToArrayString();
         }
 
         /// <summary>
@@ -121,23 +110,7 @@ namespace QuickUnity.Extensions.Generic
         /// <param name="source">The source <see cref="System.Collections.Generic.List{T}"/> object.</param>
         public static void BubbleSort<T>(this List<T> source) where T : IComparable
         {
-            int length = source.Count;
-
-            if(length <= 1)
-            {
-                return;
-            }
-
-            for(int i = 0; i < length; ++i)
-            {
-                for(int j = 0; j < length - i - 1; j++)
-                {
-                    if(source[j].CompareTo(source[j + 1]) > 0)
-                    {
-                        source.Swap(j, j + 1);
-                    }
-                }
-            }
+            SortUtility.BubbleSort<T>(source);
         }
 
         /// <summary>
@@ -147,54 +120,7 @@ namespace QuickUnity.Extensions.Generic
         /// <param name="source">The source <see cref="System.Collections.Generic.List{T}"/> object.</param>
         public static void CocktailSort<T>(this List<T> source) where T : IComparable
         {
-            bool found = true;
-            int i = 0;
-            int left = 0;
-            int right = source.Count - 1;
-
-            if(right == 0)
-            {
-                return;
-            }
-
-            while(left < right)
-            {
-                found = false;
-
-                // Find to right.
-                for(i = left; i < right; ++i)
-                {
-                    if(source[i].CompareTo(source[i + 1]) > 0)
-                    {
-                        source.Swap(i, i + 1);
-                        found = true;
-                    }
-                }
-
-                if(!found)
-                {
-                    break;
-                }
-
-                right--;
-
-                // Find to left.
-                for(i = right; i > left; --i)
-                {
-                    if(source[i - 1].CompareTo(source[i]) > 0)
-                    {
-                        source.Swap(i, i - 1);
-                        found = true;
-                    }
-                }
-
-                if(!found)
-                {
-                    break;
-                }
-
-                left++;
-            }
+            SortUtility.CocktailSort<T>(source);
         }
 
         /// <summary>
@@ -204,31 +130,7 @@ namespace QuickUnity.Extensions.Generic
         /// <param name="source">The source <see cref="System.Collections.Generic.List{T}"/> object.</param>
         public static void SelectionSort<T>(this List<T> source) where T : IComparable
         {
-            int min = 0;
-            int length = source.Count;
-
-            if(length <= 1)
-            {
-                return;
-            }
-
-            for(int i = 0; i < length; ++i)
-            {
-                min = i;
-
-                for(int j = i + 1; j < length; ++j)
-                {
-                    if(source[j].CompareTo(source[min]) < 0)
-                    {
-                        min = j;
-                    }
-                }
-
-                if(min != i)
-                {
-                    source.Swap(min, i);
-                }
-            }
+            SortUtility.SelectionSort<T>(source);
         }
 
         /// <summary>
@@ -238,26 +140,7 @@ namespace QuickUnity.Extensions.Generic
         /// <param name="source">The source <see cref="System.Collections.Generic.List{T}"/> object.</param>
         public static void InsertionSort<T>(this List<T> source) where T : IComparable
         {
-            T item = default(T);
-            int j = 0;
-            int length = source.Count;
-
-            if(length <= 1)
-            {
-                return;
-            }
-
-            for(int i = 1; i < length; ++i)
-            {
-                item = source[i];
-
-                for(j = i -1; j >= 0 && item.CompareTo(source[j]) < 0; j--)
-                {
-                    source[j + 1] = source[j];
-                }
-
-                source[j + 1] = item;
-            }
+            SortUtility.InsertionSort<T>(source);
         }
 
         /// <summary>
@@ -267,41 +150,7 @@ namespace QuickUnity.Extensions.Generic
         /// <param name="source">The source <see cref="System.Collections.Generic.List{T}"/> object.</param>
         public static void BinaryInsertionSort<T>(this List<T> source) where T : IComparable
         {
-            int left = 0, middle = 0, right = 0, j = 0;
-            int length = source.Count;
-
-            if(length <= 1)
-            {
-                return;
-            }
-
-            for(int i = 1; i < length; ++i)
-            {
-                T item = source[i];
-                left = 0;
-                right = i - 1;
-
-                while(left <= right)
-                {
-                    middle = (left + right) / 2;
-
-                    if(source[middle].CompareTo(item) > 0)
-                    {
-                        right = middle - 1;
-                    }
-                    else
-                    {
-                        left = middle + 1;
-                    }
-                }
-
-                for(j = i - 1; j >= left; --j)
-                {
-                    source[j + 1] = source[j];
-                }
-
-                source[left] = item;
-            }
+            SortUtility.BinaryInsertionSort<T>(source);
         }
 
         /// <summary>
@@ -311,34 +160,7 @@ namespace QuickUnity.Extensions.Generic
         /// <param name="source">The source <see cref="System.Collections.Generic.List{T}"/> object.</param>
         public static void ShellSort<T>(this List<T> source) where T : IComparable
         {
-            T item = default(T);
-            int length = source.Count;
-
-            if(length <= 1)
-            {
-                return;
-            }
-
-            for(int h = length / 2; h > 0; h /= 2)
-            {
-                for(int i = h; i < length; ++i)
-                {
-                    item = source[i];
-
-                    if(item.CompareTo(source[i - h]) < 0)
-                    {
-                        for(int j = 0; j < i; j += h)
-                        {
-                            if(item.CompareTo(source[j]) < 0)
-                            {
-                                item = source[j];
-                                source[j] = source[i];
-                                source[i] = item;
-                            }
-                        }
-                    }
-                }
-            }
+            SortUtility.ShellSort<T>(source);
         }
 
         /// <summary>

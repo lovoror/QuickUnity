@@ -24,7 +24,7 @@
 
 using System.Collections;
 
-namespace QuickUnity.Extensions
+namespace QuickUnity.Extensions.Collections
 {
 	/// <summary>
 	/// Extension methods to the <see cref="System.Collections.IList"/>.
@@ -48,5 +48,39 @@ namespace QuickUnity.Extensions
 
 			return position;
 		}
+
+		/// <summary>
+		/// Swaps a element in one index with another element in another index.
+		/// </summary>
+		/// <param name="source">The <see cref="System.Collections.IList"/> to swap elements. </param>
+		/// <param name="a">The first index of element in the <see cref="System.Collections.IList"/> to swap. </param>
+		/// <param name="b">The second index of element in the <see cref="System.Collections.IList"/> to swap. </param>
+		public static void Swap(this IList source, int a, int b)
+        {
+            if(a >= 0 && a < source.Count
+                && b >= 0 && b < source.Count)
+            {
+                object temp = source[b];
+                source[b] = source[a];
+                source[a] = temp;
+            }
+        }
+
+		/// <summary>
+        /// Converts the value of the current <see cref="System.Collections.IList"/> to its equivalent array string representation.
+        /// </summary>
+        /// <param name="source">The source <see cref="System.Collections.IList"/> object.</param>
+        /// <returns>The array string representation of the value of <see cref="System.Collections.IList"/>.</returns>
+        public static string ToArrayString(this IList source)
+        {
+            string[] strArr = new string[source.Count];
+
+            for(int i = 0, length = source.Count; i < length; ++i)
+            {
+                strArr[i] = source[i].ToString();
+            }
+
+            return string.Format("{{ {0} }}", string.Join(", ", strArr));
+        }
 	}
 }

@@ -23,46 +23,42 @@
  */
 
 using System.Collections.Generic;
-using System.IO;
-using QuickUnity.Extensions.Generic;
+using System.Linq;
 
-namespace QuickUnity.Extensions
+namespace QuickUnity.Extensions.Collections.Generic
 {
     /// <summary>
-    /// Extension methods to the <see cref="System.IO.DirectoryInfo"/>.
+    /// Extension methods to the <see cref="System.Collections.Generic.Dictionary{T, V}"/>.
     /// </summary>
-    public static class DirectoryInfoExtension
+    public static class DictionaryExtension
     {
         /// <summary>
-        /// Gets the files.
+        /// Adds the value with unique key.
         /// </summary>
-        /// <param name="source">The DirectoryInfo source.</param>
-        /// <param name="searchPatterns">The search patterns.</param>
-        /// <param name="searchOption">The search option.</param>
-        /// <returns>The array of FileInfo objects.</returns>
-        public static FileInfo[] GetFiles(this DirectoryInfo source, string[] searchPatterns, SearchOption searchOption = SearchOption.TopDirectoryOnly)
+        /// <typeparam name="TKey">The type of the key.</typeparam>
+        /// <typeparam name="TValue">The type of the value.</typeparam>
+        /// <param name="source">The source Dictionary object.</param>
+        /// <param name="key">The key.</param>
+        /// <param name="value">The value.</param>
+        public static void AddUnique<TKey, TValue>(this Dictionary<TKey, TValue> source, TKey key, TValue value)
         {
-            List<FileInfo> result = new List<FileInfo>();
-
-            if (searchPatterns != null)
+            if (!source.ContainsKey(key))
             {
-                for (int i = 0, length = searchPatterns.Length; i < length; ++i)
-                {
-                    string searchPattern = searchPatterns[i];
-
-                    if (!string.IsNullOrEmpty(searchPattern))
-                    {
-                        FileInfo[] array = source.GetFiles(searchPattern, searchOption);
-
-                        if (array != null && array.Length > 0)
-                        {
-                            result.AddRangeUnique(array);
-                        }
-                    }
-                }
+                source.Add(key, value);
             }
+        }
 
-            return result.ToArray();
+        /// <summary>
+        /// Gets the key by value.
+        /// </summary>
+        /// <typeparam name="TKey">The type of the key.</typeparam>
+        /// <typeparam name="TValue">The type of the value.</typeparam>
+        /// <param name="source">The source Dictionary object.</param>
+        /// <param name="value">The value.</param>
+        /// <returns>The value object.</returns>
+        public static TKey GetKey<TKey, TValue>(this Dictionary<TKey, TValue> source, TValue value)
+        {
+            return source.FirstOrDefault(q => q.Value.Equals(value)).Key;
         }
     }
 }

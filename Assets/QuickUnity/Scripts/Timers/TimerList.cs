@@ -23,7 +23,7 @@
  */
 
 using QuickUnity.Events;
-using QuickUnity.Extensions.Generic;
+using QuickUnity.Extensions.Collections.Generic;
 using System;
 using System.Collections.ObjectModel;
 using System.Collections;

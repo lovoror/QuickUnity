@@ -29,7 +29,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
-using QuickUnity.Extensions.Generic;
+using QuickUnity.Extensions.Collections.Generic;
 
 namespace QuickUnityEditor.Utilities
 {

@@ -22,36 +22,43 @@
  *	SOFTWARE.
  */
 
-using System.IO;
+using System.Collections;
 
-namespace QuickUnity.Extensions
+namespace QuickUnity.Extensions.Collections
 {
     /// <summary>
-    /// Extension methods to the <see cref="System.IO.FileInfo"/>.
+    /// Extension methods to the <see cref="System.Collections.ArrayList"/>.
     /// </summary>
-    public static class FileInfoExtension
+    public static class ArrayListExtension
     {
         /// <summary>
-        /// Renames the file.
+        /// Adds a unique item to the <see cref="System.Collections.ArrayList"/>.
         /// </summary>
-        /// <param name="source">The source object of FileInfo.</param>
-        /// <param name="newFileName">The new file name.</param>
-        public static void Rename(this FileInfo source, string newFileName)
+        /// <param name="source">A <see cref="System.Collections.ArrayList"/> oject to add item.</param>
+        /// <param name="value">The Object to be added to the end of the <see cref="System.Collections.ArrayList"/>.</param>
+        public static void AddUnique(this ArrayList source, object value)
         {
-            string dirPath = source.DirectoryName;
-            string destPath = Path.Combine(dirPath, newFileName);
-            source.MoveTo(destPath);
-            source = new FileInfo(destPath);
+            (source as IList).AddUnique(value);
         }
 
         /// <summary>
-        /// Gets the file name without extension.
+        /// Adds the range unique collection.
         /// </summary>
-        /// <param name="source">The source object of FileInfo.</param>
-        /// <returns>The file name without extension.</returns>
-        public static string GetFileNameWithoutExtension(this FileInfo source)
+        /// <param name="source">A <see cref="System.Collections.ArrayList"/> object to add some items.</param>
+        /// <param name="collection">The Objects to be added to the end of the <see cref="System.Collections.ArrayList"/>.</param>
+        public static void AddRangeUnique(this ArrayList source, ICollection collection)
         {
-            return Path.GetFileNameWithoutExtension(source.FullName);
+            ArrayList newCollection = new ArrayList();
+
+            foreach (object item in collection)
+            {
+                if (!source.Contains(item) && !newCollection.Contains(item))
+                {
+                    newCollection.Add(item);
+                }
+            }
+
+            source.AddRange(newCollection);
         }
     }
 }

@@ -24,7 +24,7 @@
 
 using System.Collections.Generic;
 
-namespace QuickUnity.Extensions.Generic
+namespace QuickUnity.Extensions.Collections.Generic
 {
 	/// <summary>
 	/// Extension methods to the interface <see cref="System.Collections.Generic.ICollection{T}"/>.

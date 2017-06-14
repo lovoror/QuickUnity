@@ -1,9 +1,9 @@
 ﻿using NUnit.Framework;
-using QuickUnity.Extensions.Generic;
+using QuickUnity.Extensions.Collections.Generic;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace QuickUnity.Extensions.Generic
+namespace QuickUnity.Extensions.Collections.Generic
 {
 	/// <summary>
 	/// Unit test cases for class <see cref="QuickUnity.Extensions.ListExtension"/>.
@@ -48,6 +48,18 @@ namespace QuickUnity.Extensions.Generic
 			list.Swap(0, 3);
 			int[] actual = list.ToArray();
 			CollectionAssert.AreEqual(expected, actual, "Swap elements is not correct");
+		}
+
+		/// <summary>
+		/// Test case for ToArrayString extension method for <see cref="System.Collections.Generic.List{T}"/>.
+		/// </summary>
+		[Test]
+		public void ToArrayStringTest()
+		{
+			List<int> list = new List<int>() { 1, 2, 3, 4, 5 };
+			string actual = list.ToArrayString();
+			string expected = "{ 1, 2, 3, 4, 5 }";
+			Assert.AreEqual(expected, actual, string.Format("The array string is not corrected: {0}", actual));
 		}
 
 		/// <summary>

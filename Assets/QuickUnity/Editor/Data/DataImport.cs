@@ -26,7 +26,7 @@ using Excel;
 using QuickUnity;
 using QuickUnity.Core.Miscs;
 using QuickUnity.Data;
-using QuickUnity.Extensions;
+using QuickUnity.Extensions.IO;
 using QuickUnity.Utilities;
 using QuickUnityEditor.Attributes;
 using QuickUnityEditor.Data.Parsers;

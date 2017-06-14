@@ -22,43 +22,36 @@
  *	SOFTWARE.
  */
 
-using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 
-namespace QuickUnity.Extensions.Generic
+namespace QuickUnity.Extensions.IO
 {
     /// <summary>
-    /// Extension methods to the <see cref="System.Collections.Generic.Dictionary{T, V}"/>.
+    /// Extension methods to the <see cref="System.IO.FileInfo"/>.
     /// </summary>
-    public static class DictionaryExtension
+    public static class FileInfoExtension
     {
         /// <summary>
-        /// Adds the value with unique key.
+        /// Renames the file.
         /// </summary>
-        /// <typeparam name="TKey">The type of the key.</typeparam>
-        /// <typeparam name="TValue">The type of the value.</typeparam>
-        /// <param name="source">The source Dictionary object.</param>
-        /// <param name="key">The key.</param>
-        /// <param name="value">The value.</param>
-        public static void AddUnique<TKey, TValue>(this Dictionary<TKey, TValue> source, TKey key, TValue value)
+        /// <param name="source">The source object of FileInfo.</param>
+        /// <param name="newFileName">The new file name.</param>
+        public static void Rename(this FileInfo source, string newFileName)
         {
-            if (!source.ContainsKey(key))
-            {
-                source.Add(key, value);
-            }
+            string dirPath = source.DirectoryName;
+            string destPath = Path.Combine(dirPath, newFileName);
+            source.MoveTo(destPath);
+            source = new FileInfo(destPath);
         }
 
         /// <summary>
-        /// Gets the key by value.
+        /// Gets the file name without extension.
         /// </summary>
-        /// <typeparam name="TKey">The type of the key.</typeparam>
-        /// <typeparam name="TValue">The type of the value.</typeparam>
-        /// <param name="source">The source Dictionary object.</param>
-        /// <param name="value">The value.</param>
-        /// <returns>The value object.</returns>
-        public static TKey GetKey<TKey, TValue>(this Dictionary<TKey, TValue> source, TValue value)
+        /// <param name="source">The source object of FileInfo.</param>
+        /// <returns>The file name without extension.</returns>
+        public static string GetFileNameWithoutExtension(this FileInfo source)
         {
-            return source.FirstOrDefault(q => q.Value.Equals(value)).Key;
+            return Path.GetFileNameWithoutExtension(source.FullName);
         }
     }
 }
