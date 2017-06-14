@@ -25,7 +25,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace QuickUnity.Extensions
+namespace QuickUnity.Extensions.Generic
 {
     /// <summary>
     /// Extension methods to the <see cref="System.Collections.Generic.List{T}"/>.
@@ -33,17 +33,14 @@ namespace QuickUnity.Extensions
     public static class ListExtension
     {
         /// <summary>
-        /// Adds the unique item.
+        /// Adds an unique item to the <see cref="System.Collections.Generic.List{T}"/>.
         /// </summary>
         /// <typeparam name="T">The type of element in List.</typeparam>
         /// <param name="source">The source <see cref="System.Collections.Generic.List{T}"/> object.</param>
         /// <param name="item">The object to be added to the end of the <see cref="System.Collections.Generic.List{T}"/>. </param>
         public static void AddUnique<T>(this List<T> source, T item)
         {
-            if (!source.Contains(item))
-            {
-                source.Add(item);
-            }
+            (source as ICollection<T>).AddUnique(item);
         }
 
         /// <summary>

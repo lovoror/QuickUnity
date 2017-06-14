@@ -22,7 +22,7 @@
  *	SOFTWARE.
  */
 
-using QuickUnity.Extensions;
+using QuickUnity.Extensions.Generic;
 using System;
 using System.Collections;
 using System.Collections.Generic;

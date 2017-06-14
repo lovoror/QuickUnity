@@ -34,21 +34,18 @@ namespace QuickUnity.Extensions
         /// <summary>
         /// Adds the unique value to the list.
         /// </summary>
-        /// <param name="source">The source.</param>
-        /// <param name="value">The value.</param>
+        /// <param name="source">A <see cref="System.Collections.ArrayList"/> oject to add item.</param>
+        /// <param name="value">The Object to be added to the end of the <see cref="System.Collections.ArrayList"/>.</param>
         public static void AddUnique(this ArrayList source, object value)
         {
-            if (!source.Contains(value))
-            {
-                source.Add(value);
-            }
+            (source as IList).AddUnique(value);
         }
 
         /// <summary>
         /// Adds the range unique collection.
         /// </summary>
-        /// <param name="source">The source.</param>
-        /// <param name="collection">The collection.</param>
+        /// <param name="source">A <see cref="System.Collections.ArrayList"/> object to add some items.</param>
+        /// <param name="collection">The Objects to be added to the end of the <see cref="System.Collections.ArrayList"/>.</param>
         public static void AddRangeUnique(this ArrayList source, ICollection collection)
         {
             ArrayList newCollection = new ArrayList();

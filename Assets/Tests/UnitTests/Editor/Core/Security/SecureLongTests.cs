@@ -1,16 +1,15 @@
 ﻿using NUnit.Framework;
 using QuickUnity.Core.Security;
 using QuickUnity.Utilities;
-using System;
+using UnityEngine;
 
-namespace QuickUnity.UnitTests
+namespace QuickUnity.UnitTests.Core.Security
 {
     /// <summary>
-    /// Unit test cases for struct SecureInt.
+    /// Unit test cases for struct SecureLong.
     /// </summary>
     [TestFixture]
-    [Category("SercureIntTests")]
-    internal class SecureIntTests
+    internal class SecureLongTests
     {
         /// <summary>
         /// Simple test.
@@ -18,32 +17,32 @@ namespace QuickUnity.UnitTests
         [Test]
         public void SimpleTest()
         {
-            int source = GetRandomValue();
-            SecureInt result = new SecureInt(source);
-            int value = result.GetValue();
+            long source = GetRandomValue();
+            SecureLong result = new SecureLong(source);
+            long value = result.GetValue();
             Assert.AreEqual(source, value);
         }
 
         /// <summary>
-        /// Test case for implicit conversion to int.
+        /// Test case for implicit conversion to long.
         /// </summary>
         [Test]
-        public void ImplicitConversionToIntTest()
+        public void ImplicitConversionToLongTest()
         {
-            int source = GetRandomValue();
-            SecureInt result = new SecureInt(source);
-            int value = result;
+            long source = GetRandomValue();
+            SecureLong result = new SecureLong(source);
+            long value = result;
             Assert.AreEqual(source, value);
         }
 
         /// <summary>
-        /// Test case for implicit conversion to SecureInt.
+        /// Test case for implicit conversion to SecureLong.
         /// </summary>
         [Test]
-        public void ImplicitConversionToSecureIntTest()
+        public void ImplicitConversionToSecureLongTest()
         {
-            int source = GetRandomValue();
-            SecureInt result = source;
+            long source = GetRandomValue();
+            SecureLong result = source;
             Assert.AreEqual(source, result.GetValue());
         }
 
@@ -53,11 +52,11 @@ namespace QuickUnity.UnitTests
         [Test]
         public void OperatorAdditionTest()
         {
-            int a = GetRandomValue();
-            int b = GetRandomValue();
-            SecureInt resultA = new SecureInt(a);
-            SecureInt resultB = new SecureInt(b);
-            SecureInt result = resultA + resultB;
+            long a = GetRandomValue();
+            long b = GetRandomValue();
+            SecureLong resultA = new SecureLong(a);
+            SecureLong resultB = new SecureLong(b);
+            SecureLong result = resultA + resultB;
             Assert.AreEqual(a + b, result.GetValue());
         }
 
@@ -67,11 +66,11 @@ namespace QuickUnity.UnitTests
         [Test]
         public void OperatorSubtractionTest()
         {
-            int a = GetRandomValue();
-            int b = GetRandomValue();
-            SecureInt resultA = new SecureInt(a);
-            SecureInt resultB = new SecureInt(b);
-            SecureInt result = resultA - resultB;
+            long a = GetRandomValue();
+            long b = GetRandomValue();
+            SecureLong resultA = new SecureLong(a);
+            SecureLong resultB = new SecureLong(b);
+            SecureLong result = resultA - resultB;
             Assert.AreEqual(a - b, result.GetValue());
         }
 
@@ -81,11 +80,11 @@ namespace QuickUnity.UnitTests
         [Test]
         public void OperatorMultiplicationTest()
         {
-            int a = GetRandomValue();
-            int b = GetRandomValue();
-            SecureInt resultA = new SecureInt(a);
-            SecureInt resultB = new SecureInt(b);
-            SecureInt result = resultA * resultB;
+            long a = GetRandomValue();
+            long b = GetRandomValue();
+            SecureLong resultA = new SecureLong(a);
+            SecureLong resultB = new SecureLong(b);
+            SecureLong result = resultA * resultB;
             Assert.AreEqual(a * b, result.GetValue());
         }
 
@@ -95,11 +94,11 @@ namespace QuickUnity.UnitTests
         [Test]
         public void OperatorDivisionTest()
         {
-            int a = GetRandomValue();
-            int b = GetRandomValue();
-            SecureInt resultA = new SecureInt(a);
-            SecureInt resultB = new SecureInt(b);
-            SecureInt result = resultA / resultB;
+            long a = GetRandomValue();
+            long b = GetRandomValue();
+            SecureLong resultA = new SecureLong(a);
+            SecureLong resultB = new SecureLong(b);
+            SecureLong result = resultA / resultB;
             Assert.AreEqual(a / b, result.GetValue());
         }
 
@@ -109,11 +108,11 @@ namespace QuickUnity.UnitTests
         [Test]
         public void OperatorModulusTest()
         {
-            int a = GetRandomValue();
-            int b = GetRandomValue();
-            SecureInt resultA = new SecureInt(a);
-            SecureInt resultB = new SecureInt(b);
-            SecureInt result = resultA % resultB;
+            long a = GetRandomValue();
+            long b = GetRandomValue();
+            SecureLong resultA = new SecureLong(a);
+            SecureLong resultB = new SecureLong(b);
+            SecureLong result = resultA % resultB;
             Assert.AreEqual(a % b, result.GetValue());
         }
 
@@ -123,10 +122,10 @@ namespace QuickUnity.UnitTests
         [Test]
         public void OperatorLessThanTest()
         {
-            int a = GetRandomValue();
-            int b = GetRandomValue();
-            SecureInt resultA = new SecureInt(a);
-            SecureInt resultB = new SecureInt(b);
+            long a = GetRandomValue();
+            long b = GetRandomValue();
+            SecureLong resultA = new SecureLong(a);
+            SecureLong resultB = new SecureLong(b);
             bool result = resultA < resultB;
             Assert.AreEqual(a < b, result);
         }
@@ -137,10 +136,10 @@ namespace QuickUnity.UnitTests
         [Test]
         public void OperatorGreaterThanTest()
         {
-            int a = GetRandomValue();
-            int b = GetRandomValue();
-            SecureInt resultA = new SecureInt(a);
-            SecureInt resultB = new SecureInt(b);
+            long a = GetRandomValue();
+            long b = GetRandomValue();
+            SecureLong resultA = new SecureLong(a);
+            SecureLong resultB = new SecureLong(b);
             bool result = resultA > resultB;
             Assert.AreEqual(a > b, result);
         }
@@ -151,10 +150,10 @@ namespace QuickUnity.UnitTests
         [Test]
         public void OperatorLessThanOrEqualToTest()
         {
-            int a = GetRandomValue();
-            int b = GetRandomValue();
-            SecureInt resultA = new SecureInt(a);
-            SecureInt resultB = new SecureInt(b);
+            long a = GetRandomValue();
+            long b = GetRandomValue();
+            SecureLong resultA = new SecureLong(a);
+            SecureLong resultB = new SecureLong(b);
             bool result = resultA <= resultB;
             Assert.AreEqual(a <= b, result);
         }
@@ -165,10 +164,10 @@ namespace QuickUnity.UnitTests
         [Test]
         public void OperatorGreatorThanOrEqualToTest()
         {
-            int a = GetRandomValue();
-            int b = GetRandomValue();
-            SecureInt resultA = new SecureInt(a);
-            SecureInt resultB = new SecureInt(b);
+            long a = GetRandomValue();
+            long b = GetRandomValue();
+            SecureLong resultA = new SecureLong(a);
+            SecureLong resultB = new SecureLong(b);
             bool result = resultA >= resultB;
             Assert.AreEqual(a >= b, result);
         }
@@ -179,10 +178,10 @@ namespace QuickUnity.UnitTests
         [Test]
         public void OperatorEqualityTest()
         {
-            int a = GetRandomValue();
-            int b = GetRandomValue();
-            SecureInt resultA = new SecureInt(a);
-            SecureInt resultB = new SecureInt(b);
+            long a = GetRandomValue();
+            long b = GetRandomValue();
+            SecureLong resultA = new SecureLong(a);
+            SecureLong resultB = new SecureLong(b);
             bool result = resultA == resultB;
             Assert.AreEqual(a == b, result);
         }
@@ -193,23 +192,22 @@ namespace QuickUnity.UnitTests
         [Test]
         public void OperatorNotEqualTest()
         {
-            int a = GetRandomValue();
-            int b = GetRandomValue();
-            SecureInt resultA = new SecureInt(a);
-            SecureInt resultB = new SecureInt(b);
+            long a = GetRandomValue();
+            long b = GetRandomValue();
+            SecureLong resultA = new SecureLong(a);
+            SecureLong resultB = new SecureLong(b);
             bool result = resultA != resultB;
             Assert.AreEqual(a != b, result);
         }
 
         /// <summary>
-        /// Gets the random int value.
+        /// Gets the random long value.
         /// </summary>
-        /// <returns>The random int value.</returns>
-        private int GetRandomValue()
+        /// <returns>The random long value.</returns>
+        private long GetRandomValue()
         {
-            int seed = MathUtility.GetRandomSeed();
-            Random rnd = new Random(seed);
-            return rnd.Next(int.MinValue, int.MaxValue);
+            Random.InitState(MathUtility.GetRandomSeed());
+            return (long)Random.Range(float.MinValue, float.MaxValue);
         }
     }
 }

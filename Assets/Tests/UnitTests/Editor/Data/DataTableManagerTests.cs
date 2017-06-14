@@ -1,18 +1,16 @@
 ﻿using NUnit.Framework;
 using QuickUnity.Data;
 using System.Collections.Generic;
-using Tests.UnitTests.Editor.DataTables;
 using UnityEngine;
 using QuickUnity.Extensions;
 
-namespace QuickUnity.UnitTests
+namespace QuickUnity.UnitTests.Data
 {
     /// <summary>
-    /// Unit test cases for class DataTableManager.
+    /// Unit test cases for class <see cref="QuickUnity.Data.DataTableManager"/>.
     /// </summary>
     [TestFixture]
-    [Category("DataTableTest")]
-    internal class DataTableTests
+    internal class DataTableManagerTests
     {
         /// <summary>
         /// Test for the method DataTableManager.GetDataTableRow.

@@ -2,13 +2,12 @@
 using QuickUnity.Core.Collections.Generic;
 using System.Collections.Generic;
 
-namespace QuickUnity.UnitTests
+namespace QuickUnity.UnitTests.Core.Collections.Generic
 {
 	/// <summary>
 	/// Unit test cases for class <see cref="QuickUnity.Core.Collections.Generic.BinarySearchTree{T}"/>.
 	/// </summary>
 	[TestFixture]
-    [Category("BinarySearchTreeTests")]
 	internal class BinarySearchTreeTests
 	{
 		/// <summary>

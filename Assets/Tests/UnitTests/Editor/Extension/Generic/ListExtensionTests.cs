@@ -1,17 +1,42 @@
 ﻿using NUnit.Framework;
-using QuickUnity.Extensions;
+using QuickUnity.Extensions.Generic;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace QuickUnity.UnitTests
+namespace QuickUnity.UnitTests.Extensions.Generic
 {
 	/// <summary>
 	/// Unit test cases for class <see cref="QuickUnity.Extensions.ListExtension"/>.
 	/// </summary>
 	[TestFixture]
-    [Category("ListExtensionTests")]
 	internal class ListExtensionTests
 	{
+		/// <summary>
+		/// Test case for AddRangeUnique extension method for <see cref="System.Collections.Generic.List{T}"/>.
+		/// </summary>
+		[Test]
+		public void AddRangeUniqueTest()
+		{
+			List<int> list = new List<int>() { 1, 2, 3 };
+			list.AddRangeUnique(new int[] { 2, 3, 4, 5 });
+			int[] expected = new int[] { 1, 2, 3, 4, 5 };
+			int[] actual = list.ToArray();
+			CollectionAssert.AreEqual(expected, actual, "Method List<T>.AddRangeUnique didn't work correctly!");
+		}
+
+		/// <summary>
+		/// Test case for RemoveRange extension method for <see cref="System.Collections.Generic.List{T}"/>.
+		/// </summary>
+		[Test]
+		public void RemoveRangeTest()
+		{
+			List<int> list = new List<int>() { 1, 2, 3, 4, 5 };
+			list.RemoveRange(new int[] { 4, 5 });
+			int[] expected = new int[] { 1, 2, 3 };
+			int[] actual = list.ToArray();
+			CollectionAssert.AreEqual(expected, actual, "Method List<T>.RemoveRange didn't work correctly!");
+		}
+
 		/// <summary>
 		/// Test case for Swap extension method for <see cref="System.Collections.Generic.List{T}"/>.
 		/// </summary>

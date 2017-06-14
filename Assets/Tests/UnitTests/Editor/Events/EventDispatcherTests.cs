@@ -2,13 +2,12 @@
 using QuickUnity.Events;
 using System;
 
-namespace QuickUnity.UnitTests
+namespace QuickUnity.UnitTests.Events
 {
     /// <summary>
     /// Unit test cases for class EventDispatchers.
     /// </summary>
     [TestFixture]
-    [Category("EventDispatcherTests")]
     internal class EventDispatcherTests
     {
         /// <summary>

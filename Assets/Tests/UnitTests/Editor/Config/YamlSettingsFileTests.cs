@@ -4,13 +4,12 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-namespace QuickUnity.UnitTests
+namespace QuickUnity.UnitTests.Config
 {
     /// <summary>
     /// Unit test cases for class YamlSettingsFile.
     /// </summary>
     [TestFixture]
-    [Category("YamlSettingsFileTests")]
     internal class YamlSettingsFileTests
     {
         /// <summary>

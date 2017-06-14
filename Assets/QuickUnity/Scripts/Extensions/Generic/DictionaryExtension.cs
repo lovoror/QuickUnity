@@ -25,7 +25,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace QuickUnity.Extensions
+namespace QuickUnity.Extensions.Generic
 {
     /// <summary>
     /// Extension methods to the <see cref="System.Collections.Generic.Dictionary{T, V}"/>.

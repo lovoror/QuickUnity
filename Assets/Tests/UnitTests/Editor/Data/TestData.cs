@@ -24,7 +24,7 @@
 
 using QuickUnity.Data;
 
-namespace Tests.UnitTests.Editor.DataTables
+namespace QuickUnity.UnitTests.Data
 {
     /// <summary>
     /// TestData

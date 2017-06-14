@@ -24,6 +24,7 @@
 
 using System.Collections.Generic;
 using System.IO;
+using QuickUnity.Extensions.Generic;
 
 namespace QuickUnity.Extensions
 {

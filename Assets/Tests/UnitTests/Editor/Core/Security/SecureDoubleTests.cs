@@ -3,13 +3,12 @@ using QuickUnity.Core.Security;
 using QuickUnity.Utilities;
 using System;
 
-namespace QuickUnity.UnitTests
+namespace QuickUnity.UnitTests.Core.Security
 {
     /// <summary>
     /// Unit test cases for struct SecureDouble.
     /// </summary>
     [TestFixture]
-    [Category("SercureDoubleTests")]
     internal class SecureDoubleTests
     {
         /// <summary>

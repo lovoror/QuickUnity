@@ -4,7 +4,7 @@ using QuickUnity.Data;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace QuickUnity.UnitTests
+namespace QuickUnity.UnitTests.Data
 {
     /// <summary>
     /// Unit test cases for class BoxDBAdapter.
@@ -51,7 +51,6 @@ namespace QuickUnity.UnitTests
     /// Unit test cases for class BoxDBAdapter.
     /// </summary>
     [TestFixture]
-    [Category("BoxDbAdapterTests")]
     internal class BoxDBAdapterTests
     {
         /// <summary>
