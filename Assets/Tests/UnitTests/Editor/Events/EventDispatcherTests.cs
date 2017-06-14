@@ -2,7 +2,7 @@
 using QuickUnity.Events;
 using System;
 
-namespace QuickUnity.UnitTests.Events
+namespace QuickUnity.Events
 {
     /// <summary>
     /// Unit test cases for class EventDispatchers.

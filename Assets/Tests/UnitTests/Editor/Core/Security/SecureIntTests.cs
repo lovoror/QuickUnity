@@ -3,7 +3,7 @@ using QuickUnity.Core.Security;
 using QuickUnity.Utilities;
 using System;
 
-namespace QuickUnity.UnitTests.Core.Security
+namespace QuickUnity.Core.Security
 {
     /// <summary>
     /// Unit test cases for struct SecureInt.

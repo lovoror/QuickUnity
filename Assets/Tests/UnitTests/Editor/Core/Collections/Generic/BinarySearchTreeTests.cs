@@ -2,7 +2,7 @@
 using QuickUnity.Core.Collections.Generic;
 using System.Collections.Generic;
 
-namespace QuickUnity.UnitTests.Core.Collections.Generic
+namespace QuickUnity.Core.Collections.Generic
 {
 	/// <summary>
 	/// Unit test cases for class <see cref="QuickUnity.Core.Collections.Generic.BinarySearchTree{T}"/>.

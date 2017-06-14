@@ -3,7 +3,7 @@ using QuickUnity.Extensions.Generic;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace QuickUnity.UnitTests.Extensions.Generic
+namespace QuickUnity.Extensions.Generic
 {
 	/// <summary>
 	/// Unit test cases for class <see cref="QuickUnity.Extensions.ListExtension"/>.

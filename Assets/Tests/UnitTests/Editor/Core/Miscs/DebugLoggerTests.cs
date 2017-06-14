@@ -2,7 +2,7 @@
 using QuickUnity.Core.Miscs;
 using System;
 
-namespace QuickUnity.UnitTests.Core.Miscs
+namespace QuickUnity.Core.Miscs
 {
     /// <summary>
     /// Unit test cases for class DebugLogger.

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using QuickUnity.Extensions;
 
-namespace QuickUnity.UnitTests.Data
+namespace QuickUnity.Data
 {
     /// <summary>
     /// Unit test cases for class <see cref="QuickUnity.Data.DataTableManager"/>.

@@ -24,7 +24,7 @@
 
 using QuickUnity.Data;
 
-namespace QuickUnity.UnitTests.Data
+namespace QuickUnity.Data
 {
     /// <summary>
     /// TestData
