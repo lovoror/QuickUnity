@@ -37,7 +37,7 @@ namespace QuickUnity.Extensions
         /// </summary>
         /// <typeparam name="T">The type of element in List.</typeparam>
         /// <param name="source">The source <see cref="System.Collections.Generic.List{T}"/> object.</param>
-        /// <param name="item">The item.</param>
+        /// <param name="item">The object to be added to the end of the <see cref="System.Collections.Generic.List{T}"/>. </param>
         public static void AddUnique<T>(this List<T> source, T item)
         {
             if (!source.Contains(item))
@@ -51,7 +51,7 @@ namespace QuickUnity.Extensions
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="source">The source <see cref="System.Collections.Generic.List{T}"/> object.</param>
-        /// <param name="collection">The collection.</param>
+        /// <param name="collection">The collection whose elements should be added to the end of the <see cref="System.Collections.Generic.List{T}"/>. </param>
         public static void AddRangeUnique<T>(this List<T> source, IEnumerable<T> collection)
         {
             List<T> newCollection = new List<T>();
@@ -72,8 +72,8 @@ namespace QuickUnity.Extensions
         /// </summary>
         /// <typeparam name="T">The type of elements in the list.</typeparam>
         /// <param name="source">The source <see cref="System.Collections.Generic.List{T}"/> object.</param>
-        /// <param name="collection">The collection.</param>
-        public static void RemoveRange<T>(this List<T> source, ICollection<T> collection)
+        /// <param name="collection">The collection whose elements should be removed from the <see cref="System.Collections.Generic.List{T}"/>. </param>
+        public static void RemoveRange<T>(this List<T> source, IEnumerable<T> collection)
         {
             foreach (T item in collection)
             {
