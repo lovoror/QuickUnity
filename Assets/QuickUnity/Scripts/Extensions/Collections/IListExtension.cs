@@ -22,6 +22,7 @@
  *	SOFTWARE.
  */
 
+using System;
 using System.Collections;
 
 namespace QuickUnity.Extensions.Collections
@@ -64,6 +65,59 @@ namespace QuickUnity.Extensions.Collections
                 source[b] = source[a];
                 source[a] = temp;
             }
+        }
+
+		/// <summary>
+		/// Copies all the elements of the <see cref="System.Collections.IList"/> to the specified <see cref="System.Collections.IList"/>. 
+		/// </summary>
+		/// <param name="source">The source object of the <see cref="System.Collections.IList"/>. </param>
+		/// <param name="target">The target object of the <see cref="System.Collections.IList"/>. </param>
+		///  <param name="index">A 32-bit integer that represents the index in <see cref="System.Collections.IList"/> at which copying begins. </param>
+		public static void CopyTo(this IList source, IList target, int index = 0)
+		{
+			int sourceLength = source.Count;
+			int targetLength = target.Count;
+
+			index = Math.Max(Math.Min(sourceLength - 1, index), 0);
+
+			for(int i = index; i < sourceLength; ++i)
+			{
+				int j = i - index;
+
+				if(j < targetLength)
+				{
+					target[j] = source[i];
+				}
+			}
+		}
+
+		/// <summary>
+        /// Searches for the maximum object and returns the index of object in the <see cref="System.Collections.IList"/>.  
+        /// </summary>
+        /// <param name="source">The <see cref="System.Collections.IList"/> to search. </param>
+        /// <param name="count">The number of objects in the section to search. </param>
+        /// <returns>The index of maximum object in the <see cref="System.Collections.IList"/>. </returns>
+		public static int IndexOfMax(this IList source, int count)
+		{
+            int index = -1;
+			int length = source.Count;
+
+			count = Math.Max(Math.Min(count, source.Count), 0);
+
+            if(length > 1)
+            {
+				index = 0;
+
+                for(int i = 0; i < count; ++i)
+                {
+                    if((source[i] as IComparable).CompareTo(source[index]) > 0)
+                    {
+                        index = i;
+                    }
+                }
+            }
+
+            return index;
         }
 
 		/// <summary>

@@ -87,7 +87,7 @@ namespace QuickUnity.Extensions.Collections.Generic
         /// <param name="source">The <see cref="System.Collections.Generic.List{T}"/> to swap elements. </param>
 		/// <param name="a">The first index of element in the <see cref="System.Collections.Generic.List{T}"/> to swap. </param>
 		/// <param name="b">The second index of element in the <see cref="System.Collections.Generic.List{T}"/> to swap. </param>
-        public static void Swap<T>(this List<T> source, int a, int b)
+        public static void Swap<T>(this List<T> source, int a, int b) where T : IComparable
         {
             (source as IList).Swap(a, b);
         }
@@ -170,32 +170,7 @@ namespace QuickUnity.Extensions.Collections.Generic
         /// <param name="source">The source <see cref="System.Collections.Generic.List{T}"/> object.</param>
         public static void MergeSort<T>(this List<T> source) where T : IComparable
         {
-            int length = source.Count;
-
-            if(length <= 1)
-            {
-                return;
-            }
-
-            int middle = length / 2;
-            List<T> left = new List<T>(4);
-            List<T> right = new List<T>(length - middle);
-
-            for(int i = 0; i < length; ++i)
-            {
-                if(i < middle)
-                {
-                    left.Add(source[i]);
-                }
-                else
-                {
-                    right.Add(source[i]);
-                }
-            }
-
-            left.MergeSort();
-            right.MergeSort();
-            Merge(source, left, right);
+            SortUtility.MergeSort<T>(source);
         }
 
         /// <summary>
@@ -205,20 +180,7 @@ namespace QuickUnity.Extensions.Collections.Generic
         /// <param name="source">The source <see cref="System.Collections.Generic.List{T}"/> object.</param>
         public static void HeapSort<T>(this List<T> source) where T : IComparable
         {
-            int length = source.Count;
-
-            if(length <= 1)
-            {
-                return;
-            }
-
-            int index = GetMaxIndex(source, length);
-
-            for(int i = length - 1, j = 1; i >= 0; --i, ++j)
-            {
-                source.Swap(index, i);
-                index = GetMaxIndex(source, length - j);
-            }
+            SortUtility.HeapSort(source);
         }
 
         /// <summary>
@@ -228,128 +190,7 @@ namespace QuickUnity.Extensions.Collections.Generic
         /// <param name="source">The source <see cref="System.Collections.Generic.List{T}"/> object.</param>
         public static void QuickSort<T>(this List<T> source) where T : IComparable
         {
-            int length = source.Count;
-
-            if(length <= 1)
-            {
-                return;
-            }
-
-            QuickSort(source, 0, length - 1);
-        }
-
-        /// <summary>
-        /// Merges two <see cref="System.Collections.Generic.List{T}"/> objects by order.
-        /// </summary>
-        /// <param name="output">The final output <see cerf="System.Collections.Generic.List{T}"/> object.</param>
-        /// <param name="a">The first <see cerf="System.Collections.Generic.List{T}"/> object.</param>
-        /// <param name="b">The second <see cref="System.Collections.Generic.List{T}"/> object.</param>
-        private static void Merge<T>(List<T> output, List<T> a, List<T> b) where T : IComparable
-        {
-            if(output == null || a == null || b == null)
-            {
-                return;
-            }
-
-            T[] resultArr = new T[a.Count + b.Count];
-            int i = 0, j = 0, k = 0;
-            int lengthA = a.Count;
-            int lengthB = b.Count;
-
-            while(i < lengthA && j < lengthB)
-            {
-                if(a[i].CompareTo(b[j]) < 0)
-                {
-                    resultArr[k++] = a[i++];
-                }
-                else
-                {
-                    resultArr[k++] = b[j++];
-                }
-            }
-
-            while(i < lengthA)
-            {
-                resultArr[k++] = a[i++];
-            }
-
-            while(j < lengthB)
-            {
-                resultArr[k++] = b[j++];
-            }
-
-            output.Clear();
-            output.AddRange(resultArr);
-        }
-
-        /// <summary>
-        /// Gets the index of maximum in the <see cref="System.Collections.Generic.List{T}"/>.
-        /// </summary>
-        /// <param name="source">The <see cref="System.Collections.Generic.List{T}"/> object to search.</param>
-        /// <param name="length">The length to limit searching.</param>
-        /// <returns>The index of maximum in the <see cref="System.Collections.Generic.List{T}"/>.</returns>
-        private static int GetMaxIndex<T>(List<T> source, int length) where T : IComparable
-        {
-            int index = 0;
-
-            if(source.Count > 1)
-            {
-                for(int i = 0; i < length; ++i)
-                {
-                    if(source[i].CompareTo(source[index]) > 0)
-                    {
-                        index = i;
-                    }
-                }
-            }
-
-            return index;
-        }
-
-        /// <summary>
-        /// Implement quick sorting algorithm.
-        /// </summary>
-        /// <param name="list">The <see cref="System.Collections.Generic.List{T}"/> object.</param>
-        /// <param name="low">The start index for sorting.</param>
-        /// <param name="high">The end index for sorting.</param>
-        private static void QuickSort<T>(List<T> list, int low, int high) where T : IComparable
-        {
-            if(low >= high)
-            {
-                return;
-            }
-
-            int i = low + 1, j = high;
-
-            while(true)
-            {
-                while(list[j].CompareTo(list[low]) > 0)
-                {
-                    j--;
-                }
-
-                while(list[i].CompareTo(list[low]) < 0 && i < j)
-                {
-                    i++;
-                }
-
-                if(i >= j)
-                {
-                    break;
-                }
-
-                list.Swap(i, j);
-                i++;
-                j--;
-            }
-
-            if(j != low)
-            {
-                list.Swap(low, j);
-            }
-
-            QuickSort(list, j + 1, high);
-            QuickSort(list, low, j - 1);
+            SortUtility.QuickSort(source);
         }
     }
 }

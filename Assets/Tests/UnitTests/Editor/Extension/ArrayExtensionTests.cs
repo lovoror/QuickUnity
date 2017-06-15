@@ -98,5 +98,44 @@ namespace QuickUnity.Extensions
 			int[] actual = list;
 			CollectionAssert.AreEqual(expected, actual, "Shell sorting did not sort correctly");
         }
+
+        /// <summary>
+        /// Test case for MergeSort extension method for <see cref="System.Array"/>.
+        /// </summary>
+        [Test]
+        public void MergeSortTest()
+        {
+            int[] list = new int[] { 10, 15, 5, 4, 7, 20, 14, 0, -5, -8, -2, -1 };
+			int[] expected = new int[] { -8, -5, -2, -1, 0, 4, 5, 7, 10, 14, 15, 20 };
+			list.MergeSort();
+			int[] actual = list;
+			CollectionAssert.AreEqual(expected, actual, "Merge sorting did not sort correctly");
+        }
+
+        /// <summary>
+        /// Test case for HeapSort extension method for <see cref="System.Array"/>. 
+        /// </summary>
+        [Test]
+        public void HeapSortTest()
+        {
+            int[] list = new int[] { 10, 15, 5, 4, 7, 20, 14, 0, -5, -8, -2, -1 };
+			int[] expected = new int[] { -8, -5, -2, -1, 0, 4, 5, 7, 10, 14, 15, 20 };
+			list.HeapSort();
+			int[] actual = list;
+			CollectionAssert.AreEqual(expected, actual, "Heap sorting did not sort correctly");
+        }
+
+        /// <summary>
+        /// Test case for QuickSort extension method for <see cref="System.Array"/>. 
+        /// </summary>
+        [Test]
+        public void QuickSortTest()
+        {
+            int[] list = new int[] { 10, 15, 5, 4, 7, 20, 14, 0, -5, -8, -2, -1 };
+			int[] expected = new int[] { -8, -5, -2, -1, 0, 4, 5, 7, 10, 14, 15, 20 };
+			list.QuickSort();
+			int[] actual = list;
+			CollectionAssert.AreEqual(expected, actual, "Quick sorting did not sort correctly");
+        }
     }
 }

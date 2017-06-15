@@ -105,5 +105,35 @@ namespace QuickUnity.Extensions
 		{
 			SortUtility.ShellSort<T>(source);
 		}
+
+		/// <summary>
+        /// Implements the shell sorting algorithm to the <see cref="System.Array"/>. 
+        /// </summary>
+        /// <typeparam name="T">The type of elements in the <see cref="System.Array"/>. </typeparam>
+        /// <param name="source">The source <see cref="System.Array"/> object. </param>
+		public static void MergeSort<T>(this T[] source) where T : IComparable
+		{
+			SortUtility.MergeSort<T>(source);
+		}
+
+		/// <summary>
+        /// Implements the heap sorting algorithm to the <see cref="System.Array"/>. 
+        /// </summary>
+        /// <typeparam name="T">The type of elements in the <see cref="System.Array"/>. </typeparam>
+        /// <param name="source">The source <see cref="System.Array"/> object. </param>
+        public static void HeapSort<T>(this T[] source) where T : IComparable
+        {
+            SortUtility.HeapSort(source);
+        }
+
+		/// <summary>
+        /// Implements the quick sorting algorithm to the <see cref="System.Array"/>. 
+        /// </summary>
+        /// <typeparam name="T">The type of elements in the <see cref="System.Array"/>. </typeparam>
+        /// <param name="source">The source <see cref="System.Array"/> object. </param>
+        public static void QuickSort<T>(this T[] source) where T : IComparable
+        {
+            SortUtility.QuickSort(source);
+        }
 	}
 }

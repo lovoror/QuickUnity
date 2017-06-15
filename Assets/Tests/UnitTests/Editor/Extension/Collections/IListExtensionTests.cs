@@ -37,6 +37,31 @@ namespace QuickUnity.Extensions.Collections
 			int[] actual = list.ToArray();
 			CollectionAssert.AreEqual(expected, actual, "Swap elements is not correct");
 		}
+		
+		/// <summary>
+		/// Test case for CopyTo extension method for <see cref="System.Collections.IList"/>.
+		/// </summary>
+		[Test]
+		public void CopyToTest()
+		{
+			IList list = new int[5] { 1, 2, 3, 4, 5 };
+			int[] expected = new int[] { 2, 3, 4, 5};
+			IList actual = new int[4];
+			list.CopyTo(actual, 1);
+			CollectionAssert.AreEqual(expected, actual, "Method CopyTo didn't work correctly!");
+		}
+
+		/// <summary>
+		/// Test case for IndexOfMax extension method for <see cref="System.Collections.IList"/>.
+		/// </summary>
+		[Test]
+		public void IndexOfMaxTest()
+		{
+			IList list = new int[] { 10, 15, 5, 4, 7, 20, 14, 0, -5, -8, -2, -1 };
+			int expected = 5;
+			int actual = list.IndexOfMax(list.Count);
+			Assert.AreEqual(expected, actual, "Method IndexOfMax didn't work correctly!");
+		}
 
 		/// <summary>
 		/// Test case for ToArrayString extension method for <see cref="System.Collections.IList"/>.

@@ -273,5 +273,171 @@ namespace QuickUnity.Utilities
                 }
             }
         }
+
+        /// <summary>
+		/// Implements the merge sorting algorithm to the <see cref="System.Collections.IList"/>.
+		/// </summary>
+		/// <typeparam name="T">The type of elements in the <see cref="System.Collections.IList"/>. </typeparam>
+		/// <param name="source">The <see cref="System.Collections.IList"/> to be sorted. </param>
+        public static void MergeSort<T>(IList source) where T : IComparable
+        {
+            int length = source.Count;
+
+            if(length <= 1)
+            {
+                return;
+            }
+
+            int middle = length / 2;
+            IList left = new T[middle];
+            IList right = new T[length - middle];
+
+            for(int i = 0; i < length; ++i)
+            {
+                if(i < middle)
+                {
+                    left[i] = (T)source[i];
+                }
+                else
+                {
+                    right[i - middle] = (T)source[i];
+                }
+            }
+
+            MergeSort<T>(left);
+            MergeSort<T>(right);
+            IList result = MergeList<T>(left, right);
+            result.CopyTo(source);
+        }
+
+        /// <summary>
+		/// Implements the heap sorting algorithm to the <see cref="System.Collections.IList"/>.
+		/// </summary>
+		/// <param name="source">The <see cref="System.Collections.IList"/> to be sorted. </param>
+        public static void HeapSort(IList source)
+        {
+            int length = source.Count;
+
+            if(length <= 1)
+            {
+                return;
+            }
+
+            int index = source.IndexOfMax(length);
+
+            for(int i = length - 1, j = 1; i >= 0; --i, ++j)
+            {
+                source.Swap(index, i);
+                index = source.IndexOfMax(length - j);
+            }
+        }
+
+        /// <summary>
+        /// Implements the quick sorting algorithm.
+        /// </summary>
+        /// <param name="source">The <see cref="System.Collections.IList"/> to be sorted. </param>
+        public static void QuickSort(IList source)
+        {
+            int length = source.Count;
+
+            if(length <= 1)
+            {
+                return;
+            }
+
+            QuickSort(source, 0, length - 1);
+        }
+
+        /// <summary>
+        /// Merges two <see cref="System.Collections.IList"/> by order.
+        /// </summary>
+        /// <param name="a">The first <see cerf="System.Collections.IList"/>. </param>
+        /// <param name="b">The second <see cref="System.Collections.IList"/> object. </param>
+        /// <returns>The sorted <see cref="System.Collections.IList"/>. </returns>
+        private static IList MergeList<T>(IList a, IList b) where T : IComparable
+        {
+            if(a == null || b == null)
+            {
+                return null;
+            }
+
+            int lengthA = a.Count;
+            int lengthB = b.Count;
+            int i = 0, j = 0, k = 0;
+            T item = default(T);
+            T[] resultArr = new T[lengthA + lengthB];
+
+            while(i < lengthA && j < lengthB)
+            {
+                item = (T)a[i];
+
+                if(item.CompareTo(b[j]) < 0)
+                {
+                    resultArr[k++] = (T)a[i++];
+                }
+                else
+                {
+                    resultArr[k++] = (T)b[j++];
+                }
+            }
+
+            while(i < lengthA)
+            {
+                resultArr[k++] = (T)a[i++];
+            }
+
+            while(j < lengthB)
+            {
+                resultArr[k++] = (T)b[j++];
+            }
+
+            return resultArr;
+        }
+
+        /// <summary>
+        /// Implement quick sorting algorithm. 
+        /// </summary>
+        /// <param name="list">The <see cref="System.Collections.IList"/> to be sorted. </param>
+        /// <param name="low">The start index for sorting. </param>
+        /// <param name="high">The end index for sorting. </param>
+        private static void QuickSort(IList list, int low, int high)
+        {
+            if(low >= high)
+            {
+                return;
+            }
+
+            int i = low + 1, j = high;
+
+            while(true)
+            {
+                while((list[j] as IComparable).CompareTo(list[low]) > 0)
+                {
+                    j--;
+                }
+
+                while((list[i] as IComparable).CompareTo(list[low]) < 0 && i < j)
+                {
+                    i++;
+                }
+
+                if(i >= j)
+                {
+                    break;
+                }
+
+                list.Swap(i, j);
+                i++;
+                j--;
+            }
+
+            if(j != low)
+            {
+                list.Swap(low, j);
+            }
+
+            QuickSort(list, j + 1, high);
+            QuickSort(list, low, j - 1);
+        }
 	}
 }
