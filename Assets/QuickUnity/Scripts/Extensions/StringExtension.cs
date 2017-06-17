@@ -47,8 +47,7 @@ namespace QuickUnity.Extensions
         /// <returns>The string with removing all whitespace characters.</returns>
         public static string TrimAll(this string source)
         {
-            string[] stringArr = source.Split(s_whitespaceChars, StringSplitOptions.RemoveEmptyEntries);
-            return string.Join("", stringArr);
+            return source.TrimAll(s_whitespaceChars);
         }
 
         /// <summary>

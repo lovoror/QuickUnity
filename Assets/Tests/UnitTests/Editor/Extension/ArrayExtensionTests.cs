@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework;
-using QuickUnity.Extensions.Collections;
 
 namespace QuickUnity.Extensions
 {

@@ -34,16 +34,16 @@ namespace QuickUnity.Extensions
     public static class ComponentExtension
     {
         /// <summary>
-        /// Copies the component values.
+        /// Copies values from the <see cref="UnityEngine.Component"/> to another <see cref="UnityEngine.Component"/> of the <see cref="UnityEngine.GameObject"/>. 
         /// </summary>
-        /// <param name="component">The component.</param>
-        /// <param name="targetGameObject">The target game object.</param>
+        /// <param name="component">The <see cref="UnityEngine.Component"/>. </param>
+        /// <param name="targetGameObject">The target <see cref="UnityEngine.GameObject"/>. </param>
         public static void CopyComponentValues(this Component component, GameObject targetGameObject)
         {
             if (targetGameObject)
             {
                 Type type = component.GetType();
-                Component copyComponent = targetGameObject.AddComponent(type);
+                Component copyComponent = targetGameObject.GetOrAddComponent(type);
                 FieldInfo[] fields = type.GetFields();
                 PropertyInfo[] properties = type.GetProperties();
 

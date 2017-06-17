@@ -6,7 +6,7 @@ using UnityEngine;
 namespace QuickUnity.Extensions.Collections.Generic
 {
 	/// <summary>
-	/// Unit test cases for class <see cref="QuickUnity.Extensions.ListExtension"/>.
+	/// Unit test cases for class <see cref="QuickUnity.Extensions.Collections.Generic.ListExtension"/>.
 	/// </summary>
 	[TestFixture]
 	internal class ListExtensionTests
