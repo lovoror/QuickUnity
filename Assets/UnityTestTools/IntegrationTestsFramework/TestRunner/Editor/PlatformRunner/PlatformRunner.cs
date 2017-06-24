@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
+using System.Linq;
 
 namespace UnityTest.IntegrationTests
 {
@@ -74,7 +74,7 @@ namespace UnityTest.IntegrationTests
                 settings.AddConfigurationFile(TestRunnerConfigurator.integrationTestsNetwork,
                                               string.Join("\n", configuration.GetConnectionIPs()));
 
-            settings.AddConfigurationFile(TestRunnerConfigurator.testScenesToRun, string.Join("\n", configuration.testScenes.ToArray()));
+            settings.AddConfigurationFile (TestRunnerConfigurator.testScenesToRun, string.Join ("\n", configuration.testScenes.ToArray()));
 
             settings.ChangeSettingsForIntegrationTests();
 
@@ -109,25 +109,19 @@ namespace UnityTest.IntegrationTests
             {
                 case BuildTargetGroup.Android:
                     return BuildTarget.Android;
-
-                case BuildTargetGroup.WebGL:
-                    return BuildTarget.WebGL;
-
                 default:
+                {
+                    switch (Application.platform)
                     {
-                        switch (Application.platform)
-                        {
-                            case RuntimePlatform.WindowsPlayer:
-                                return BuildTarget.StandaloneWindows;
-
-                            case RuntimePlatform.OSXPlayer:
-                                return BuildTarget.StandaloneOSXIntel;
-
-                            case RuntimePlatform.LinuxPlayer:
-                                return BuildTarget.StandaloneLinux;
-                        }
-                        return BuildTarget.WebGL;
+                        case RuntimePlatform.WindowsPlayer:
+                            return BuildTarget.StandaloneWindows;
+                        case RuntimePlatform.OSXPlayer:
+                            return BuildTarget.StandaloneOSXIntel;
+                        case RuntimePlatform.LinuxPlayer:
+                            return BuildTarget.StandaloneLinux;
                     }
+                    return BuildTarget.WebGL;
+                }
             }
         }
     }

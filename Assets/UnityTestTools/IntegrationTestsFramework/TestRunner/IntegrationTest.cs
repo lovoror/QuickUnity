@@ -138,11 +138,11 @@ public static class IntegrationTest
     }
 
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-    public class DynamicTest : Attribute
+    public class DynamicTestAttribute : Attribute
     {
         private readonly string m_SceneName;
 
-        public DynamicTest(string sceneName)
+        public DynamicTestAttribute(string sceneName)
         {
             if (sceneName.EndsWith(".unity"))
                 sceneName = sceneName.Substring(0, sceneName.Length - ".unity".Length);

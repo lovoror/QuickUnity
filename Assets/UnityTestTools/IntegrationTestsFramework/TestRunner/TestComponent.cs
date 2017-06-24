@@ -57,16 +57,16 @@ namespace UnityTest
         }
 
         public bool IsExceptionExpected(string exception)
-		{
-			exception = exception.Trim();
+        {
+            exception = exception.Trim();
             if (!expectException) 
-				return false;
-			if(string.IsNullOrEmpty(expectedExceptionList.Trim())) 
-				return true;
+                return false;
+            if(string.IsNullOrEmpty(expectedExceptionList.Trim())) 
+                return true;
             foreach (var expectedException in expectedExceptionList.Split(',').Select(e => e.Trim()))
             {
                 if (exception == expectedException) 
-					return true;
+                    return true;
                 var exceptionType = Type.GetType(exception) ?? GetTypeByName(exception);
                 var expectedExceptionType = Type.GetType(expectedException) ?? GetTypeByName(expectedException);
                 if (exceptionType != null && expectedExceptionType != null && IsAssignableFrom(expectedExceptionType, exceptionType))
@@ -396,10 +396,10 @@ namespace UnityTest
 
                 foreach (Type type in types)
                 {
-                    var attributes = type.GetCustomAttributes(typeof(IntegrationTest.DynamicTest), true);
+                    var attributes = type.GetCustomAttributes(typeof(IntegrationTest.DynamicTestAttribute), true);
                     if (attributes.Length == 1)
                     {
-                        var a = attributes.Single() as IntegrationTest.DynamicTest;
+                        var a = attributes.Single() as IntegrationTest.DynamicTestAttribute;
                         if (a.IncludeOnScene(sceneName)) yield return type;
                     }
                 }
