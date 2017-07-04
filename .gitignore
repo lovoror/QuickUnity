@@ -35,3 +35,6 @@
 Assets/VSCode.meta
 
 Assembly-CSharp-Editor.csproj
+/QuickUnity.Editor.csproj
+/QuickUnity.csproj
+/QuickUnity.sln.GhostDoc.xml
